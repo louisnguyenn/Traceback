@@ -1,5 +1,6 @@
 import { ArrowRight } from 'lucide-react';
 import AnimatedContent from '../animations/AnimatedContent';
+import Link from "next/link";
 
 const Hero = () => {
 	return (
@@ -37,7 +38,7 @@ const Hero = () => {
 
 					<div className="flex flex-col sm:flex-row items-center justify-center lg:justify-start gap-3 sm:gap-4 mb-8 sm:mb-12">
 						<button className="group w-full sm:w-auto px-6 sm:px-8 py-3 sm:py-4 bg-linear-to-b from-blue-600 to-blue-400 rounded-lg font-semibold text-sm sm:text-base transition-all duration-300 hover:scale-102 cursor-pointer flex items-center justify-center gap-2">
-							<span>Get Started</span>
+							<Link href="/signin">Get Started</Link>
 							<ArrowRight className="w-4 h-4 sm:h-5 group-hover:translate-x-1 transition-transform duration-300" />
 						</button>
 					</div>
