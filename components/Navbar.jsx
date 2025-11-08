@@ -30,14 +30,14 @@ const Navbar = ({ scrolled }) => {
 					</div>
 
 					{/* nav links */}
-					<div className="hidden md:flex items-center space-x-6 lg:space-x-8">
+					{/* <div className="hidden md:flex items-center space-x-6 lg:space-x-8">
 						<a
 							href="#features"
 							className="text-gray-300 hover:text-white text-sm lg:text-base"
 						>
 							Features
 						</a>
-					</div>
+					</div> */}
 
 					{/* set the hamburger menu to hidden on medium and large sized devices */}
 					<button
