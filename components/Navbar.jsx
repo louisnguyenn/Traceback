@@ -1,5 +1,6 @@
 import { Menu, X } from 'lucide-react';
 import Image from 'next/image';
+import Link from 'next/link';
 import { useState } from 'react';
 
 const Navbar = ({ scrolled }) => {
@@ -38,6 +39,14 @@ const Navbar = ({ scrolled }) => {
 							Features
 						</a>
 					</div> */}
+					<div className="hidden md:flex items-center space-x-6 lg:space-x-8">
+						<Link
+							href="/signin"
+							className="text-gray-300 hover:text-white text-sm lg:text-base"
+						>
+							Login
+						</Link>
+					</div>
 
 					{/* set the hamburger menu to hidden on medium and large sized devices */}
 					<button
