@@ -1,10 +1,10 @@
 'use client';
 
 import { useEffect, useState } from 'react';
-import Features from '../components/Features';
-import Footer from '../components/Footer';
-import Hero from '../components/Hero';
-import Navbar from '../components/Navbar';
+import Features from "@/components/Features";
+import Navbar from "@/components/Navbar";
+import Hero from "@/components/Hero";
+import Footer from "@/components/Footer";
 
 function App() {
 	const [scrolled, setScrolled] = useState(false);
