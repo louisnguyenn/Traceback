@@ -13,17 +13,18 @@ import {
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
+import { ArrowLeft } from 'lucide-react';
 
 const styles = {
 	container: 'w-full max-w-md',
 	header: 'space-y-1',
-	title: 'text-3xl font-bold text-pink-500',
+	title: 'text-3xl font-bold text-blue-400',
 	content: 'space-y-4',
 	fieldGroup: 'space-y-2',
 	footer: 'flex flex-col',
 	button: 'w-full',
-	prompt: 'mt-4 text-center text-sm',
-	link: 'ml-2 text-pink-500',
+	prompt: 'mt-4 text-center text-sm text-gray-300',
+	link: 'ml-2 text-blue-400',
 };
 
 export function SignupForm() {
@@ -80,6 +81,14 @@ export function SignupForm() {
 					</Link>
 				</div>
 			</form>
+
+			<Link
+				href="/"
+				className="flex items-center justify-center gap-2 text-gray-300 hover:text-white transition-colors mt-4 text-sm"
+			>
+				<ArrowLeft className="w-4 h-4 sm:h-5 group-hover:-translate-x-1 transition-transform duration-300" />
+				<span>Return home</span>
+			</Link>
 		</div>
 	);
 }
