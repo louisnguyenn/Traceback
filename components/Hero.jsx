@@ -27,15 +27,12 @@ const Hero = () => {
 						<span className="bg-linear-to-b from-blue-400 via-cyan-400 to-blue-400 bg-clip-text text-transparent block mb-2 sm:mb-3">
 							Get Up to Speed
 						</span>
-						<span className="bg-linear-to-r from-white via-blue-100 to-cyan-100 bg-clip-text text-transparent block">
-							With TraceBack
-						</span>
 					</h1>
 
 					<p className="text-lg sm:text-xl lg:text-2xl text-gray-300 max-w-2xl mx-auto mb-6 sm:mb-8 leading-relaxed text-center">
 						Instantly analyze your codebase to deliver crystal-clear summaries
 						of commits, merges, diffs, and project evolution, so you can start
-						contributing like you&aposve been there all along.
+						contributing like you&apos;ve been there all along
 					</p>
 
 					<div className="flex flex-col sm:flex-row items-center justify-center lg:justify-start gap-3 sm:gap-4 mb-8 sm:mb-12">
