@@ -23,8 +23,9 @@ focus on contributing instead of catching up.
 
 ## 🏗️ Tech Stack
 
-**Frontend** Next.js, React, Tailwind CSS **Backend / API** Next.js API Routes
-**AI Integration** Gemini AI API
+**Frontend:** Next.js, React, Tailwind CSS  
+**Backend / API:** Next.js API Routes  
+**AI Integration:** Gemini AI API
 
 ---
 
