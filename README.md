@@ -1,9 +1,7 @@
 # 🧭 Traceback
 
-Traceback helps developers get up to speed with new projects instantly.  
-By summarizing **Git commits, merges, and diffs** using **Gemini AI**, it
-provides a clear overview of what’s been happening in a repository — so you can
-focus on contributing instead of catching up.
+Traceback helps developers get up to speed with new projects instantly. By summarizing **Git commits, merges, and diffs** using **Gemini AI**, it
+provides a clear overview of what’s been happening in a repository, so you can focus on contributing instead of catching up.
 
 <!-- ![Traceback Preview](public/preview.png) -->
 
@@ -11,7 +9,7 @@ focus on contributing instead of catching up.
 
 ## ✨ Features
 
-- 🧠 **AI-Powered Summaries** – Automatically summarizes commit history, merge
+- 🧠 **AI-Powered Summaries** – Summarize commit history, merge
   activity, and diffs using Gemini AI.
 - 📊 **Project Dashboard** – View organized summaries, recent commits, and key
   repository insights in one place.
