@@ -1,6 +1,7 @@
 import { ArrowRight } from 'lucide-react';
 import Link from 'next/link';
 import AnimatedContent from './animations/AnimatedContent';
+import FadeContent from './animations/FadeContent';
 
 const Hero = () => {
 	return (
@@ -12,15 +13,15 @@ const Hero = () => {
 			<div className="flex flex-col items-center text-center max-w-4xl mx-auto">
 				<h1 className="text-4xl sm:text-5xl lg:text-7xl font-bold mb-6 sm:mb-8 leading-tight">
 					<AnimatedContent
-						distance={100}
+						distance={60}
 						direction="up"
 						reverse={false}
-						duration={1.3}
+						duration={1}
 						ease="power2.out"
 						initialOpacity={0}
 						animateOpacity
 						threshold={0.2}
-						delay={0.3}
+						delay={0.5}
 					>
 						<span className="bg-linear-to-r from-white via-blue-100 to-cyan-100 bg-clip-text text-transparent block mb-2 sm:mb-3">
 							Got Added to a Project?
@@ -28,15 +29,15 @@ const Hero = () => {
 					</AnimatedContent>
 
 					<AnimatedContent
-						distance={100}
+						distance={60}
 						direction="up"
 						reverse={false}
-						duration={1.6}
+						duration={1}
 						ease="power2.out"
 						initialOpacity={0}
 						animateOpacity
 						threshold={0.2}
-						delay={1}
+						delay={1.1}
 					>
 						<span className="bg-linear-to-b from-blue-400 via-cyan-400 to-blue-400 bg-clip-text text-transparent block mb-2 sm:mb-3">
 							Get Up to Speed Instantly
@@ -45,10 +46,10 @@ const Hero = () => {
 				</h1>
 
 				<AnimatedContent
-					distance={100}
+					distance={40}
 					direction="up"
 					reverse={false}
-					duration={1.8}
+					duration={1}
 					ease="power2.out"
 					initialOpacity={0}
 					animateOpacity
@@ -63,10 +64,17 @@ const Hero = () => {
 				</AnimatedContent>
 
 				<div className="flex flex-col sm:flex-row items-center justify-center lg:justify-start gap-3 sm:gap-4 mb-8 sm:mb-12">
-					<button className="group w-full sm:w-auto px-6 sm:px-8 py-3 sm:py-4 bg-linear-to-b from-blue-600 to-blue-400 rounded-lg font-semibold text-sm sm:text-base transition-all duration-300 hover:scale-102 cursor-pointer flex items-center justify-center gap-2">
-						<Link href="/signin">Get Started</Link>
-						<ArrowRight className="w-4 h-4 sm:h-5 group-hover:translate-x-1 transition-transform duration-300" />
-					</button>
+					<FadeContent
+						blur={true}
+						duration={1200}
+						easing="ease-out"
+						initialOpacity={0}
+					>
+						<button className="group w-full sm:w-auto px-6 sm:px-8 py-3 sm:py-4 bg-linear-to-b from-blue-600 to-blue-400 rounded-lg font-semibold text-sm sm:text-base transition-all duration-300 hover:scale-102 cursor-pointer flex items-center justify-center gap-2">
+							<Link href="/signin">Get Started</Link>
+							<ArrowRight className="w-4 h-4 sm:h-5 group-hover:translate-x-1 transition-transform duration-300" />
+						</button>
+					</FadeContent>
 				</div>
 			</div>
 		</section>
