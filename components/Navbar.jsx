@@ -16,14 +16,7 @@ const Navbar = ({ scrolled }) => {
 		>
 			<div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
 				<div className="flex justify-between items-center h-14 sm:h-16 md:h-20">
-					<div className="flex items-center space-x-1 group cursor-pointer">
-						<Image
-							src="/tracebacklogotransparent.png"
-							alt="TraceBack"
-							width={80}
-							height={80}
-							className="w-16 h-16 sm:w-20 sm:h-20"
-						/>
+					<div className="flex items-center space-x-1 group">
 						<span className="text-lg sm:text-xl md:text-2xl font-medium">
 							<span className="text-white">Trace</span>
 							<span className="text-blue-400">Back</span>
