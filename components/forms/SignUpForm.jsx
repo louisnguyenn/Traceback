@@ -91,13 +91,15 @@ export function SignupForm() {
 				</div>
 			</form>
 
-			<Link
-				href="/"
-				className="flex items-center justify-center gap-2 text-gray-300 hover:text-white transition-colors mt-6 text-sm py-3 rounded-lg hover:bg-slate-800/30"
-			>
-				<ArrowLeft className="w-4 h-4 transition-transform duration-300 group-hover:-translate-x-1" />
-				<span>Return home</span>
-			</Link>
+			<div className="flex justify-center mt-6">
+				<Link
+					href="/"
+					className="inline-flex items-center gap-2 text-gray-400 hover:text-white transition-colors text-sm"
+				>
+					<ArrowLeft className="w-4 h-4 transition-transform duration-300" />
+					<span>Return home</span>
+				</Link>
+			</div>
 		</div>
 	);
 }
