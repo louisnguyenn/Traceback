@@ -13,7 +13,7 @@ import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { useAuth } from '@/context/AuthContext';
-import { ArrowLeft } from 'lucide-react';
+import { ArrowLeft, Github } from 'lucide-react';
 
 export function SigninForm() {
 	const { GitHubSignIn, user } = useAuth();
@@ -72,10 +72,11 @@ export function SigninForm() {
 				<div>
 					<button
 						type="button"
-						className="w-full mt-4 px-4 py-2 bg-slate-800 hover:bg-slate-700 text-white rounded-lg transition-colors cursor-pointer"
+						className="flex gap-2 items-center justify-center w-full mt-4 px-4 py-2 bg-slate-800 hover:bg-slate-700 text-white rounded-lg transition-colors cursor-pointer"
 						onClick={GitHubSignIn}
 					>
 						Sign in with GitHub
+						<Github size={16}/>
 					</button>
 				</div>
 
