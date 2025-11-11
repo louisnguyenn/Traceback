@@ -8,8 +8,16 @@ export const AuthProvider = ({ children }) => {
 	const [user, setUser] = useState(null);
 	const [loading, setLoading] = useState(true);
 
-	const GitHubSignIn = () => {
-		supabase.auth.signInWithOAuth({ provider: 'github' });
+	// sign in with github auth
+	const GitHubSignIn = async () => {
+		try {
+			const { error } = await supabase.auth.signInWithOAuth({
+				provider: 'github',
+			});
+			if (error) console.error('GitHub sign-in error:', error);
+		} catch (err) {
+			console.error('Unexpected error:', err);
+		}
 	};
 
 	useEffect(() => {
