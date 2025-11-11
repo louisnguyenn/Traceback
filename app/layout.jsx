@@ -1,3 +1,4 @@
+import { AuthProvider } from '@/context/AuthContext';
 import { Geist, Geist_Mono } from 'next/font/google';
 import './globals.css';
 
@@ -15,7 +16,7 @@ export const metadata = {
 	title: 'Traceback',
 	description: 'AI-powered Git insight tool for developers',
 	icons: {
-		icon: '/favicon.ico', // default
+		icon: '/favicon.ico',
 		shortcut: '/favicon-16x16.png',
 		apple: '/apple-touch-icon.png',
 	},
@@ -27,7 +28,7 @@ export default function RootLayout({ children }) {
 			<body
 				className={`${geistSans.variable} ${geistMono.variable} antialiased`}
 			>
-				{children}
+				<AuthProvider>{children}</AuthProvider>
 			</body>
 		</html>
 	);
