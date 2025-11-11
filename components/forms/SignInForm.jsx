@@ -14,6 +14,7 @@ import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { useAuth } from '@/context/AuthContext';
 import { ArrowLeft, Github } from 'lucide-react';
+import { FaGoogle } from "react-icons/fa";
 
 export function SigninForm() {
 	const { GitHubSignIn, user } = useAuth();
@@ -86,7 +87,7 @@ export function SigninForm() {
 						className="flex gap-2 items-center justify-center w-full mt-4 px-4 py-2 bg-slate-800 hover:bg-slate-700 text-white rounded-lg transition-colors cursor-pointer"
 					>
 						Sign in with Google
-						
+						<FaGoogle size={16}/>
 					</button>
 				</div>
 
