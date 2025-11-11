@@ -76,7 +76,17 @@ export function SigninForm() {
 						onClick={GitHubSignIn}
 					>
 						Sign in with GitHub
-						<Github size={16}/>
+						<Github size={16} />
+					</button>
+				</div>
+
+				<div>
+					<button
+						type="button"
+						className="flex gap-2 items-center justify-center w-full mt-4 px-4 py-2 bg-slate-800 hover:bg-slate-700 text-white rounded-lg transition-colors cursor-pointer"
+					>
+						Sign in with Google
+						
 					</button>
 				</div>
 
