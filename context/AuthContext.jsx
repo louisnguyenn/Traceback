@@ -34,7 +34,7 @@ export const AuthProvider = ({ children }) => {
 	}, []);
 
 	return (
-		<AuthContext.Provider value={{ user, loading }}>
+		<AuthContext.Provider value={{ user, loading, GitHubSignIn }}>
 			{!loading && children}
 		</AuthContext.Provider>
 	);

@@ -12,9 +12,12 @@ import {
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
+import { useAuth } from '@/context/AuthContext';
 import { ArrowLeft } from 'lucide-react';
 
 export function SigninForm() {
+	const { GitHubSignIn, user } = useAuth();
+
 	return (
 		<div className="w-full max-w-md">
 			<form>
@@ -65,6 +68,17 @@ export function SigninForm() {
 						</Button>
 					</CardFooter>
 				</Card>
+
+				<div>
+					<button
+						type="button"
+						className="w-full mt-4 px-4 py-2 bg-slate-800 hover:bg-slate-700 text-white rounded-lg transition-colors cursor-pointer"
+						onClick={GitHubSignIn}
+					>
+						Sign in with GitHub
+					</button>
+				</div>
+
 				<div className="mt-4 text-center text-sm text-gray-300">
 					Don&apos;t have an account?
 					<Link
