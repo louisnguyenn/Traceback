@@ -2,11 +2,11 @@
 import Link from 'next/link';
 
 import {
-	Card,
-	CardContent,
-	CardFooter,
-	CardHeader,
-	CardTitle,
+  Card,
+  CardContent,
+  CardFooter,
+  CardHeader,
+  CardTitle,
 } from '@/components/ui/card';
 
 import { Button } from '@/components/ui/button';
@@ -33,10 +33,7 @@ export function SigninForm() {
           </CardHeader>
           <CardContent className="space-y-4">
             <div className="space-y-2">
-              <Label
-                htmlFor="identifier"
-                className="text-gray-200"
-              >
+              <Label htmlFor="identifier" className="text-gray-200">
                 Email
               </Label>
               <Input
@@ -48,10 +45,7 @@ export function SigninForm() {
               />
             </div>
             <div className="space-y-2">
-              <Label
-                htmlFor="password"
-                className="text-gray-200"
-              >
+              <Label htmlFor="password" className="text-gray-200">
                 Password
               </Label>
               <Input
