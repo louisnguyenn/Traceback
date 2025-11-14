@@ -6,7 +6,6 @@ const AuthContext = createContext();
 
 export const AuthProvider = ({ children }) => {
   const [user, setUser] = useState(null);
-  const [loading, setLoading] = useState(true);
 
   // sign in with github auth
   const GitHubSignIn = async () => {
@@ -21,29 +20,14 @@ export const AuthProvider = ({ children }) => {
   };
 
   useEffect(() => {
-    // Fetch current user on mount
-    const getUser = async () => {
-      const {
-        data: { user },
-      } = await supabase.auth.getUser();
-      setUser(user);
-      setLoading(false);
-    };
-    getUser();
-
-    // Listen for auth state changes
-    const { data: subscription } = supabase.auth.onAuthStateChange(
-      (_event, session) => {
-        setUser(session?.user ?? null);
-      }
-    );
-
-    return () => subscription.subscription.unsubscribe();
+    supabase.auth.getSession().then(({ data: { session } }) => {
+      setUser(session?.user ?? null);
+    });
   }, []);
 
   return (
-    <AuthContext.Provider value={{ user, loading, GitHubSignIn }}>
-      {!loading && children}
+    <AuthContext.Provider value={{ user, GitHubSignIn }}>
+      {children}
     </AuthContext.Provider>
   );
 };

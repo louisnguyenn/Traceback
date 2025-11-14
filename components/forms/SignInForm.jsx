@@ -17,7 +17,7 @@ import { ArrowLeft, Github } from 'lucide-react';
 import { FaGoogle } from 'react-icons/fa';
 
 export function SigninForm() {
-  const { GitHubSignIn, user } = useAuth();
+  const { GitHubSignIn, signOut, user } = useAuth();
 
   return (
     <div className="w-full max-w-md">
