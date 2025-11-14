@@ -2,7 +2,7 @@ import { SignupForm } from '@/components/forms/SignUpForm';
 import React from 'react';
 
 const SignUpRoute = () => {
-	return <SignupForm />;
+  return <SignupForm />;
 };
 
 export default SignUpRoute;

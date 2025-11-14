@@ -2,7 +2,7 @@ import { SigninForm } from '@/components/forms/SignInForm';
 import React from 'react';
 
 const SignInRoute = () => {
-	return <SigninForm />;
+  return <SigninForm />;
 };
 
 export default SignInRoute;
