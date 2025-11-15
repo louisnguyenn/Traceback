@@ -10,42 +10,27 @@ export const AuthProvider = ({ children }) => {
 
   // sign in with github auth
   const GitHubSignIn = async () => {
-    try {
-      const { error } = await supabase.auth.signInWithOAuth({
-        provider: 'github',
-        options: {
-          redirectTo: `${window.location.origin}/dashboard`,
-        },
-      });
-      if (error) console.error('GitHub sign-in error:', error);
-    } catch (err) {
-      console.error('Unexpected error:', err);
-    }
+    supabase.auth.signInWithOAuth({
+      provider: 'github',
+      options: {
+        redirectTo: `${window.location.origin}/dashboard`,
+      },
+    });
   };
 
   // sign in with google auth
   const GoogleSignIn = async () => {
-    try {
-      const { error } = await supabase.auth.signInWithOAuth({
-        provider: 'google',
-        options: {
-          redirectTo: `${window.location.origin}/dashboard`,
-        },
-      });
-      if (error) console.error('Google sign-in error:', error);
-    } catch (err) {
-      console.error('Unexpected error:', err);
-    }
+    supabase.auth.signInWithOAuth({
+      provider: 'google',
+      options: {
+        redirectTo: `${window.location.origin}/dashboard`,
+      },
+    });
   };
 
   // sign out
   const signOut = async () => {
-    try {
-      const { error } = await supabase.auth.signOut();
-      if (error) console.error('Sign out error:', error);
-    } catch (err) {
-      console.error('Unexpected error:', err);
-    }
+    supabase.auth.signOut();
   };
 
   useEffect(() => {
@@ -55,14 +40,16 @@ export const AuthProvider = ({ children }) => {
       setLoading(false);
     });
 
-    // Listen for auth changes
-    const {
-      data: { subscription },
-    } = supabase.auth.onAuthStateChange((_event, session) => {
+    // listen for any auth changes (sign out or sign in)
+    // if user signs out then user will be set to NULL
+    const { data: listener } = supabase.auth.onAuthStateChange((_, session) => {
       setUser(session?.user ?? null);
     });
 
-    return () => subscription.unsubscribe();
+    // unsubscribe to the auth listener to prevent memory leaks
+    return () => {
+      listener.subscription.unsubscribe();
+    };
   }, []);
 
   return (
