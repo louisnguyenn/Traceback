@@ -19,6 +19,9 @@ const DashboardPage = () => {
     return null;
   }
 
+  console.log(user);
+  console.log(user.user_metadata?.full_name);
+
   return (
     <div className="min-h-screen bg-gray-900 text-white p-8">
       <div className="max-w-4xl mx-auto">
