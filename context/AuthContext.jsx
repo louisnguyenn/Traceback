@@ -1,6 +1,6 @@
 'use client';
 import { supabase } from '@/lib/supabaseClient';
-import { createContext, useEffect, useState } from 'react';
+import { createContext, useContext, useEffect, useState } from 'react';
 
 const AuthContext = createContext();
 
@@ -45,7 +45,7 @@ export const AuthProvider = ({ children }) => {
     const {
       data: { subscription },
     } = supabase.auth.onAuthStateChange((_event, session) => {
-      setSession(session);
+      setUser(session?.user ?? null);
     });
 
     // unsubscribe to the auth listener to prevent memory leaks
@@ -62,3 +62,5 @@ export const AuthProvider = ({ children }) => {
     </AuthContext.Provider>
   );
 };
+
+export const useAuth = () => useContext(AuthContext);
