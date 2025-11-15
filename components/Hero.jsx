@@ -40,7 +40,14 @@ const Hero = () => {
             delay={1.1}
           >
             <span className="bg-linear-to-b from-blue-400 via-cyan-400 to-blue-400 bg-clip-text text-transparent block mb-2 sm:mb-3">
-              Get Up to Speed Instantly
+              Get Up to{' '}
+              <span className="relative inline-block">
+                <span className="bg-linear-to-b from-blue-400 via-cyan-400 to-blue-400 bg-clip-text text-transparent">
+                  Speed
+                </span>
+                <span className="absolute bottom-0 left-0 w-full h-[4px] bg-linear-to-r from-blue-400 via-cyan-400 to-blue-400"></span>
+              </span>{' '}
+              Instantly
             </span>
           </AnimatedContent>
         </h1>
