@@ -1,5 +1,6 @@
 'use client';
 import Link from 'next/link';
+import { useState } from 'react';
 
 import {
   Card,
@@ -17,7 +18,21 @@ import { ArrowLeft, Github } from 'lucide-react';
 import { FaGoogle } from 'react-icons/fa';
 
 export function SigninForm() {
-  const { GitHubSignIn, signOut, user } = useAuth();
+  const { GitHubSignIn, GoogleSignIn } = useAuth();
+  const [githubLoading, setGithubLoading] = useState(false);
+  const [googleLoading, setGoogleLoading] = useState(false);
+
+  // loading states
+  // will continue until redirect happens
+  const handleGitHubSignIn = async () => {
+    setGithubLoading(true);
+    await GitHubSignIn();
+  };
+
+  const handleGoogleSignIn = async () => {
+    setGoogleLoading(true);
+    await GoogleSignIn();
+  };
 
   return (
     <div className="w-full max-w-md">
@@ -64,24 +79,81 @@ export function SigninForm() {
           </CardFooter>
         </Card>
 
-        <div>
+        <div className="space-y-3 mt-4">
           <button
             type="button"
-            className="flex gap-2 items-center justify-center w-full mt-4 px-4 py-2 bg-slate-800 hover:bg-slate-700 text-white rounded-lg transition-colors cursor-pointer"
-            onClick={GitHubSignIn}
+            disabled={githubLoading}
+            className="flex gap-2 items-center justify-center w-full px-4 py-2 bg-slate-800 hover:bg-slate-700 text-white rounded-lg transition-colors cursor-pointer disabled:opacity-50 disabled:cursor-not-allowed"
+            onClick={handleGitHubSignIn}
           >
-            Sign in with GitHub
-            <Github size={16} />
+            {githubLoading ? (
+              <>
+                <svg
+                  className="animate-spin h-4 w-4 text-white"
+                  xmlns="http://www.w3.org/2000/svg"
+                  fill="none"
+                  viewBox="0 0 24 24"
+                >
+                  <circle
+                    className="opacity-25"
+                    cx="12"
+                    cy="12"
+                    r="10"
+                    stroke="currentColor"
+                    strokeWidth="4"
+                  ></circle>
+                  <path
+                    className="opacity-75"
+                    fill="currentColor"
+                    d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"
+                  ></path>
+                </svg>
+                <span>Signing in...</span>
+              </>
+            ) : (
+              <>
+                <span>Sign in with GitHub</span>
+                <Github size={16} />
+              </>
+            )}
           </button>
-        </div>
 
-        <div>
           <button
             type="button"
-            className="flex gap-2 items-center justify-center w-full mt-4 px-4 py-2 bg-slate-800 hover:bg-slate-700 text-white rounded-lg transition-colors cursor-pointer"
+            disabled={googleLoading}
+            className="flex gap-2 items-center justify-center w-full px-4 py-2 bg-slate-800 hover:bg-slate-700 text-white rounded-lg transition-colors cursor-pointer disabled:opacity-50 disabled:cursor-not-allowed"
+            onClick={handleGoogleSignIn}
           >
-            Sign in with Google
-            <FaGoogle size={16} />
+            {googleLoading ? (
+              <>
+                <svg
+                  className="animate-spin h-4 w-4 text-white"
+                  xmlns="http://www.w3.org/2000/svg"
+                  fill="none"
+                  viewBox="0 0 24 24"
+                >
+                  <circle
+                    className="opacity-25"
+                    cx="12"
+                    cy="12"
+                    r="10"
+                    stroke="currentColor"
+                    strokeWidth="4"
+                  ></circle>
+                  <path
+                    className="opacity-75"
+                    fill="currentColor"
+                    d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"
+                  ></path>
+                </svg>
+                <span>Signing in...</span>
+              </>
+            ) : (
+              <>
+                <span>Sign in with Google</span>
+                <FaGoogle size={16} />
+              </>
+            )}
           </button>
         </div>
 
