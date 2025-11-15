@@ -42,13 +42,15 @@ export const AuthProvider = ({ children }) => {
 
     // listen for any auth changes (sign out or sign in)
     // if user signs out then user will be set to NULL
-    const { data: listener } = supabase.auth.onAuthStateChange((_, session) => {
-      setUser(session?.user ?? null);
+    const {
+      data: { subscription },
+    } = supabase.auth.onAuthStateChange((_event, session) => {
+      setSession(session);
     });
 
     // unsubscribe to the auth listener to prevent memory leaks
     return () => {
-      listener.subscription.unsubscribe();
+      subscription.unsubscribe();
     };
   }, []);
 
@@ -60,5 +62,3 @@ export const AuthProvider = ({ children }) => {
     </AuthContext.Provider>
   );
 };
-
-export const useAuth = () => useContext(AuthContext);
