@@ -1,5 +1,6 @@
 'use client';
 import Link from 'next/link';
+import { useState } from 'react';
 
 import {
   Card,
@@ -12,9 +13,27 @@ import {
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
-import { ArrowLeft } from 'lucide-react';
+import { useAuth } from '@/context/AuthContext';
+import { ArrowLeft, Github } from 'lucide-react';
+import { FaGoogle } from 'react-icons/fa';
 
 export function SignupForm() {
+  const { GitHubSignIn, GoogleSignIn } = useAuth();
+  const [githubLoading, setGithubLoading] = useState(false);
+  const [googleLoading, setGoogleLoading] = useState(false);
+
+  // loading states
+  // will continue until redirect happens
+  const handleGitHubSignIn = async () => {
+    setGithubLoading(true);
+    await GitHubSignIn();
+  };
+
+  const handleGoogleSignIn = async () => {
+    setGoogleLoading(true);
+    await GoogleSignIn();
+  };
+
   return (
     <div className="w-full max-w-md">
       <form>
@@ -71,6 +90,85 @@ export function SignupForm() {
             </Button>
           </CardFooter>
         </Card>
+
+        <div className="space-y-3 mt-4">
+          <button
+            type="button"
+            disabled={githubLoading}
+            className="flex gap-2 items-center justify-center w-full px-4 py-2 bg-slate-800 hover:bg-slate-700 text-white rounded-lg transition-colors cursor-pointer disabled:opacity-50 disabled:cursor-not-allowed"
+            onClick={handleGitHubSignIn}
+          >
+            {githubLoading ? (
+              <>
+                <svg
+                  className="animate-spin h-4 w-4 text-white"
+                  xmlns="http://www.w3.org/2000/svg"
+                  fill="none"
+                  viewBox="0 0 24 24"
+                >
+                  <circle
+                    className="opacity-25"
+                    cx="12"
+                    cy="12"
+                    r="10"
+                    stroke="currentColor"
+                    strokeWidth="4"
+                  ></circle>
+                  <path
+                    className="opacity-75"
+                    fill="currentColor"
+                    d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"
+                  ></path>
+                </svg>
+                <span>Signing in...</span>
+              </>
+            ) : (
+              <>
+                <span>Sign un with GitHub</span>
+                <Github size={16} />
+              </>
+            )}
+          </button>
+
+          <button
+            type="button"
+            disabled={googleLoading}
+            className="flex gap-2 items-center justify-center w-full px-4 py-2 bg-slate-800 hover:bg-slate-700 text-white rounded-lg transition-colors cursor-pointer disabled:opacity-50 disabled:cursor-not-allowed"
+            onClick={handleGoogleSignIn}
+          >
+            {googleLoading ? (
+              <>
+                <svg
+                  className="animate-spin h-4 w-4 text-white"
+                  xmlns="http://www.w3.org/2000/svg"
+                  fill="none"
+                  viewBox="0 0 24 24"
+                >
+                  <circle
+                    className="opacity-25"
+                    cx="12"
+                    cy="12"
+                    r="10"
+                    stroke="currentColor"
+                    strokeWidth="4"
+                  ></circle>
+                  <path
+                    className="opacity-75"
+                    fill="currentColor"
+                    d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"
+                  ></path>
+                </svg>
+                <span>Signing in...</span>
+              </>
+            ) : (
+              <>
+                <span>Sign un with Google</span>
+                <FaGoogle size={16} />
+              </>
+            )}
+          </button>
+        </div>
+
         <div className="mt-4 text-center text-sm text-gray-300">
           Have an account?
           <Link
