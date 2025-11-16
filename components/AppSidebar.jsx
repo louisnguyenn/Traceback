@@ -1,59 +1,87 @@
-import { Calendar, Home, Inbox, Search, Settings } from 'lucide-react';
+import {
+  BarChart3,
+  FileText,
+  FolderGit2,
+  GitBranch,
+  Home,
+  Settings,
+  Users,
+} from 'lucide-react';
 
 import {
   Sidebar,
   SidebarContent,
   SidebarGroup,
   SidebarGroupContent,
-  SidebarGroupLabel,
+  SidebarHeader,
   SidebarMenu,
   SidebarMenuButton,
   SidebarMenuItem,
 } from '@/components/ui/sidebar';
 
-// Menu items.
 const items = [
   {
-    title: 'Home',
-    url: '#',
+    title: 'Dashboard',
+    url: '/dashboard',
     icon: Home,
   },
   {
-    title: 'Inbox',
-    url: '#',
-    icon: Inbox,
+    title: 'Repositories',
+    url: '/dashboard/repositories',
+    icon: FolderGit2,
   },
   {
-    title: 'Calendar',
-    url: '#',
-    icon: Calendar,
+    title: 'Commits',
+    url: '/dashboard/commits',
+    icon: GitBranch,
   },
   {
-    title: 'Search',
-    url: '#',
-    icon: Search,
+    title: 'Analytics',
+    url: '/dashboard/analytics',
+    icon: BarChart3,
+  },
+  {
+    title: 'Reports',
+    url: '/dashboard/reports',
+    icon: FileText,
+  },
+  {
+    title: 'Team',
+    url: '/dashboard/team',
+    icon: Users,
   },
   {
     title: 'Settings',
-    url: '#',
+    url: '/dashboard/settings',
     icon: Settings,
   },
 ];
 
 export function AppSidebar() {
   return (
-    <Sidebar>
-      <SidebarContent>
+    <Sidebar className="border-r border-slate-800 bg-slate-950">
+      <SidebarHeader className="border-b border-slate-800 p-6 bg-slate-900/50">
+        <div className="flex items-center space-x-2">
+          <h1 className="text-xl font-bold">
+            <span className="text-white">Trace</span>
+            <span className="text-blue-400">back</span>
+          </h1>
+        </div>
+      </SidebarHeader>
+
+      <SidebarContent className="bg-slate-950">
         <SidebarGroup>
-          <SidebarGroupLabel>Application</SidebarGroupLabel>
           <SidebarGroupContent>
-            <SidebarMenu>
+            <SidebarMenu className="space-y-1 px-3 py-4">
               {items.map((item) => (
                 <SidebarMenuItem key={item.title}>
                   <SidebarMenuButton asChild>
-                    <a href={item.url}>
-                      <item.icon />
-                      <span>{item.title}</span>
+                    <a
+                      href={item.url}
+                      className="flex items-center space-x-3 px-4 py-3 rounded-lg hover:bg-slate-800/50 text-gray-400 hover:text-white transition-colors"
+                    >
+                      <item.icon className="w-5 h-5" />
+                      <span className="text-sm font-medium">{item.title}</span>
                     </a>
                   </SidebarMenuButton>
                 </SidebarMenuItem>

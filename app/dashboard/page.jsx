@@ -18,14 +18,12 @@ const DashboardPage = () => {
   const { user, loading, signOut } = useAuth();
   const router = useRouter();
 
-  // redirect to sign in page if not authenticated
   useEffect(() => {
     if (!loading && !user) {
       router.push('/signin');
     }
   }, [user, loading, router]);
 
-  // show loading state when user is signing into dashboard
   if (loading || !user) {
     return (
       <div className="min-h-screen bg-slate-950 flex items-center justify-center">
@@ -57,15 +55,21 @@ const DashboardPage = () => {
   }
 
   return (
-    <div className="min-h-screen bg-slate-950">
+    <div className="bg-slate-950">
+      {/* Top Header */}
       <header className="border-b border-slate-800 bg-slate-900/50 backdrop-blur-sm sticky top-0 z-10">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="flex justify-between items-center h-16">
-            <div className="flex items-center space-x-2">
-              <h1 className="text-xl font-bold">
-                <span className="text-white">Trace</span>
-                <span className="text-blue-400">back</span>
-              </h1>
+        <div className="px-6 py-4">
+          <div className="flex justify-between items-center">
+            <div>
+              <h2 className="text-2xl font-bold text-white">
+                Welcome back,{' '}
+                {user.user_metadata?.full_name?.split(' ')[0] ||
+                  user.email?.split('@')[0]}
+                !
+              </h2>
+              <p className="text-sm text-gray-400 mt-1">
+                Here&apos;s what&apos;s happening with your projects today.
+              </p>
             </div>
 
             <div className="flex items-center space-x-4">
@@ -75,8 +79,8 @@ const DashboardPage = () => {
               <div className="flex items-center space-x-3">
                 {user.user_metadata?.avatar_url && (
                   <Image
-                    width={64}
-                    height={64}
+                    width={32}
+                    height={32}
                     src={user.user_metadata.avatar_url}
                     alt="Avatar"
                     className="w-8 h-8 rounded-full"
@@ -99,19 +103,7 @@ const DashboardPage = () => {
         </div>
       </header>
 
-      <main className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
-        <div className="mb-8">
-          <h2 className="text-3xl font-bold text-white mb-2">
-            Welcome back,{' '}
-            {user.user_metadata?.full_name?.split(' ')[0] ||
-              user.email?.split('@')[0]}
-            !
-          </h2>
-          <p className="text-gray-400">
-            Here&apos;s what&apos;s happening with your projects today.
-          </p>
-        </div>
-
+      <main className="px-6 py-8">
         {/* stats */}
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
           <div className="bg-slate-900/50 border border-slate-800 rounded-xl p-6 hover:border-blue-500/50 transition-colors">
