@@ -1,3 +1,4 @@
+'use client';
 import {
   BarChart3,
   FileText,
@@ -17,7 +18,10 @@ import {
   SidebarMenu,
   SidebarMenuButton,
   SidebarMenuItem,
+  useSidebar,
 } from '@/components/ui/sidebar';
+import Image from 'next/image';
+import Link from 'next/link';
 
 const items = [
   {
@@ -58,14 +62,31 @@ const items = [
 ];
 
 export function AppSidebar() {
+  const { state } = useSidebar();
+
   return (
-    <Sidebar className="border-r border-slate-950 bg-slate-950">
-      <SidebarHeader className="border-b border-slate-950 p-6 bg-slate-950 items-center justify-center">
+    <Sidebar
+      variant="sidebar"
+      collapsible="icon"
+      className="border-r border-slate-950 bg-slate-950"
+    >
+      <SidebarHeader className="border-b border-slate-950 p-6 bg-slate-950 flex items-center justify-center">
         <div className="flex items-center space-x-2">
-          <h1 className="text-2xl font-bold">
-            <span className="text-white">Trace</span>
-            <span className="text-blue-400">back</span>
-          </h1>
+          {state === 'collapsed' ? (
+            <Link href="/" className="flex items-center">
+              <Image
+                src="/tracebacklogotransparent.png"
+                alt="Traceback"
+                width={32}
+                height={32}
+              />
+            </Link>
+          ) : (
+            <Link href="/" className="text-2xl font-bold">
+              <span className="text-white">Trace</span>
+              <span className="text-blue-400">back</span>
+            </Link>
+          )}
         </div>
       </SidebarHeader>
 
@@ -76,13 +97,13 @@ export function AppSidebar() {
               {items.map((item) => (
                 <SidebarMenuItem key={item.title}>
                   <SidebarMenuButton asChild>
-                    <a
+                    <Link
                       href={item.url}
                       className="flex items-center space-x-3 px-4 py-3 rounded-lg hover:bg-slate-800/50 text-gray-400 hover:text-white transition-colors"
                     >
                       <item.icon className="w-5 h-5" />
                       <span className="text-sm font-medium">{item.title}</span>
-                    </a>
+                    </Link>
                   </SidebarMenuButton>
                 </SidebarMenuItem>
               ))}
