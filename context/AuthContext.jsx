@@ -1,5 +1,6 @@
 'use client';
 import { supabase } from '@/lib/supabaseClient';
+import { useRouter } from 'next/navigation';
 import { createContext, useContext, useEffect, useState } from 'react';
 
 const AuthContext = createContext();
@@ -7,6 +8,7 @@ const AuthContext = createContext();
 export const AuthProvider = ({ children }) => {
   const [user, setUser] = useState(null);
   const [loading, setLoading] = useState(true);
+  const router = useRouter();
 
   // sign in with github auth
   const GitHubSignIn = async () => {
@@ -31,6 +33,7 @@ export const AuthProvider = ({ children }) => {
   // sign out
   const signOut = async () => {
     supabase.auth.signOut();
+    router.push('/'); // redirect back to landing page
   };
 
   useEffect(() => {
