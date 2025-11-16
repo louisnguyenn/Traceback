@@ -59,10 +59,10 @@ const items = [
 
 export function AppSidebar() {
   return (
-    <Sidebar className="border-r border-slate-800 bg-slate-950">
-      <SidebarHeader className="border-b border-slate-800 p-6 bg-slate-900/50">
+    <Sidebar className="border-r border-slate-950 bg-slate-950">
+      <SidebarHeader className="border-b border-slate-950 p-6 bg-slate-950 items-center justify-center">
         <div className="flex items-center space-x-2">
-          <h1 className="text-xl font-bold">
+          <h1 className="text-2xl font-bold">
             <span className="text-white">Trace</span>
             <span className="text-blue-400">back</span>
           </h1>
