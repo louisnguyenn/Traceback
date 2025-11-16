@@ -19,19 +19,10 @@ const Navbar = ({ scrolled }) => {
           <div className="flex items-center space-x-1 group">
             <span className="text-lg sm:text-xl md:text-2xl font-medium">
               <span className="text-white">Trace</span>
-              <span className="text-blue-400">Back</span>
+              <span className="text-blue-400">back</span>
             </span>
           </div>
 
-          {/* nav links */}
-          {/* <div className="hidden md:flex items-center space-x-6 lg:space-x-8">
-						<a
-							href="#features"
-							className="text-gray-300 hover:text-white text-sm lg:text-base"
-						>
-							Features
-						</a>
-					</div> */}
           <div className="hidden md:flex items-center space-x-6 lg:space-x-8">
             <Link
               href="/signin"
