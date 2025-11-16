@@ -1,13 +1,15 @@
-import { Sidebar } from '@/components/Sidebar';
+import { AppSidebar } from '@/components/AppSidebar';
 import { SidebarProvider, SidebarTrigger } from '@/components/ui/sidebar';
+
+// TODO: implement sidebar in dashboard
 
 export default function DashboardLayout({ children }) {
   return (
     <>
       <SidebarProvider>
-        <Sidebar>
+        <AppSidebar>
           <main>{children}</main>
-        </Sidebar>
+        </AppSidebar>
       </SidebarProvider>
     </>
   );
