@@ -111,7 +111,7 @@ const DashboardPage = () => {
             !
           </h2>
           <p className="text-gray-400">
-            Here's what's happening with your projects today.
+            Here&apos;s what&apos;s happening with your projects today.
           </p>
         </div>
 
@@ -236,13 +236,15 @@ const DashboardPage = () => {
               <div className="space-y-3">
                 <div className="flex items-center space-x-3 mb-4">
                   {user.user_metadata?.avatar_url ? (
-                    <img
+                    <Image
+                      width={64}
+                      height={64}
                       src={user.user_metadata.avatar_url}
                       alt="Avatar"
                       className="w-12 h-12 rounded-full"
                     />
                   ) : (
-                    <div className="w-12 h-12 bg-gradient-to-br from-blue-500 to-cyan-500 rounded-full flex items-center justify-center text-white font-bold">
+                    <div className="w-12 h-12 bg-linear-to-br from-blue-500 to-cyan-500 rounded-full flex items-center justify-center text-white font-bold">
                       {(
                         user.user_metadata?.full_name?.[0] ||
                         user.email?.[0] ||
