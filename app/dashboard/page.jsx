@@ -1,4 +1,12 @@
 'use client';
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuLabel,
+  DropdownMenuSeparator,
+  DropdownMenuTrigger,
+} from '@/components/ui/dropdown-menu';
 import { useAuth } from '@/context/AuthContext';
 import {
   Activity,
@@ -56,7 +64,6 @@ const DashboardPage = () => {
 
   return (
     <div className="bg-slate-950">
-      {/* Top Header */}
       <header className="border-b border-slate-800 bg-slate-900/50 backdrop-blur-sm sticky top-0 z-10">
         <div className="px-6 py-4">
           <div className="flex justify-between items-center">
@@ -73,31 +80,58 @@ const DashboardPage = () => {
             </div>
 
             <div className="flex items-center space-x-4">
-              <button className="p-2 hover:bg-slate-800 rounded-lg transition-colors">
-                <Settings className="w-5 h-5 text-gray-400" />
-              </button>
-              <div className="flex items-center space-x-3">
-                {user.user_metadata?.avatar_url && (
-                  <Image
-                    width={32}
-                    height={32}
-                    src={user.user_metadata.avatar_url}
-                    alt="Avatar"
-                    className="w-8 h-8 rounded-full"
-                  />
-                )}
-                <span className="text-sm text-gray-300 hidden sm:block">
-                  {user.user_metadata?.full_name ||
-                    user.user_metadata?.name ||
-                    user.email}
-                </span>
-              </div>
-              <button
-                onClick={signOut}
-                className="text-sm hover:text-red-400 text-gray-400 transition-colors duration-300 cursor-pointer"
-              >
-                Log Out
-              </button>
+              <DropdownMenu>
+                <DropdownMenuTrigger asChild>
+                  <button className="p-1 hover:bg-slate-800 rounded-full transition-colors cursor-pointer">
+                    {user.user_metadata?.avatar_url ? (
+                      <Image
+                        width={32}
+                        height={32}
+                        src={user.user_metadata.avatar_url}
+                        alt="Avatar"
+                        className="w-8 h-8 rounded-full"
+                      />
+                    ) : (
+                      <div className="w-8 h-8 bg-linear-to-br from-blue-500 to-cyan-500 rounded-full flex items-center justify-center text-white text-sm font-bold">
+                        {(
+                          user.user_metadata?.full_name?.[0] ||
+                          user.email?.[0] ||
+                          'U'
+                        ).toUpperCase()}
+                      </div>
+                    )}
+                  </button>
+                </DropdownMenuTrigger>
+                <DropdownMenuContent
+                  align="end"
+                  className="w-56 bg-slate-900 border-slate-800"
+                >
+                  <DropdownMenuLabel className="text-gray-200">
+                    My Account
+                  </DropdownMenuLabel>
+                  <DropdownMenuSeparator className="bg-slate-800" />
+                  <DropdownMenuItem
+                    className="text-gray-300 hover:bg-slate-800 cursor-pointer focus:bg-slate-800 focus:text-white"
+                    onClick={() => router.push('/dashboard/settings')}
+                  >
+                    <Settings className="w-4 h-4 mr-2" />
+                    Settings
+                  </DropdownMenuItem>
+                  <DropdownMenuSeparator className="bg-slate-800" />
+                  <DropdownMenuItem
+                    className="text-red-400 hover:bg-slate-800 cursor-pointer focus:bg-slate-800 focus:text-red-300"
+                    onClick={signOut}
+                  >
+                    Log Out
+                  </DropdownMenuItem>
+                </DropdownMenuContent>
+              </DropdownMenu>
+
+              <span className="text-sm text-gray-300 hidden sm:block">
+                {user.user_metadata?.full_name ||
+                  user.user_metadata?.name ||
+                  user.email}
+              </span>
             </div>
           </div>
         </div>
