@@ -17,7 +17,7 @@ const Navbar = ({ scrolled }) => {
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex justify-between items-center h-14 sm:h-16 md:h-20">
           <div className="flex items-center space-x-1 group">
-            <span className="text-lg sm:text-xl md:text-2xl font-medium">
+            <span className="text-lg sm:text-2xl md:text-3xl font-bold">
               <span className="text-white">Trace</span>
               <span className="text-blue-400">back</span>
             </span>
@@ -26,9 +26,9 @@ const Navbar = ({ scrolled }) => {
           <div className="hidden md:flex items-center space-x-6 lg:space-x-8">
             <Link
               href="/signin"
-              className="text-gray-300 hover:text-white text-sm lg:text-base"
+              className="text-gray-300 hover:text-white text-sm lg:text-base transition-colors duration-300"
             >
-              Login
+              Sign in
             </Link>
           </div>
 
