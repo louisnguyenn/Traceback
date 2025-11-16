@@ -62,10 +62,9 @@ const DashboardPage = () => {
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="flex justify-between items-center h-16">
             <div className="flex items-center space-x-2">
-              <div className="w-8 h-8 bg-linear-to-br from-blue-500 to-cyan-500 rounded-lg"></div>
               <h1 className="text-xl font-bold">
                 <span className="text-white">Trace</span>
-                <span className="text-blue-400">Back</span>
+                <span className="text-blue-400">back</span>
               </h1>
             </div>
 
@@ -100,9 +99,7 @@ const DashboardPage = () => {
         </div>
       </header>
 
-      {/* Main Content */}
       <main className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
-        {/* Welcome Section */}
         <div className="mb-8">
           <h2 className="text-3xl font-bold text-white mb-2">
             Welcome back,{' '}
@@ -115,7 +112,7 @@ const DashboardPage = () => {
           </p>
         </div>
 
-        {/* Stats Grid */}
+        {/* stats */}
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
           <div className="bg-slate-900/50 border border-slate-800 rounded-xl p-6 hover:border-blue-500/50 transition-colors">
             <div className="flex items-center justify-between mb-4">
@@ -162,9 +159,8 @@ const DashboardPage = () => {
           </div>
         </div>
 
-        {/* Two Column Layout */}
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
-          {/* Recent Activity */}
+          {/* recent activity */}
           <div className="lg:col-span-2 bg-slate-900/50 border border-slate-800 rounded-xl p-6">
             <div className="flex items-center justify-between mb-6">
               <h3 className="text-xl font-semibold text-white">
@@ -228,9 +224,8 @@ const DashboardPage = () => {
             </div>
           </div>
 
-          {/* Quick Actions & User Info */}
           <div className="space-y-6">
-            {/* User Info Card */}
+            {/* user info card */}
             <div className="bg-slate-900/50 border border-slate-800 rounded-xl p-6">
               <h3 className="text-lg font-semibold text-white mb-4">Profile</h3>
               <div className="space-y-3">
@@ -283,7 +278,7 @@ const DashboardPage = () => {
               </div>
             </div>
 
-            {/* Quick Actions */}
+            {/* quick actions */}
             <div className="bg-slate-900/50 border border-slate-800 rounded-xl p-6">
               <h3 className="text-lg font-semibold text-white mb-4">
                 Quick Actions
