@@ -126,12 +126,6 @@ const DashboardPage = () => {
                   </DropdownMenuItem>
                 </DropdownMenuContent>
               </DropdownMenu>
-
-              <span className="text-sm text-gray-300 hidden sm:block">
-                {user.user_metadata?.full_name ||
-                  user.user_metadata?.name ||
-                  user.email}
-              </span>
             </div>
           </div>
         </div>
