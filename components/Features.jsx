@@ -9,7 +9,7 @@ const features = [
   {
     title: 'Onboarding Mode',
     description:
-      'New to a repository? Traceback automatically generates a “quick brief”—a personalized summary of the most important recent commits, key features, and active branches—to get you up to speed in minutes.',
+      'New to a repository? Traceback automatically generates a “quick brief”, a personalized summary of the most important recent commits, key features, and active branches, to get you up to speed in minutes.',
     image: 'onboarding-summary',
     imagePosition: 'right',
   },
