@@ -79,7 +79,7 @@ const Hero = () => {
           >
             <Link
               href="/signin"
-              className="group w-full sm:w-auto px-6 sm:px-8 py-3 sm:py-4 bg-linear-to-b from-blue-600 to-blue-400 rounded-lg font-semibold text-sm sm:text-base transition-all duration-300 hover:scale-102 cursor-pointer flex items-center justify-center gap-2"
+              className="group w-full sm:w-auto px-6 sm:px-8 py-3 sm:py-4 bg-linear-to-b from-blue-600 to-blue-400 rounded-lg font-semibold text-sm sm:text-base transition-all duration-300 hover:to-blue-500 hover:scale-103 cursor-pointer flex items-center justify-center gap-2"
             >
               Get Started
               <ArrowRight className="w-4 h-4 sm:h-5 group-hover:translate-x-1 transition-transform duration-300" />
