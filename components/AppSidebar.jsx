@@ -5,6 +5,7 @@ import {
   FolderGit2,
   GitBranch,
   Home,
+  LogOut,
   Settings,
   Users,
 } from 'lucide-react';
@@ -12,16 +13,16 @@ import {
 import {
   Sidebar,
   SidebarContent,
+  SidebarFooter,
   SidebarGroup,
   SidebarGroupContent,
   SidebarHeader,
   SidebarMenu,
   SidebarMenuButton,
   SidebarMenuItem,
-  SidebarTrigger,
   useSidebar,
 } from '@/components/ui/sidebar';
-import Image from 'next/image';
+import { useAuth } from '@/context/AuthContext';
 import Link from 'next/link';
 
 const items = [
@@ -64,6 +65,7 @@ const items = [
 
 export function AppSidebar() {
   const { state } = useSidebar();
+  const { signOut } = useAuth();
 
   return (
     <Sidebar
@@ -101,6 +103,20 @@ export function AppSidebar() {
           </SidebarGroupContent>
         </SidebarGroup>
       </SidebarContent>
+
+      <SidebarFooter className="border-t border-slate-900 bg-slate-950 p-3">
+        <SidebarMenu>
+          <SidebarMenuItem>
+            <SidebarMenuButton
+              onClick={signOut}
+              className="flex items-center space-x-3 px-4 py-3 rounded-lg hover:bg-slate-800/50 text-red-400 hover:text-red-300 transition-colors cursor-pointer w-full"
+            >
+              <LogOut className="w-5 h-5" />
+              <span className="text-sm font-medium">Log Out</span>
+            </SidebarMenuButton>
+          </SidebarMenuItem>
+        </SidebarMenu>
+      </SidebarFooter>
     </Sidebar>
   );
 }
