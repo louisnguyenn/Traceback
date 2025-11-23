@@ -183,7 +183,7 @@ const DashboardPage = () => {
 
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
           {/* recent activity */}
-          <div className="lg:col-span-2 bg-slate-900/50 border border-slate-800 rounded-xl p-6">
+          <div className="lg:col-span-3 bg-slate-900/50 border border-slate-800 rounded-xl p-6">
             <div className="flex items-center justify-between mb-6">
               <h3 className="text-xl font-semibold text-white">
                 Recent Activity
@@ -243,84 +243,6 @@ const DashboardPage = () => {
                   </div>
                 </div>
               ))}
-            </div>
-          </div>
-
-          <div className="space-y-6">
-            {/* user info card */}
-            <div className="bg-slate-900/50 border border-slate-800 rounded-xl p-6">
-              <h3 className="text-lg font-semibold text-white mb-4">Profile</h3>
-              <div className="space-y-3">
-                <div className="flex items-center space-x-3 mb-4">
-                  {user.user_metadata?.avatar_url ? (
-                    <Image
-                      width={64}
-                      height={64}
-                      src={user.user_metadata.avatar_url}
-                      alt="Avatar"
-                      className="w-12 h-12 rounded-full"
-                    />
-                  ) : (
-                    <div className="w-12 h-12 bg-linear-to-br from-blue-500 to-cyan-500 rounded-full flex items-center justify-center text-white font-bold">
-                      {(
-                        user.user_metadata?.full_name?.[0] ||
-                        user.email?.[0] ||
-                        'U'
-                      ).toUpperCase()}
-                    </div>
-                  )}
-                  <div>
-                    <p className="text-sm font-medium text-white">
-                      {user.user_metadata?.full_name ||
-                        user.user_metadata?.name ||
-                        'User'}
-                    </p>
-                    <p className="text-xs text-gray-400">
-                      {user.app_metadata?.provider || 'email'}
-                    </p>
-                  </div>
-                </div>
-                <div className="pt-3 border-t border-slate-800 space-y-2 text-sm">
-                  <div className="flex justify-between">
-                    <span className="text-gray-400">Email</span>
-                    <span className="text-white truncate ml-2">
-                      {user.email}
-                    </span>
-                  </div>
-                  <div className="flex justify-between">
-                    <span className="text-gray-400">Member since</span>
-                    <span className="text-white">
-                      {new Date(user.created_at).toLocaleDateString('en-US', {
-                        month: 'short',
-                        year: 'numeric',
-                      })}
-                    </span>
-                  </div>
-                </div>
-              </div>
-            </div>
-
-            {/* quick actions */}
-            <div className="bg-slate-900/50 border border-slate-800 rounded-xl p-6">
-              <h3 className="text-lg font-semibold text-white mb-4">
-                Quick Actions
-              </h3>
-              <div className="space-y-2">
-                <button className="w-full flex items-center space-x-3 p-3 rounded-lg hover:bg-slate-800 transition-colors text-left">
-                  <FileText className="w-5 h-5 text-blue-400" />
-                  <span className="text-sm text-gray-300">New Analysis</span>
-                </button>
-                <button className="w-full flex items-center space-x-3 p-3 rounded-lg hover:bg-slate-800 transition-colors text-left">
-                  <FolderGit2 className="w-5 h-5 text-cyan-400" />
-                  <span className="text-sm text-gray-300">
-                    Connect Repository
-                  </span>
-                </button>
-                <button className="w-full flex items-center space-x-3 p-3 rounded-lg hover:bg-slate-800 transition-colors text-left">
-                  <Users className="w-5 h-5 text-purple-400" />
-                  <span className="text-sm text-gray-300">Invite Team</span>
-                </button>
-              </div>
             </div>
           </div>
         </div>
