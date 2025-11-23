@@ -72,25 +72,10 @@ export function AppSidebar() {
       className="border-r border-slate-900 bg-slate-950"
     >
       <SidebarHeader className="border-b border-slate-950 p-6 bg-slate-950">
-        <div className="flex items-center justify-between w-full">
-          <Link
-            href="/"
-            className="text-2xl font-bold group-data-[collapsible=icon]:hidden"
-          >
+        <div className="flex items-center justify-center w-full">
+          <Link href="/" className="text-3xl font-bold">
             <span className="text-white">Trace</span>
             <span className="text-blue-400">back</span>
-          </Link>
-
-          <Link
-            href="/"
-            className="hidden group-data-[collapsible=icon]:flex items-center justify-center w-full"
-          >
-            <Image
-              src="/tracebacklogotransparent.png"
-              alt="Traceback"
-              width={32}
-              height={32}
-            />
           </Link>
         </div>
       </SidebarHeader>
