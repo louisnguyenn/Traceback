@@ -1,7 +1,9 @@
 'use client';
 import {
+  ChevronDown,
   FolderCode,
   FolderGit2,
+  GitBranch,
   GitCommitVertical,
   GitCompare,
   GitMerge,
@@ -10,11 +12,17 @@ import {
 } from 'lucide-react';
 
 import {
+  Collapsible,
+  CollapsibleContent,
+  CollapsibleTrigger,
+} from '@/components/ui/collapsible';
+import {
   Sidebar,
   SidebarContent,
   SidebarFooter,
   SidebarGroup,
   SidebarGroupContent,
+  SidebarGroupLabel,
   SidebarHeader,
   SidebarMenu,
   SidebarMenuButton,
@@ -25,7 +33,7 @@ import { useAuth } from '@/context/AuthContext';
 import Image from 'next/image';
 import Link from 'next/link';
 
-const items = [
+const mainItems = [
   {
     title: 'Dashboard',
     url: '/dashboard',
@@ -36,11 +44,9 @@ const items = [
     url: '/dashboard/projects',
     icon: FolderCode,
   },
-  {
-    title: 'Activity',
-    url: '/dashboard/activity',
-    icon: FolderGit2,
-  },
+];
+
+const activityItems = [
   {
     title: 'Commits',
     url: '/dashboard/activity/commits',
@@ -55,6 +61,11 @@ const items = [
     title: 'Diffs',
     url: '/dashboard/activity/diffs',
     icon: GitCompare,
+  },
+  {
+    title: 'Branches',
+    url: '/dashboard/activity/branches',
+    icon: GitBranch,
   },
 ];
 
@@ -78,10 +89,11 @@ export function AppSidebar() {
       </SidebarHeader>
 
       <SidebarContent className="bg-slate-950">
+        {/* main menu items */}
         <SidebarGroup>
           <SidebarGroupContent>
             <SidebarMenu className="space-y-1 px-3 py-1">
-              {items.map((item) => (
+              {mainItems.map((item) => (
                 <SidebarMenuItem key={item.title}>
                   <SidebarMenuButton asChild>
                     <Link
@@ -99,6 +111,41 @@ export function AppSidebar() {
             </SidebarMenu>
           </SidebarGroupContent>
         </SidebarGroup>
+
+        <Collapsible defaultOpen className="group/collapsible">
+          <SidebarGroup>
+            <SidebarGroupLabel asChild>
+              <CollapsibleTrigger className="flex w-full items-center justify-between px-6 py-2 text-sm font-medium text-gray-400 hover:text-white transition-colors">
+                <div className="flex items-center space-x-2">
+                  <FolderGit2 className="w-4 h-4" />
+                  <span>Activity</span>
+                </div>
+                <ChevronDown className="w-4 h-4 transition-transform duration-200 group-data-[state=open]/collapsible:rotate-180" />
+              </CollapsibleTrigger>
+            </SidebarGroupLabel>
+            <CollapsibleContent>
+              <SidebarGroupContent>
+                <SidebarMenu className="space-y-1 px-3 py-1">
+                  {activityItems.map((item) => (
+                    <SidebarMenuItem key={item.title}>
+                      <SidebarMenuButton asChild>
+                        <Link
+                          href={item.url}
+                          className="flex items-center space-x-3 px-4 py-3 rounded-lg hover:bg-slate-800/50 text-gray-400 hover:text-white transition-colors"
+                        >
+                          <item.icon className="w-5 h-5" />
+                          <span className="text-base font-medium">
+                            {item.title}
+                          </span>
+                        </Link>
+                      </SidebarMenuButton>
+                    </SidebarMenuItem>
+                  ))}
+                </SidebarMenu>
+              </SidebarGroupContent>
+            </CollapsibleContent>
+          </SidebarGroup>
+        </Collapsible>
       </SidebarContent>
 
       <SidebarFooter className="border-t border-slate-900 bg-slate-950 p-4">
