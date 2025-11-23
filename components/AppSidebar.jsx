@@ -89,7 +89,9 @@ export function AppSidebar() {
                       className="flex items-center space-x-3 px-4 py-3 rounded-lg hover:bg-slate-800/50 text-gray-400 hover:text-white transition-colors"
                     >
                       <item.icon className="w-5 h-5" />
-                      <span className="text-sm font-medium">{item.title}</span>
+                      <span className="text-base font-medium">
+                        {item.title}
+                      </span>
                     </Link>
                   </SidebarMenuButton>
                 </SidebarMenuItem>
