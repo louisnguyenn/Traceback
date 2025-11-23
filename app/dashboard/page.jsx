@@ -14,7 +14,7 @@ import { useRouter } from 'next/navigation';
 import { useEffect } from 'react';
 
 const DashboardPage = () => {
-  const { user, loading, signOut } = useAuth();
+  const { user, loading } = useAuth();
   const router = useRouter();
 
   useEffect(() => {
@@ -54,136 +54,137 @@ const DashboardPage = () => {
   }
 
   return (
-    <div className="bg-slate-950">
-      <header className="border-b border-slate-800 bg-slate-900/50 backdrop-blur-sm sticky top-0 z-10">
-        <div className="px-6 py-7">
-          <div className="flex justify-between items-center">
-            <div>
-              {/* <SidebarTrigger className="px-3 text-gray-400 hover:text-white hover:bg-slate-800 rounded-lg cursor-pointer group-data-[collapsible=icon]:mx-auto" /> */}
-              <h2 className="text-4xl font-bold text-white">
-                Welcome back,{' '}
-                {user.user_metadata?.full_name?.split(' ')[0] ||
-                  user.email?.split('@')[0]}
-                !
-              </h2>
-              <p className="text-base text-gray-400 mt-3">
-                Here&apos;s what&apos;s happening with your projects today.
-              </p>
-            </div>
-          </div>
-        </div>
-      </header>
-
-      <main className="px-6 py-8">
-        {/* stats */}
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
-          <div className="bg-slate-900/50 border border-slate-800 rounded-xl p-6 hover:border-blue-500/50 transition-colors">
-            <div className="flex items-center justify-between mb-4">
-              <div className="p-3 bg-blue-500/10 rounded-lg">
-                <FolderGit2 className="w-6 h-6 text-blue-400" />
+    <div className="bg-slate-950 min-h-screen">
+      <main>
+        <header className="border-b border-slate-800 bg-slate-900/50 backdrop-blur-sm">
+          <div className="px-6 py-7">
+            <div className="flex justify-between items-center">
+              <div>
+                <h2 className="text-4xl font-bold text-white">
+                  Welcome back,{' '}
+                  {user.user_metadata?.full_name?.split(' ')[0] ||
+                    user.email?.split('@')[0]}
+                  !
+                </h2>
+                <p className="text-base text-gray-400 mt-3">
+                  Here&apos;s what&apos;s happening with your projects today.
+                </p>
               </div>
-              <TrendingUp className="w-5 h-5 text-green-400" />
             </div>
-            <h3 className="text-2xl font-bold text-white mb-1">12</h3>
-            <p className="text-sm text-gray-400">Active Repositories</p>
           </div>
+        </header>
 
-          <div className="bg-slate-900/50 border border-slate-800 rounded-xl p-6 hover:border-cyan-500/50 transition-colors">
-            <div className="flex items-center justify-between mb-4">
-              <div className="p-3 bg-cyan-500/10 rounded-lg">
-                <GitBranch className="w-6 h-6 text-cyan-400" />
-              </div>
-              <TrendingUp className="w-5 h-5 text-green-400" />
-            </div>
-            <h3 className="text-2xl font-bold text-white mb-1">247</h3>
-            <p className="text-sm text-gray-400">Total Commits</p>
-          </div>
-
-          <div className="bg-slate-900/50 border border-slate-800 rounded-xl p-6 hover:border-purple-500/50 transition-colors">
-            <div className="flex items-center justify-between mb-4">
-              <div className="p-3 bg-purple-500/10 rounded-lg">
-                <Users className="w-6 h-6 text-purple-400" />
-              </div>
-              <TrendingUp className="w-5 h-5 text-green-400" />
-            </div>
-            <h3 className="text-2xl font-bold text-white mb-1">8</h3>
-            <p className="text-sm text-gray-400">Team Members</p>
-          </div>
-
-          <div className="bg-slate-900/50 border border-slate-800 rounded-xl p-6 hover:border-green-500/50 transition-colors">
-            <div className="flex items-center justify-between mb-4">
-              <div className="p-3 bg-green-500/10 rounded-lg">
-                <Activity className="w-6 h-6 text-green-400" />
-              </div>
-              <TrendingUp className="w-5 h-5 text-green-400" />
-            </div>
-            <h3 className="text-2xl font-bold text-white mb-1">94%</h3>
-            <p className="text-sm text-gray-400">Code Coverage</p>
-          </div>
-        </div>
-
-        <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
-          {/* recent activity */}
-          <div className="lg:col-span-3 bg-slate-900/50 border border-slate-800 rounded-xl p-6">
-            <div className="flex items-center justify-between mb-6">
-              <h3 className="text-xl font-semibold text-white">
-                Recent Activity
-              </h3>
-              <button className="text-sm text-blue-400 hover:text-blue-300 transition-colors">
-                View All
-              </button>
-            </div>
-
-            <div className="space-y-4">
-              {[
-                {
-                  repo: 'traceback-nextjs',
-                  action: 'pushed to main',
-                  time: '2 hours ago',
-                  color: 'blue',
-                },
-                {
-                  repo: 'auth-service',
-                  action: 'created pull request',
-                  time: '5 hours ago',
-                  color: 'green',
-                },
-                {
-                  repo: 'api-gateway',
-                  action: 'merged branch feature/oauth',
-                  time: '1 day ago',
-                  color: 'purple',
-                },
-                {
-                  repo: 'frontend-ui',
-                  action: 'deployed to production',
-                  time: '2 days ago',
-                  color: 'cyan',
-                },
-              ].map((activity, index) => (
-                <div
-                  key={index}
-                  className="flex items-start space-x-4 p-4 rounded-lg hover:bg-slate-800/50 transition-colors"
-                >
-                  <div
-                    className={`p-2 bg-${activity.color}-500/10 rounded-lg mt-1`}
-                  >
-                    <GitBranch
-                      className={`w-4 h-4 text-${activity.color}-400`}
-                    />
-                  </div>
-                  <div className="flex-1 min-w-0">
-                    <p className="text-sm text-white font-medium truncate">
-                      {activity.repo}
-                    </p>
-                    <p className="text-sm text-gray-400">{activity.action}</p>
-                  </div>
-                  <div className="flex items-center text-xs text-gray-500">
-                    <Clock className="w-3 h-3 mr-1" />
-                    {activity.time}
-                  </div>
+        <div className="px-6 py-8">
+          {/* stats */}
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
+            <div className="bg-slate-900/50 border border-slate-800 rounded-xl p-6 hover:border-blue-500/50 transition-colors">
+              <div className="flex items-center justify-between mb-4">
+                <div className="p-3 bg-blue-500/10 rounded-lg">
+                  <FolderGit2 className="w-6 h-6 text-blue-400" />
                 </div>
-              ))}
+                <TrendingUp className="w-5 h-5 text-green-400" />
+              </div>
+              <h3 className="text-2xl font-bold text-white mb-1">12</h3>
+              <p className="text-sm text-gray-400">Active Repositories</p>
+            </div>
+
+            <div className="bg-slate-900/50 border border-slate-800 rounded-xl p-6 hover:border-cyan-500/50 transition-colors">
+              <div className="flex items-center justify-between mb-4">
+                <div className="p-3 bg-cyan-500/10 rounded-lg">
+                  <GitBranch className="w-6 h-6 text-cyan-400" />
+                </div>
+                <TrendingUp className="w-5 h-5 text-green-400" />
+              </div>
+              <h3 className="text-2xl font-bold text-white mb-1">247</h3>
+              <p className="text-sm text-gray-400">Total Commits</p>
+            </div>
+
+            <div className="bg-slate-900/50 border border-slate-800 rounded-xl p-6 hover:border-purple-500/50 transition-colors">
+              <div className="flex items-center justify-between mb-4">
+                <div className="p-3 bg-purple-500/10 rounded-lg">
+                  <Users className="w-6 h-6 text-purple-400" />
+                </div>
+                <TrendingUp className="w-5 h-5 text-green-400" />
+              </div>
+              <h3 className="text-2xl font-bold text-white mb-1">8</h3>
+              <p className="text-sm text-gray-400">Team Members</p>
+            </div>
+
+            <div className="bg-slate-900/50 border border-slate-800 rounded-xl p-6 hover:border-green-500/50 transition-colors">
+              <div className="flex items-center justify-between mb-4">
+                <div className="p-3 bg-green-500/10 rounded-lg">
+                  <Activity className="w-6 h-6 text-green-400" />
+                </div>
+                <TrendingUp className="w-5 h-5 text-green-400" />
+              </div>
+              <h3 className="text-2xl font-bold text-white mb-1">94%</h3>
+              <p className="text-sm text-gray-400">Code Coverage</p>
+            </div>
+          </div>
+
+          <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
+            {/* recent activity */}
+            <div className="lg:col-span-3 bg-slate-900/50 border border-slate-800 rounded-xl p-6">
+              <div className="flex items-center justify-between mb-6">
+                <h3 className="text-xl font-semibold text-white">
+                  Recent Activity
+                </h3>
+                <button className="text-sm text-blue-400 hover:text-blue-300 transition-colors">
+                  View All
+                </button>
+              </div>
+
+              <div className="space-y-4">
+                {[
+                  {
+                    repo: 'traceback-nextjs',
+                    action: 'pushed to main',
+                    time: '2 hours ago',
+                    color: 'blue',
+                  },
+                  {
+                    repo: 'auth-service',
+                    action: 'created pull request',
+                    time: '5 hours ago',
+                    color: 'green',
+                  },
+                  {
+                    repo: 'api-gateway',
+                    action: 'merged branch feature/oauth',
+                    time: '1 day ago',
+                    color: 'purple',
+                  },
+                  {
+                    repo: 'frontend-ui',
+                    action: 'deployed to production',
+                    time: '2 days ago',
+                    color: 'cyan',
+                  },
+                ].map((activity, index) => (
+                  <div
+                    key={index}
+                    className="flex items-start space-x-4 p-4 rounded-lg hover:bg-slate-800/50 transition-colors"
+                  >
+                    <div
+                      className={`p-2 bg-${activity.color}-500/10 rounded-lg mt-1`}
+                    >
+                      <GitBranch
+                        className={`w-4 h-4 text-${activity.color}-400`}
+                      />
+                    </div>
+                    <div className="flex-1 min-w-0">
+                      <p className="text-sm text-white font-medium truncate">
+                        {activity.repo}
+                      </p>
+                      <p className="text-sm text-gray-400">{activity.action}</p>
+                    </div>
+                    <div className="flex items-center text-xs text-gray-500">
+                      <Clock className="w-3 h-3 mr-1" />
+                      {activity.time}
+                    </div>
+                  </div>
+                ))}
+              </div>
             </div>
           </div>
         </div>
