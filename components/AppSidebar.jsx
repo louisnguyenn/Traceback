@@ -39,22 +39,22 @@ const items = [
   },
   {
     title: 'Commits',
-    url: '/dashboard/activity/commits',
+    url: '/dashboard/commits',
     icon: GitCommitVertical,
   },
   {
     title: 'Merges',
-    url: '/dashboard/activity/merges',
+    url: '/dashboard/merges',
     icon: GitMerge,
   },
   {
     title: 'Diffs',
-    url: '/dashboard/activity/diffs',
+    url: '/dashboard/diffs',
     icon: GitCompare,
   },
   {
     title: 'Branches',
-    url: '/dashboard/activity/branches',
+    url: '/dashboard/branches',
     icon: GitBranch,
   },
 ];
