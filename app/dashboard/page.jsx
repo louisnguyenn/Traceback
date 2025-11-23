@@ -7,6 +7,7 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from '@/components/ui/dropdown-menu';
+import { SidebarTrigger } from '@/components/ui/sidebar';
 import { useAuth } from '@/context/AuthContext';
 import {
   Activity,
@@ -68,6 +69,7 @@ const DashboardPage = () => {
         <div className="px-6 py-4">
           <div className="flex justify-between items-center">
             <div>
+              {/* <SidebarTrigger className="px-3 text-gray-400 hover:text-white hover:bg-slate-800 rounded-lg cursor-pointer group-data-[collapsible=icon]:mx-auto" /> */}
               <h2 className="text-2xl font-bold text-white">
                 Welcome back,{' '}
                 {user.user_metadata?.full_name?.split(' ')[0] ||

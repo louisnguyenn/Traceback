@@ -69,7 +69,7 @@ export function AppSidebar() {
     <Sidebar
       variant="sidebar"
       collapsible="icon"
-      className="border-r border-slate-950 bg-slate-950"
+      className="border-r border-slate-900 bg-slate-950"
     >
       <SidebarHeader className="border-b border-slate-950 p-6 bg-slate-950">
         <div className="flex items-center justify-between w-full">
@@ -92,8 +92,6 @@ export function AppSidebar() {
               height={32}
             />
           </Link>
-
-          <SidebarTrigger className="px-3 text-gray-400 hover:text-white hover:bg-slate-800 rounded-lg cursor-pointer group-data-[collapsible=icon]:mx-auto" />
         </div>
       </SidebarHeader>
 
