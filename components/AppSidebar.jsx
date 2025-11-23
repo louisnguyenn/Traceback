@@ -83,7 +83,7 @@ export function AppSidebar() {
       <SidebarContent className="bg-slate-950">
         <SidebarGroup>
           <SidebarGroupContent>
-            <SidebarMenu className="space-y-1 px-3 py-4">
+            <SidebarMenu className="space-y-1 px-3 py-1">
               {items.map((item) => (
                 <SidebarMenuItem key={item.title}>
                   <SidebarMenuButton asChild>

@@ -66,17 +66,17 @@ const DashboardPage = () => {
   return (
     <div className="bg-slate-950">
       <header className="border-b border-slate-800 bg-slate-900/50 backdrop-blur-sm sticky top-0 z-10">
-        <div className="px-6 py-4">
+        <div className="px-6 py-7">
           <div className="flex justify-between items-center">
             <div>
               {/* <SidebarTrigger className="px-3 text-gray-400 hover:text-white hover:bg-slate-800 rounded-lg cursor-pointer group-data-[collapsible=icon]:mx-auto" /> */}
-              <h2 className="text-2xl font-bold text-white">
+              <h2 className="text-5xl font-bold text-white">
                 Welcome back,{' '}
                 {user.user_metadata?.full_name?.split(' ')[0] ||
                   user.email?.split('@')[0]}
                 !
               </h2>
-              <p className="text-sm text-gray-400 mt-1">
+              <p className="text-base text-gray-400 mt-3">
                 Here&apos;s what&apos;s happening with your projects today.
               </p>
             </div>
