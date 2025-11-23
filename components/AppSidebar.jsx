@@ -1,13 +1,12 @@
 'use client';
 import {
-  BarChart3,
-  FileText,
+  FolderCode,
   FolderGit2,
-  GitBranch,
+  GitCommitVertical,
+  GitCompare,
+  GitMerge,
   Home,
   LogOutIcon,
-  Settings,
-  Users,
 } from 'lucide-react';
 
 import {
@@ -33,34 +32,29 @@ const items = [
     icon: Home,
   },
   {
-    title: 'Repositories',
-    url: '/dashboard/repositories',
+    title: 'My Projects',
+    url: '/dashboard/projects',
+    icon: FolderCode,
+  },
+  {
+    title: 'Activity',
+    url: '/dashboard/activity',
     icon: FolderGit2,
   },
   {
     title: 'Commits',
-    url: '/dashboard/commits',
-    icon: GitBranch,
+    url: '/dashboard/activity/commits',
+    icon: GitCommitVertical,
   },
   {
-    title: 'Analytics',
-    url: '/dashboard/analytics',
-    icon: BarChart3,
+    title: 'Merges',
+    url: '/dashboard/activity/merges',
+    icon: GitMerge,
   },
   {
-    title: 'Reports',
-    url: '/dashboard/reports',
-    icon: FileText,
-  },
-  {
-    title: 'Team',
-    url: '/dashboard/team',
-    icon: Users,
-  },
-  {
-    title: 'Settings',
-    url: '/dashboard/settings',
-    icon: Settings,
+    title: 'Diffs',
+    url: '/dashboard/activity/diffs',
+    icon: GitCompare,
   },
 ];
 
