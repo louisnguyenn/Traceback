@@ -1,13 +1,4 @@
 'use client';
-import {
-  DropdownMenu,
-  DropdownMenuContent,
-  DropdownMenuItem,
-  DropdownMenuLabel,
-  DropdownMenuSeparator,
-  DropdownMenuTrigger,
-} from '@/components/ui/dropdown-menu';
-import { SidebarTrigger } from '@/components/ui/sidebar';
 import { useAuth } from '@/context/AuthContext';
 import {
   Activity,
@@ -19,7 +10,6 @@ import {
   TrendingUp,
   Users,
 } from 'lucide-react';
-import Image from 'next/image';
 import { useRouter } from 'next/navigation';
 import { useEffect } from 'react';
 
@@ -70,7 +60,7 @@ const DashboardPage = () => {
           <div className="flex justify-between items-center">
             <div>
               {/* <SidebarTrigger className="px-3 text-gray-400 hover:text-white hover:bg-slate-800 rounded-lg cursor-pointer group-data-[collapsible=icon]:mx-auto" /> */}
-              <h2 className="text-5xl font-bold text-white">
+              <h2 className="text-4xl font-bold text-white">
                 Welcome back,{' '}
                 {user.user_metadata?.full_name?.split(' ')[0] ||
                   user.email?.split('@')[0]}
@@ -79,55 +69,6 @@ const DashboardPage = () => {
               <p className="text-base text-gray-400 mt-3">
                 Here&apos;s what&apos;s happening with your projects today.
               </p>
-            </div>
-
-            <div className="flex items-center space-x-4">
-              <DropdownMenu>
-                <DropdownMenuTrigger asChild>
-                  <button className="p-1 hover:bg-slate-800 rounded-full transition-colors cursor-pointer">
-                    {user.user_metadata?.avatar_url ? (
-                      <Image
-                        width={32}
-                        height={32}
-                        src={user.user_metadata.avatar_url}
-                        alt="Avatar"
-                        className="w-8 h-8 rounded-full"
-                      />
-                    ) : (
-                      <div className="w-8 h-8 bg-linear-to-br from-blue-500 to-cyan-500 rounded-full flex items-center justify-center text-white text-sm font-bold">
-                        {(
-                          user.user_metadata?.full_name?.[0] ||
-                          user.email?.[0] ||
-                          'U'
-                        ).toUpperCase()}
-                      </div>
-                    )}
-                  </button>
-                </DropdownMenuTrigger>
-                <DropdownMenuContent
-                  align="end"
-                  className="w-56 bg-slate-900 border-slate-800"
-                >
-                  <DropdownMenuLabel className="text-gray-200">
-                    My Account
-                  </DropdownMenuLabel>
-                  <DropdownMenuSeparator className="bg-slate-800" />
-                  <DropdownMenuItem
-                    className="text-gray-300 hover:bg-slate-800 cursor-pointer focus:bg-slate-800 focus:text-white"
-                    onClick={() => router.push('/dashboard/settings')}
-                  >
-                    <Settings className="w-4 h-4 mr-2" />
-                    Settings
-                  </DropdownMenuItem>
-                  <DropdownMenuSeparator className="bg-slate-800" />
-                  <DropdownMenuItem
-                    className="text-red-400 hover:bg-slate-800 cursor-pointer focus:bg-slate-800 focus:text-red-300"
-                    onClick={signOut}
-                  >
-                    Log Out
-                  </DropdownMenuItem>
-                </DropdownMenuContent>
-              </DropdownMenu>
             </div>
           </div>
         </div>
