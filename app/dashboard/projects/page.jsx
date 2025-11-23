@@ -8,7 +8,8 @@ import {
   EmptyTitle,
 } from '@/components/ui/empty';
 import { Input } from '@/components/ui/input';
-import { ArrowUpRightIcon, Folder, Search } from 'lucide-react';
+import { IconFolderCode } from '@tabler/icons-react';
+import { Github, Search } from 'lucide-react';
 import React from 'react';
 
 const page = () => {
@@ -39,9 +40,9 @@ const page = () => {
         <Empty>
           <EmptyHeader>
             <EmptyMedia variant="icon">
-              <Folder />
+              <IconFolderCode />
             </EmptyMedia>
-            <EmptyTitle>No Projects Yet</EmptyTitle>
+            <EmptyTitle className="text-gray-400">No Projects Yet</EmptyTitle>
             <EmptyDescription>
               You haven&apos;t created any projects yet. Get started by creating
               your first project.
@@ -49,20 +50,11 @@ const page = () => {
           </EmptyHeader>
           <EmptyContent>
             <div className="flex gap-2">
-              <Button>Create Project</Button>
-              <Button variant="outline">Import Project</Button>
+              <Button className="cursor-pointer hover:bg-slate-800 hover:-translate-y-1 transition-all duration-300">
+                Import Project from GitHub <Github className="w-5 h-5" />
+              </Button>
             </div>
           </EmptyContent>
-          <Button
-            variant="link"
-            asChild
-            className="text-muted-foreground"
-            size="sm"
-          >
-            <a href="#">
-              Learn More <ArrowUpRightIcon />
-            </a>
-          </Button>
         </Empty>
       </main>
     </div>
