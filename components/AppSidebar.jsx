@@ -23,6 +23,7 @@ import {
   useSidebar,
 } from '@/components/ui/sidebar';
 import { useAuth } from '@/context/AuthContext';
+import Image from 'next/image';
 import Link from 'next/link';
 
 const items = [
@@ -65,7 +66,7 @@ const items = [
 
 export function AppSidebar() {
   const { state } = useSidebar();
-  const { signOut } = useAuth();
+  const { user, signOut } = useAuth();
 
   return (
     <Sidebar
@@ -104,7 +105,40 @@ export function AppSidebar() {
         </SidebarGroup>
       </SidebarContent>
 
-      <SidebarFooter className="border-t border-slate-900 bg-slate-950 p-3">
+      <SidebarFooter className="border-t border-slate-900 bg-slate-950 p-4">
+        {user && (
+          <div className="mb-3">
+            <div className="flex items-center space-x-3 mb-3">
+              <div className="flex-shrink-0">
+                {user.user_metadata?.avatar_url ? (
+                  <Image
+                    width={40}
+                    height={40}
+                    src={user.user_metadata.avatar_url}
+                    alt="Avatar"
+                    className="w-10 h-10 rounded-full"
+                  />
+                ) : (
+                  <div className="w-10 h-10 bg-gradient-to-br from-blue-500 to-cyan-500 rounded-full flex items-center justify-center text-white text-sm font-bold">
+                    {(
+                      user.user_metadata?.full_name?.[0] ||
+                      user.email?.[0] ||
+                      'U'
+                    ).toUpperCase()}
+                  </div>
+                )}
+              </div>
+              <div className="flex-1 min-w-0 group-data-[collapsible=icon]:hidden">
+                <p className="text-sm font-medium text-white truncate">
+                  {user.user_metadata?.full_name ||
+                    user.user_metadata?.name ||
+                    'User'}
+                </p>
+                <p className="text-xs text-gray-400 truncate">{user.email}</p>
+              </div>
+            </div>
+          </div>
+        )}
         <SidebarMenu>
           <SidebarMenuItem>
             <SidebarMenuButton
