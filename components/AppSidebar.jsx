@@ -109,7 +109,7 @@ export function AppSidebar() {
         {user && (
           <div className="mb-3">
             <div className="flex items-center space-x-3 mb-3">
-              <div className="flex-shrink-0">
+              <div className="shrink-0">
                 {user.user_metadata?.avatar_url ? (
                   <Image
                     width={40}
@@ -119,7 +119,7 @@ export function AppSidebar() {
                     className="w-10 h-10 rounded-full"
                   />
                 ) : (
-                  <div className="w-10 h-10 bg-gradient-to-br from-blue-500 to-cyan-500 rounded-full flex items-center justify-center text-white text-sm font-bold">
+                  <div className="w-10 h-10 bg-linear-to-br from-blue-500 to-cyan-500 rounded-full flex items-center justify-center text-white text-sm font-bold">
                     {(
                       user.user_metadata?.full_name?.[0] ||
                       user.email?.[0] ||
