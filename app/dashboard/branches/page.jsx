@@ -1,3 +1,5 @@
+'use client';
+import AnimatedContent from '@/components/animations/AnimatedContent';
 import React from 'react';
 
 const page = () => {
@@ -8,7 +10,19 @@ const page = () => {
           <div className="px-6 py-7">
             <div className="flex justify-between items-center">
               <div>
-                <h2 className="text-4xl font-bold text-white">Branches</h2>
+                <AnimatedContent
+                  distance={60}
+                  direction="up"
+                  reverse={true}
+                  duration={0.7}
+                  ease="power2.out"
+                  initialOpacity={0}
+                  animateOpacity
+                  threshold={0.2}
+                  delay={0.3}
+                >
+                  <h2 className="text-4xl font-bold text-white">Branches</h2>
+                </AnimatedContent>
               </div>
             </div>
           </div>
