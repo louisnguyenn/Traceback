@@ -14,7 +14,7 @@ export async function fetchGemini(prompt) {
     // return the generated text
     return response.text;
   } catch (error) {
-    console.error('Gemini API Error:', error.reponse?.data || error.message);
+    console.error('Gemini API Error:', error.response?.data || error.message);
     throw new Error('Failed to generate text');
   }
 }
