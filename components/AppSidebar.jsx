@@ -1,16 +1,5 @@
 'use client';
 import {
-  FolderCode,
-  FolderGit2,
-  GitBranch,
-  GitCommitVertical,
-  GitCompare,
-  GitMerge,
-  Home,
-  LogOutIcon,
-} from 'lucide-react';
-
-import {
   Sidebar,
   SidebarContent,
   SidebarFooter,
@@ -23,6 +12,16 @@ import {
   useSidebar,
 } from '@/components/ui/sidebar';
 import { useAuth } from '@/context/AuthContext';
+import {
+  FolderCode,
+  FolderGit2,
+  GitBranch,
+  GitCommitVertical,
+  GitCompare,
+  GitMerge,
+  Home,
+  LogOutIcon,
+} from 'lucide-react';
 import Image from 'next/image';
 import Link from 'next/link';
 
