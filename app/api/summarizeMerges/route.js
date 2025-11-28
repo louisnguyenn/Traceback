@@ -1,0 +1,1 @@
+// TODO: implement summarize merges (refer to the implementation in summarize commits)
