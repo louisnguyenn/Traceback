@@ -1,1 +1,0 @@
-// TODO: implement summarize branches (refer to the implementation in summarize commits)
