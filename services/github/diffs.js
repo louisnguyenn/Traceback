@@ -1,6 +1,6 @@
 export async function fetchGitHubDiffs(repoUrl, hash) {
   const apiUrl =
-    repo.replace('https://github.com', 'https://api.github.com/repos') +
+    repoUrl.replace('https://github.com', 'https://api.github.com/repos') +
     `/commits/${hash}`;
 
   const res = await fetch(apiUrl, {
