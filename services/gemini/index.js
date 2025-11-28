@@ -7,7 +7,12 @@ export async function fetchGemini(prompt) {
     // fetch gemini api and wait for response
     const response = await ai.models.generateContent({
       model: 'gemini-2.5-flash',
-      contents: [[{ role: 'user', parts: [{ text: prompt }] }]],
+      contents: [
+        {
+          role: 'user',
+          parts: [{ text: prompt }],
+        },
+      ],
     });
     console.log(response.text);
 
