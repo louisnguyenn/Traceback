@@ -17,7 +17,7 @@ const DashboardPage = () => {
   const router = useRouter();
 
   function projectsRoute() {
-    router.push('dashboard/projects');
+    router.push('/projects');
   }
 
   useEffect(() => {
