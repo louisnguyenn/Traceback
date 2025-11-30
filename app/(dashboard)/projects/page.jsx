@@ -12,9 +12,11 @@ import {
 import { Input } from '@/components/ui/input';
 import { IconFolderCode } from '@tabler/icons-react';
 import { Search } from 'lucide-react';
+import { useRouter } from 'next/navigation';
 import React, { useState } from 'react';
 
 const ProjectsPage = () => {
+  const router = useRouter();
   const [repoUrl, setRepoUrl] = useState('');
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState('');
@@ -25,7 +27,6 @@ const ProjectsPage = () => {
       return;
     }
 
-    // Basic GitHub URL validation
     const githubUrlPattern =
       /^https?:\/\/(www\.)?github\.com\/[\w-]+\/[\w.-]+\/?$/;
     if (!githubUrlPattern.test(repoUrl.trim())) {
@@ -55,10 +56,12 @@ const ProjectsPage = () => {
       const data = await response.json();
       console.log('Project created:', data);
 
-      // Clear input and show success (you might want to redirect or update state)
       setRepoUrl('');
-      // Optional: redirect to project page
-      // router.push(`/projects/${data.projectId}`);
+
+      // redirect to the new project detail page
+      if (data.project?.id) {
+        router.push(`/projects/${data.project.id}`);
+      }
     } catch (err) {
       setError(err.message || 'An error occurred while creating the project');
       console.error('Error creating project:', err);
@@ -67,7 +70,7 @@ const ProjectsPage = () => {
     }
   };
 
-  const handleKeyPress = (e) => {
+  const handleKeyDown = (e) => {
     if (e.key === 'Enter') {
       handleCreateProject();
     }
@@ -128,7 +131,7 @@ const ProjectsPage = () => {
                   placeholder="Paste GitHub Repo URL"
                   value={repoUrl}
                   onChange={(e) => setRepoUrl(e.target.value)}
-                  onKeyPress={handleKeyPress}
+                  onKeyDown={handleKeyDown}
                   disabled={loading}
                   className="flex-1 border-slate-700 bg-slate-900 text-white placeholder:text-gray-400 focus:border-slate-600 disabled:opacity-50"
                 />
