@@ -14,7 +14,7 @@ import { IconFolderCode } from '@tabler/icons-react';
 import { Search } from 'lucide-react';
 import React, { useState } from 'react';
 
-const page = () => {
+const ProjectsPage = () => {
   const [repoUrl, setRepoUrl] = useState('');
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState('');
@@ -149,4 +149,4 @@ const page = () => {
   );
 };
 
-export default page;
+export default ProjectsPage;
