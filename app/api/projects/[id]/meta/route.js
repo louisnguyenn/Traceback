@@ -2,9 +2,9 @@ import { NextResponse } from 'next/server';
 
 export async function GET(request, { params }) {
   try {
-    const { id } = params;
+    const { id } = await params;
 
-    // Parse the ID back to owner/repo (your same logic)
+    // Parse the ID back to owner/repo
     const parts = id.split('-');
     if (parts.length < 2) {
       return NextResponse.json(
@@ -23,7 +23,7 @@ export async function GET(request, { params }) {
       );
     }
 
-    // Fetch from GitHub API (FAST stuff only)
+    // Fetch from GitHub API
     const githubResponse = await fetch(
       `https://api.github.com/repos/${owner}/${repo}`,
       {
@@ -54,7 +54,7 @@ export async function GET(request, { params }) {
       updatedAt: repoData.updated_at,
     });
   } catch (error) {
-    console.error('Error fetching project meta:', error);
+    console.error('Error fetching project:', error);
     return NextResponse.json(
       { message: 'Internal server error' },
       { status: 500 }
