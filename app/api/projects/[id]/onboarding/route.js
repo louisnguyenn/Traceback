@@ -46,7 +46,7 @@ export async function GET(request, { params }) {
       })),
     };
 
-    // 👇 your Gemini / LLM call
+    // Generate onboarding summary
     const summary = await generateOnboardingSummary(context);
 
     return NextResponse.json({ summary });

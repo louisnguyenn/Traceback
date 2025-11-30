@@ -12,12 +12,16 @@ import {
 import { useParams, useRouter } from 'next/navigation';
 import { useEffect, useState } from 'react';
 
+// this is the main project detail page component
+// workflow: fetch project data -> fetch meta and onboarding data -> merge data -> render sections
 const ProjectDetailPage = () => {
   const params = useParams();
   const router = useRouter();
   const projectId = params.id;
 
   const [projectData, setProjectData] = useState(null);
+  const [metaData, setMetaData] = useState(null);
+  const [onboardingData, setOnboardingData] = useState(null);
   const [loading, setLoading] = useState(true);
   const [expandedSections, setExpandedSections] = useState({
     onboarding: true,
@@ -26,6 +30,7 @@ const ProjectDetailPage = () => {
     dependencies: false,
   });
 
+  // this effect fetches the main project data
   useEffect(() => {
     // fetch the project data
     const fetchProject = async () => {
@@ -48,6 +53,47 @@ const ProjectDetailPage = () => {
     fetchProject();
   }, [projectId, router]);
 
+  // this effect fetches metaData and onboardingData
+  useEffect(() => {
+    if (!projectId) return;
+
+    const fetchMeta = async () => {
+      try {
+        const res = await fetch(`/api/projects/${projectId}/meta`);
+        if (!res.ok) throw new Error('Failed to fetch meta');
+        const data = await res.json();
+        setMetaData(data);
+      } catch (err) {
+        console.error('Meta fetch error:', err);
+      }
+    };
+
+    const fetchOnboarding = async () => {
+      try {
+        const res = await fetch(`/api/projects/${projectId}/onboarding`);
+        if (!res.ok) throw new Error('Failed to fetch onboarding');
+        const data = await res.json();
+        setOnboardingData(data);
+      } catch (err) {
+        console.error('Onboarding fetch error:', err);
+      }
+    };
+
+    fetchMeta();
+    fetchOnboarding();
+  }, [projectId]);
+
+  // this effect updates projectData when metaData or onboardingData changes
+  useEffect(() => {
+    if (!projectData) return;
+
+    setProjectData((prev) => ({
+      ...prev,
+      ...metaData,
+      onboardingOverview: onboardingData?.summary || prev.onboardingOverview,
+    }));
+  }, [metaData, onboardingData]);
+
   const toggleSection = (section) => {
     setExpandedSections((prev) => ({
       ...prev,
@@ -59,7 +105,7 @@ const ProjectDetailPage = () => {
     router.push(`/projects/${projectId}/${section}`);
   };
 
-  if (loading) {
+  if (loading || !projectData) {
     return (
       <div className="min-h-screen bg-slate-950 flex items-center justify-center">
         <div className="text-center">
