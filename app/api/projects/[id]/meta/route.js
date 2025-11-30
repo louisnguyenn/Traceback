@@ -1,30 +1,62 @@
-import { getRepoMeta } from '@/services/github.service';
-import { getProjectById } from '@/services/projects.service';
 import { NextResponse } from 'next/server';
 
-export async function GET(req, { params }) {
-  const { id } = params;
-
+export async function GET(request, { params }) {
   try {
-    const project = await getProjectById(id);
+    const { id } = params;
 
-    if (!project) {
-      return NextResponse.json({ error: 'Project not found' }, { status: 404 });
+    // Parse the ID back to owner/repo (your same logic)
+    const parts = id.split('-');
+    if (parts.length < 2) {
+      return NextResponse.json(
+        { message: 'Invalid project ID' },
+        { status: 400 }
+      );
     }
 
-    // GitHub data (fast)
-    const meta = await getRepoMeta(project.repoUrl);
+    const owner = parts[0];
+    const repo = parts.slice(1).join('-');
+
+    if (!owner || !repo) {
+      return NextResponse.json(
+        { message: 'Invalid project ID' },
+        { status: 400 }
+      );
+    }
+
+    // Fetch from GitHub API (FAST stuff only)
+    const githubResponse = await fetch(
+      `https://api.github.com/repos/${owner}/${repo}`,
+      {
+        headers: {
+          Accept: 'application/vnd.github.v3+json',
+        },
+      }
+    );
+
+    if (!githubResponse.ok) {
+      return NextResponse.json(
+        { message: 'Project not found' },
+        { status: 404 }
+      );
+    }
+
+    const repoData = await githubResponse.json();
 
     return NextResponse.json({
-      id: project.id,
-      name: project.name,
-      repoUrl: project.repoUrl,
-      ...meta,
+      id,
+      name: repoData.name,
+      description: repoData.description,
+      url: repoData.html_url,
+      owner: repoData.owner.login,
+      stars: repoData.stargazers_count,
+      language: repoData.language,
+      createdAt: repoData.created_at,
+      updatedAt: repoData.updated_at,
     });
   } catch (error) {
-    console.error(error);
+    console.error('Error fetching project meta:', error);
     return NextResponse.json(
-      { error: 'Failed to fetch project meta' },
+      { message: 'Internal server error' },
       { status: 500 }
     );
   }

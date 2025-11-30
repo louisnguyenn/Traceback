@@ -1,37 +1,59 @@
 import { generateOnboardingSummary } from '@/services/gemini.service';
-import { getRepoContext } from '@/services/github.service';
-import { getProjectById, saveSummary } from '@/services/projects.service';
 import { NextResponse } from 'next/server';
 
-export async function GET(req, { params }) {
-  const { id } = params;
-
+export async function GET(request, { params }) {
   try {
-    const project = await getProjectById(id);
+    const { id } = params;
 
-    if (!project) {
-      return NextResponse.json({ error: 'Project not found' }, { status: 404 });
+    // Parse the ID
+    const parts = id.split('-');
+    if (parts.length < 2) {
+      return NextResponse.json(
+        { message: 'Invalid project ID' },
+        { status: 400 }
+      );
     }
 
-    // Return cached summary if available
-    if (project.onboardingOverview) {
-      return NextResponse.json({ summary: project.onboardingOverview });
+    const owner = parts[0];
+    const repo = parts.slice(1).join('-');
+
+    if (!owner || !repo) {
+      return NextResponse.json(
+        { message: 'Invalid project ID' },
+        { status: 400 }
+      );
     }
 
-    // Get detailed repo info (slow)
-    const context = await getRepoContext(project.repoUrl);
+    // Get key files for context (slow)
+    const filesResponse = await fetch(
+      `https://api.github.com/repos/${owner}/${repo}/contents`
+    );
+    const files = await filesResponse.json();
 
-    // Call Gemini (slowest)
+    // Get recent commits (slow)
+    const commitsResponse = await fetch(
+      `https://api.github.com/repos/${owner}/${repo}/commits?per_page=20`
+    );
+    const commits = await commitsResponse.json();
+
+    // Create clean AI context
+    const context = {
+      repo: `${owner}/${repo}`,
+      files: files.slice(0, 30).map((f) => f.name),
+      commits: commits.slice(0, 10).map((c) => ({
+        message: c.commit.message,
+        author: c.commit.author.name,
+      })),
+    };
+
+    // 👇 your Gemini / LLM call
     const summary = await generateOnboardingSummary(context);
-
-    // Save to DB so we don't regenerate every time
-    await saveSummary(project.id, summary);
 
     return NextResponse.json({ summary });
   } catch (error) {
-    console.error(error);
+    console.error('Error generating onboarding:', error);
     return NextResponse.json(
-      { error: 'Failed to generate onboarding summary' },
+      { message: 'Failed to generate onboarding summary' },
       { status: 500 }
     );
   }

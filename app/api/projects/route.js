@@ -1,6 +1,9 @@
 import { onboardingPrompt } from '@/prompts';
 import { fetchGemini } from '@/services/gemini.service';
-import { getCompleteRepositoryData, parseRepoUrl } from '@/services/github.service.';
+import {
+  getCompleteRepositoryData,
+  parseRepoUrl,
+} from '@/services/github.service';
 
 export async function POST(req) {
   try {
