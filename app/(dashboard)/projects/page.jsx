@@ -112,41 +112,98 @@ const ProjectsPage = () => {
           </div>
         </div>
 
-        <Empty>
-          <EmptyHeader>
-            <EmptyMedia variant="icon">
-              <IconFolderCode />
-            </EmptyMedia>
-            <EmptyTitle className="text-gray-400">No Projects Yet</EmptyTitle>
-            <EmptyDescription>
-              You haven&apos;t created any projects yet. Get started by creating
-              your first project.
-            </EmptyDescription>
-          </EmptyHeader>
-          <EmptyContent>
-            <div className="flex flex-col gap-2">
-              <div className="flex gap-2">
-                <Input
-                  type="text"
-                  placeholder="Paste GitHub Repo URL"
-                  value={repoUrl}
-                  onChange={(e) => setRepoUrl(e.target.value)}
-                  onKeyDown={handleKeyDown}
-                  disabled={loading}
-                  className="flex-1 border-slate-700 bg-slate-900 text-white placeholder:text-gray-400 focus:border-slate-600 disabled:opacity-50"
-                />
-                <Button
-                  onClick={handleCreateProject}
-                  disabled={loading}
-                  className="bg-blue-600 hover:bg-blue-700 text-white cursor-pointer disabled:opacity-50 disabled:cursor-not-allowed"
-                >
-                  {loading ? 'Creating...' : 'Create Project'}
-                </Button>
+        {loading ? (
+          <div className="flex flex-col items-center justify-center py-20">
+            <svg
+              className="animate-spin h-16 w-16 text-blue-400 mb-4"
+              xmlns="http://www.w3.org/2000/svg"
+              fill="none"
+              viewBox="0 0 24 24"
+            >
+              <circle
+                className="opacity-25"
+                cx="12"
+                cy="12"
+                r="10"
+                stroke="currentColor"
+                strokeWidth="4"
+              ></circle>
+              <path
+                className="opacity-75"
+                fill="currentColor"
+                d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"
+              ></path>
+            </svg>
+            <h3 className="text-xl font-semibold text-white mb-2">
+              Importing Your Project
+            </h3>
+            <p className="text-gray-400">
+              Fetching repository data and generating AI insights...
+            </p>
+          </div>
+        ) : (
+          <Empty>
+            <EmptyHeader>
+              <EmptyMedia variant="icon">
+                <IconFolderCode />
+              </EmptyMedia>
+              <EmptyTitle className="text-gray-400">No Projects Yet</EmptyTitle>
+              <EmptyDescription>
+                You haven&apos;t created any projects yet. Get started by
+                creating your first project.
+              </EmptyDescription>
+            </EmptyHeader>
+            <EmptyContent>
+              <div className="flex flex-col gap-2">
+                <div className="flex gap-2">
+                  <Input
+                    type="text"
+                    placeholder="Paste GitHub Repo URL"
+                    value={repoUrl}
+                    onChange={(e) => setRepoUrl(e.target.value)}
+                    onKeyDown={handleKeyDown}
+                    disabled={loading}
+                    className="flex-1 border-slate-700 bg-slate-900 text-white placeholder:text-gray-400 focus:border-slate-600 disabled:opacity-50"
+                  />
+                  <Button
+                    onClick={handleCreateProject}
+                    disabled={loading}
+                    className="bg-blue-600 hover:bg-blue-700 text-white cursor-pointer disabled:opacity-50 disabled:cursor-not-allowed"
+                  >
+                    {loading ? (
+                      <div className="flex items-center gap-2">
+                        <svg
+                          className="animate-spin h-4 w-4"
+                          xmlns="http://www.w3.org/2000/svg"
+                          fill="none"
+                          viewBox="0 0 24 24"
+                        >
+                          <circle
+                            className="opacity-25"
+                            cx="12"
+                            cy="12"
+                            r="10"
+                            stroke="currentColor"
+                            strokeWidth="4"
+                          ></circle>
+                          <path
+                            className="opacity-75"
+                            fill="currentColor"
+                            d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"
+                          ></path>
+                        </svg>
+                        <span>Creating...</span>
+                      </div>
+                    ) : (
+                      'Create Project'
+                    )}
+                  </Button>
+                </div>
+                {error && <p className="text-sm text-red-400">{error}</p>}
               </div>
-              {error && <p className="text-sm text-red-400">{error}</p>}
-            </div>
-          </EmptyContent>
-        </Empty>
+            </EmptyContent>
+          </Empty>
+        )}
       </main>
     </div>
   );
