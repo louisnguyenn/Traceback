@@ -9,19 +9,9 @@ import {
   SidebarMenu,
   SidebarMenuButton,
   SidebarMenuItem,
-  useSidebar,
 } from '@/components/ui/sidebar';
 import { useAuth } from '@/context/AuthContext';
-import {
-  FolderCode,
-  FolderGit2,
-  GitBranch,
-  GitCommitVertical,
-  GitCompare,
-  GitMerge,
-  Home,
-  LogOutIcon,
-} from 'lucide-react';
+import { FolderCode, HelpCircle, Home, LogOutIcon } from 'lucide-react';
 import Image from 'next/image';
 import Link from 'next/link';
 
@@ -37,29 +27,13 @@ const items = [
     icon: FolderCode,
   },
   {
-    title: 'Commits',
-    url: '/dashboard/commits',
-    icon: GitCommitVertical,
-  },
-  {
-    title: 'Merges',
-    url: '/dashboard/merges',
-    icon: GitMerge,
-  },
-  {
-    title: 'Diffs',
-    url: '/dashboard/diffs',
-    icon: GitCompare,
-  },
-  {
-    title: 'Branches',
-    url: '/dashboard/branches',
-    icon: GitBranch,
+    title: 'Help',
+    url: '/dashboard/help',
+    icon: HelpCircle,
   },
 ];
 
 export function AppSidebar() {
-  const { state } = useSidebar();
   const { user, signOut } = useAuth();
 
   return (
