@@ -1,69 +1,47 @@
-import { NextResponse } from 'next/server';
+import onboardingPrompt from '@/prompts';
+import { fetchGemini } from '@/services/gemini';
+import { getCompleteRepositoryData, parseRepoUrl } from '@/services/github';
 
-export async function POST(request) {
+export async function POST(req) {
   try {
-    const { repoUrl } = await request.json();
+    const { repoUrl } = await req.json();
 
     if (!repoUrl) {
-      return NextResponse.json(
-        { message: 'Repository URL is required' },
+      return Response.json(
+        { error: 'Repository URL is required' },
         { status: 400 }
       );
     }
 
-    // Extract owner and repo name from the URL
-    const match = repoUrl.match(/github\.com\/([^\/]+)\/([^\/]+)/);
-    if (!match) {
-      return NextResponse.json(
-        { message: 'Invalid GitHub URL' },
-        { status: 400 }
-      );
-    }
+    // Parse URL
+    const { owner, repo } = parseRepoUrl(repoUrl);
 
-    const [, owner, repo] = match;
-    const repoName = repo.replace('.git', '');
+    // Fetch repository data
+    const projectData = await getCompleteRepositoryData(owner, repo);
 
-    // TODO: create a general github service to fetch repo details
-    // Fetch repository details from GitHub API
-    const githubResponse = await fetch(
-      `https://api.github.com/repos/${owner}/${repoName}`,
-      {
-        headers: {
-          Accept: 'application/vnd.github.v3+json',
-        },
-      }
-    );
+    // Build the prompt with project info
+    const prompt = onboardingPrompt(projectData);
 
-    if (!githubResponse.ok) {
-      return NextResponse.json(
-        { message: 'Repository not found or is private' },
-        { status: 404 }
-      );
-    }
+    // Fetch Gemini for the onboarding overview
+    const onboardingOverview = await fetchGemini(prompt);
 
-    const repoData = await githubResponse.json();
+    // Add onboarding overview to project data
+    const project = {
+      ...projectData,
+      onboardingOverview,
+    };
 
-    // Generate a temporary ID (replace with database ID later)
-    const projectId = `${owner}-${repoName}`.toLowerCase();
+    // TODO: Save to database
+    // await db.projects.create(project);
 
-    return NextResponse.json({
+    return Response.json({
       message: 'Project created successfully',
-      project: {
-        id: projectId,
-        name: repoData.name,
-        description: repoData.description,
-        url: repoData.html_url,
-        owner: repoData.owner.login,
-        stars: repoData.stargazers_count,
-        language: repoData.language,
-        createdAt: repoData.created_at,
-        updatedAt: repoData.updated_at,
-      },
+      project,
     });
   } catch (error) {
-    console.error('Error creating project:', error);
-    return NextResponse.json(
-      { message: 'Internal server error' },
+    console.error('API Error:', error);
+    return Response.json(
+      { error: error.message || 'Failed to process request' },
       { status: 500 }
     );
   }
