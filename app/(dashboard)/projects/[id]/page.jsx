@@ -20,8 +20,6 @@ const ProjectDetailPage = () => {
   const projectId = params.id;
 
   const [projectData, setProjectData] = useState(null);
-  const [metaData, setMetaData] = useState(null);
-  const [onboardingData, setOnboardingData] = useState(null);
   const [loading, setLoading] = useState(true);
   const [expandedSections, setExpandedSections] = useState({
     onboarding: true,
@@ -55,44 +53,33 @@ const ProjectDetailPage = () => {
 
   // this effect fetches metaData and onboardingData
   useEffect(() => {
-    if (!projectId) return;
+    // check if we already have onboardingOverview or projectData is null
+    if (!projectData || projectData.onboardingOverview) return;
 
-    const fetchMeta = async () => {
+    // fetch and merge both data
+    const generateOnboarding = async () => {
       try {
-        const res = await fetch(`/api/projects/${projectId}/meta`);
-        if (!res.ok) throw new Error('Failed to fetch meta');
-        const data = await res.json();
-        setMetaData(data);
-      } catch (err) {
-        console.error('Meta fetch error:', err);
+        const res = await fetch('/api/projects', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({
+            repoUrl: `https://github.com/${projectData.owner}/${projectData.name}`,
+          }),
+        });
+
+        const json = await res.json();
+
+        setProjectData((prev) => ({
+          ...prev,
+          ...json.project,
+        }));
+      } catch (error) {
+        console.error('Data merge error:', e);
       }
     };
 
-    const fetchOnboarding = async () => {
-      try {
-        const res = await fetch(`/api/projects/${projectId}/onboarding`);
-        if (!res.ok) throw new Error('Failed to fetch onboarding');
-        const data = await res.json();
-        setOnboardingData(data);
-      } catch (err) {
-        console.error('Onboarding fetch error:', err);
-      }
-    };
-
-    fetchMeta();
-    fetchOnboarding();
-  }, [projectId]);
-
-  // this effect updates projectData when metaData or onboardingData changes
-  useEffect(() => {
-    if (!projectData) return;
-
-    setProjectData((prev) => ({
-      ...prev,
-      ...metaData,
-      onboardingOverview: onboardingData?.summary || prev.onboardingOverview,
-    }));
-  }, [metaData, onboardingData]);
+    generateOnboarding();
+  }, [projectData]);
 
   const toggleSection = (section) => {
     setExpandedSections((prev) => ({
