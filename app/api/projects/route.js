@@ -1,4 +1,4 @@
-import onboardingPrompt from '@/prompts';
+import { onboardingPrompt } from '@/prompts';
 import { fetchGemini } from '@/services/gemini';
 import { getCompleteRepositoryData, parseRepoUrl } from '@/services/github';
 
