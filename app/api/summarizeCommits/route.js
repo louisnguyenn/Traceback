@@ -1,5 +1,5 @@
 import { summarizeCommitsPrompt } from '@/prompts';
-import { fetchGemini } from '@/services/gemini';
+import { fetchGemini } from '@/services/gemini.service';
 import { fetchGitHubCommits } from '@/services/github/commits';
 
 export async function POST(req) {

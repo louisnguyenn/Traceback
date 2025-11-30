@@ -1,5 +1,5 @@
 import { summarizeBranchesPrompt } from '@/prompts';
-import { fetchGemini } from '@/services/gemini';
+import { fetchGemini } from '@/services/gemini.service';
 import { fetchGitHubBranches } from '@/services/github/branches';
 
 export async function POST(req) {

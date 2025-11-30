@@ -1,5 +1,5 @@
 import { summarizeDiffsPrompt } from '@/prompts';
-import { fetchGemini } from '@/services/gemini';
+import { fetchGemini } from '@/services/gemini.service';
 import { fetchGitHubDiffs } from '@/services/github/diffs';
 
 export async function POST(req) {
