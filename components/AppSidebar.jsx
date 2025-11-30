@@ -23,12 +23,12 @@ const items = [
   },
   {
     title: 'My Projects',
-    url: '/dashboard/projects',
+    url: '/projects',
     icon: FolderCode,
   },
   {
     title: 'Help',
-    url: '/dashboard/help',
+    url: '/help',
     icon: HelpCircle,
   },
 ];
