@@ -11,10 +11,68 @@ import {
 } from '@/components/ui/empty';
 import { Input } from '@/components/ui/input';
 import { IconFolderCode } from '@tabler/icons-react';
-import { Github, Search } from 'lucide-react';
-import React from 'react';
+import { Search } from 'lucide-react';
+import React, { useState } from 'react';
 
 const page = () => {
+  const [repoUrl, setRepoUrl] = useState('');
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState('');
+
+  const handleCreateProject = async () => {
+    if (!repoUrl.trim()) {
+      setError('Please enter a GitHub repository URL');
+      return;
+    }
+
+    // Basic GitHub URL validation
+    const githubUrlPattern =
+      /^https?:\/\/(www\.)?github\.com\/[\w-]+\/[\w.-]+\/?$/;
+    if (!githubUrlPattern.test(repoUrl.trim())) {
+      setError('Please enter a valid GitHub repository URL');
+      return;
+    }
+
+    setLoading(true);
+    setError('');
+
+    try {
+      const response = await fetch('/api/projects', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          repoUrl: repoUrl.trim(),
+        }),
+      });
+
+      if (!response.ok) {
+        const errorData = await response.json();
+        throw new Error(errorData.message || 'Failed to create project');
+      }
+
+      const data = await response.json();
+      console.log('Project created:', data);
+
+      // Clear input and show success (you might want to redirect or update state)
+      setRepoUrl('');
+      // Optional: redirect to project page
+      // router.push(`/projects/${data.projectId}`);
+    } catch (err) {
+      setError(err.message || 'An error occurred while creating the project');
+      console.error('Error creating project:', err);
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  const handleKeyPress = (e) => {
+    if (e.key === 'Enter') {
+      handleCreateProject();
+    }
+  };
+
   return (
     <div className="bg-slate-950 min-h-screen">
       <main>
@@ -45,7 +103,7 @@ const page = () => {
             <Search className="w-5 h-5 text-gray-400 shrink-0" />
             <Input
               type="search"
-              placeholder="Search projects..."
+              placeholder="Search Projects"
               className="border-0 p-0 bg-transparent text-white placeholder:text-gray-400 focus-visible:ring-0 focus-visible:ring-offset-0"
             />
           </div>
@@ -63,10 +121,26 @@ const page = () => {
             </EmptyDescription>
           </EmptyHeader>
           <EmptyContent>
-            <div className="flex gap-2">
-              <Button className="cursor-pointer hover:bg-slate-800 hover:-translate-y-1 transition-all duration-300">
-                Import Project from GitHub <Github className="w-5 h-5" />
-              </Button>
+            <div className="flex flex-col gap-2">
+              <div className="flex gap-2">
+                <Input
+                  type="text"
+                  placeholder="Paste GitHub Repo URL"
+                  value={repoUrl}
+                  onChange={(e) => setRepoUrl(e.target.value)}
+                  onKeyPress={handleKeyPress}
+                  disabled={loading}
+                  className="flex-1 border-slate-700 bg-slate-900 text-white placeholder:text-gray-400 focus:border-slate-600 disabled:opacity-50"
+                />
+                <Button
+                  onClick={handleCreateProject}
+                  disabled={loading}
+                  className="bg-blue-600 hover:bg-blue-700 text-white cursor-pointer disabled:opacity-50 disabled:cursor-not-allowed"
+                >
+                  {loading ? 'Creating...' : 'Create Project'}
+                </Button>
+              </div>
+              {error && <p className="text-sm text-red-400">{error}</p>}
             </div>
           </EmptyContent>
         </Empty>
