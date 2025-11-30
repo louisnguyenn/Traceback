@@ -106,6 +106,43 @@ const ProjectDetailPage = () => {
     );
   }
 
+  // Reusable Section Component
+  const Section = ({
+    title,
+    icon,
+    isExpanded,
+    onToggle,
+    onFullScreen,
+    children,
+  }) => {
+    return (
+      <div className="bg-slate-900/50 rounded-lg border border-slate-800 overflow-hidden">
+        <div className="flex items-center justify-between p-4 border-b border-slate-800">
+          <button
+            onClick={onToggle}
+            className="flex items-center gap-2 text-white hover:text-blue-400 transition-colors"
+          >
+            {isExpanded ? (
+              <ChevronDown className="w-5 h-5" />
+            ) : (
+              <ChevronRight className="w-5 h-5" />
+            )}
+            {icon}
+            <h3 className="text-lg font-semibold">{title}</h3>
+          </button>
+          <button
+            onClick={onFullScreen}
+            className="p-2 text-gray-400 hover:text-white hover:bg-slate-800 rounded-lg transition-colors"
+            title="View full screen"
+          >
+            <Maximize2 className="w-4 h-4" />
+          </button>
+        </div>
+        {isExpanded && <div className="p-4">{children}</div>}
+      </div>
+    );
+  };
+
   return (
     <div className="bg-slate-950 min-h-screen">
       <main>
@@ -207,7 +244,10 @@ const ProjectDetailPage = () => {
                     d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"
                   ></path>
                 </svg>
-                <span>Onboarding overview not available yet...</span>
+                <span>
+                  AI is analyzing the repository and generating an onboarding
+                  guide…
+                </span>
               </div>
             )}
           </Section>
@@ -380,43 +420,6 @@ const ProjectDetailPage = () => {
           )}
         </div>
       </main>
-    </div>
-  );
-};
-
-// Reusable Section Component
-const Section = ({
-  title,
-  icon,
-  isExpanded,
-  onToggle,
-  onFullScreen,
-  children,
-}) => {
-  return (
-    <div className="bg-slate-900/50 rounded-lg border border-slate-800 overflow-hidden">
-      <div className="flex items-center justify-between p-4 border-b border-slate-800">
-        <button
-          onClick={onToggle}
-          className="flex items-center gap-2 text-white hover:text-blue-400 transition-colors"
-        >
-          {isExpanded ? (
-            <ChevronDown className="w-5 h-5" />
-          ) : (
-            <ChevronRight className="w-5 h-5" />
-          )}
-          {icon}
-          <h3 className="text-lg font-semibold">{title}</h3>
-        </button>
-        <button
-          onClick={onFullScreen}
-          className="p-2 text-gray-400 hover:text-white hover:bg-slate-800 rounded-lg transition-colors"
-          title="View full screen"
-        >
-          <Maximize2 className="w-4 h-4" />
-        </button>
-      </div>
-      {isExpanded && <div className="p-4">{children}</div>}
     </div>
   );
 };
