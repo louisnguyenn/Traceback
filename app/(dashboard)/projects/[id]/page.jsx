@@ -74,7 +74,7 @@ const ProjectDetailPage = () => {
           ...json.project,
         }));
       } catch (error) {
-        console.error('Data merge error:', e);
+        console.error('Data merge error:', error);
       }
     };
 
