@@ -28,8 +28,8 @@ export function SigninForm() {
       <form>
         <Card className="border-slate-800 bg-slate-900/50 backdrop-blur-sm shadow-xl min-h-[600px] flex flex-col">
           <CardHeader className="space-y-5 pb-10">
-            <CardTitle className="text-3xl font-bold text-blue-400 text-center">
-              Sign In
+            <CardTitle className="text-4xl font-bold text-blue-400 text-center">
+              <span className="text-white">Trace</span>back
             </CardTitle>
             <p className="text-2xl font-bold text-white text-center">
               Access Your Account
@@ -73,7 +73,7 @@ export function SigninForm() {
                   </>
                 ) : (
                   <>
-                    <span>Sign in with Google</span>
+                    <span>Continue with Google</span>
                     <FaGoogle size={16} />
                   </>
                 )}
@@ -111,25 +111,14 @@ export function SigninForm() {
                   </>
                 ) : (
                   <>
-                    <span>Sign in with GitHub</span>
+                    <span>Continue with GitHub</span>
                     <Github size={16} />
                   </>
                 )}
               </button>
             </div>
 
-            {/* This section will be pushed to the bottom */}
             <div className="mt-auto space-y-4 pt-8">
-              <div className="text-center text-sm text-gray-300">
-                Don&apos;t have an account?
-                <Link
-                  className="ml-2 text-blue-400 hover:text-blue-300 transition-colors underline-offset-4 hover:underline"
-                  href="signup"
-                >
-                  Sign Up
-                </Link>
-              </div>
-
               <div className="flex justify-center">
                 <Link
                   href="/"
