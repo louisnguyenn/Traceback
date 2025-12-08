@@ -1,10 +1,12 @@
-import { onboardingPrompt } from '@/prompts';
-import { fetchGemini } from '@/services/gemini.service';
 import {
   getCompleteRepositoryData,
   parseRepoUrl,
 } from '@/services/github.service';
 
+/* workflow: split into two end points for progressive loading
+  load metadata first (github info) then fetch gemini and let gemini summarize the repo */
+
+// fast metadata fetch
 export async function POST(req) {
   try {
     const { repoUrl } = await req.json();
@@ -22,22 +24,13 @@ export async function POST(req) {
     // Fetch repository data
     const projectData = await getCompleteRepositoryData(owner, repo);
 
-    // Build the prompt with project info
-    const prompt = onboardingPrompt(projectData);
-
-    // Fetch Gemini for the onboarding overview
-    const onboardingOverview = await fetchGemini(prompt);
-
-    // Add onboarding overview to project data
-    const project = {
-      ...projectData,
-      onboardingOverview,
-    };
-
     // Return the generated summary
     return Response.json({
-      message: 'Project created successfully',
-      project,
+      message: 'Project metadata fetched',
+      project: {
+        ...projectData,
+        onboardingOverview: null, // will be generated seperately
+      },
     });
   } catch (error) {
     console.error('API Error:', error);
