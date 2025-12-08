@@ -1,3 +1,5 @@
+'use server';
+
 import { GoogleGenAI } from '@google/genai';
 
 const ai = new GoogleGenAI({ apiKey: process.env.GEMINI_API_KEY });
@@ -23,5 +25,3 @@ export async function fetchGemini(prompt) {
     throw new Error('Failed to generate text');
   }
 }
-
-// TODO: fix gemini service

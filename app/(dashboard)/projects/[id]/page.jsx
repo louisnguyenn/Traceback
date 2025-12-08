@@ -22,6 +22,8 @@ import { useParams, useRouter } from 'next/navigation';
 import { useEffect, useState } from 'react';
 
 const ProjectDetailPage = () => {
+  console.log('Gemini key:', process.env.GEMINI_API_KEY); // debug
+
   const params = useParams();
   const router = useRouter();
   const { user, loading: authLoading } = useAuth();

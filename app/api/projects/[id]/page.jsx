@@ -92,15 +92,14 @@ const ProjectDetailPage = () => {
     }
 
     try {
-      // 🐛 FIX 1: URL was wrong - should be /api/projects/generate-onboarding
       const response = await fetch('/api/projects/generate-onboarding', {
-        method: 'POST', // 🐛 FIX 2: POST needs quotes
+        method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ projectData }),
       });
 
       if (!response.ok) {
-        throw new Error('Failed to generate onboarding'); // 🐛 FIX 3: Typo fix
+        throw new Error('Failed to generate onboarding');
       }
 
       const { onboardingOverview } = await response.json();
@@ -141,7 +140,7 @@ const ProjectDetailPage = () => {
             : p
         );
         localStorage.setItem('projects', JSON.stringify(updated));
-        // 🐛 FIX 4: Was spreading 'projects' instead of 'projectData'
+
         setProjectData({
           ...projectData,
           isGenerating: false,
