@@ -1,84 +1,203 @@
 'use client';
 import AnimatedContent from '@/components/animations/AnimatedContent';
-import { Button } from '@/components/ui/button';
+import { useAuth } from '@/context/AuthContext';
 import {
-  Empty,
-  EmptyContent,
-  EmptyDescription,
-  EmptyHeader,
-  EmptyMedia,
-  EmptyTitle,
-} from '@/components/ui/empty';
-import { Input } from '@/components/ui/input';
-import { IconFolderCode } from '@tabler/icons-react';
-import { Search } from 'lucide-react';
+  AlertCircle,
+  CheckCircle,
+  Clock,
+  FolderGit2,
+  GitBranch,
+  Loader2,
+  Plus,
+  Star,
+  Trash2,
+} from 'lucide-react';
 import { useRouter } from 'next/navigation';
-import React, { useState } from 'react';
+import { useCallback, useEffect, useState } from 'react';
 
-const ProjectsPage = () => {
+export default function ProjectsPage() {
   const router = useRouter();
-  const [repoUrl, setRepoUrl] = useState('');
+  const { user, loading: authLoading } = useAuth();
+  const [projects, setProjects] = useState([]);
   const [loading, setLoading] = useState(false);
-  const [error, setError] = useState('');
+  const [repoUrl, setRepoUrl] = useState('');
+  const [showAddForm, setShowAddForm] = useState(false);
 
-  const handleCreateProject = async () => {
-    if (!repoUrl.trim()) {
-      setError('Please enter a GitHub repository URL');
-      return;
+  // Redirect if not authenticated
+  useEffect(() => {
+    if (!authLoading && !user) {
+      router.push('/signin');
     }
+  }, [user, authLoading, router]);
 
-    const githubUrlPattern =
-      /^https?:\/\/(www\.)?github\.com\/[\w-]+\/[\w.-]+\/?$/;
-    if (!githubUrlPattern.test(repoUrl.trim())) {
-      setError('Please enter a valid GitHub repository URL');
-      return;
+  // Load projects from localStorage on mount only
+  useEffect(() => {
+    const saved = localStorage.getItem('projects');
+    if (saved) {
+      setProjects(JSON.parse(saved));
     }
+  }, []);
+
+  // Calculate stats
+  const stats = {
+    total: projects.length,
+    generating: projects.filter((p) => p.isGenerating).length,
+    ready: projects.filter((p) => p.onboardingOverview && !p.isGenerating)
+      .length,
+    failed: projects.filter((p) => p.generationFailed).length,
+  };
+
+  // Separate function to update localStorage and state
+  const updateProjects = useCallback((updatedProjects) => {
+    setProjects(updatedProjects);
+    localStorage.setItem('projects', JSON.stringify(updatedProjects));
+  }, []);
+
+  // Background generation function
+  const generateOnboarding = useCallback(
+    async (project) => {
+      try {
+        const response = await fetch('/api/projects/generate-onboarding', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ projectData: project }),
+        });
+
+        if (!response.ok) {
+          throw new Error('Failed to generate onboarding');
+        }
+
+        const { onboardingOverview } = await response.json();
+
+        // Update project in localStorage
+        const saved = localStorage.getItem('projects');
+        if (saved) {
+          const currentProjects = JSON.parse(saved);
+          const updated = currentProjects.map((p) =>
+            p.id === project.id
+              ? { ...p, onboardingOverview, isGenerating: false }
+              : p
+          );
+          updateProjects(updated);
+        }
+      } catch (error) {
+        console.error('Error generating onboarding:', error);
+
+        // Mark as failed
+        const saved = localStorage.getItem('projects');
+        if (saved) {
+          const currentProjects = JSON.parse(saved);
+          const updated = currentProjects.map((p) =>
+            p.id === project.id
+              ? { ...p, isGenerating: false, generationFailed: true }
+              : p
+          );
+          updateProjects(updated);
+        }
+      }
+    },
+    [updateProjects]
+  );
+
+  const addProject = async (e) => {
+    e.preventDefault();
+    if (!repoUrl.trim()) return;
 
     setLoading(true);
-    setError('');
 
     try {
-      const response = await fetch('/api/projects', {
+      // Fetch GitHub metadata
+      const metaResponse = await fetch('/api/projects', {
         method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({
-          repoUrl: repoUrl.trim(),
-        }),
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ repoUrl }),
       });
 
-      if (!response.ok) {
-        const errorData = await response.json();
-        throw new Error(errorData.message || 'Failed to create project');
+      if (!metaResponse.ok) {
+        const error = await metaResponse.json();
+        throw new Error(error.error || 'Failed to fetch project');
       }
 
-      const data = await response.json();
-      console.log('Project created:', data);
+      const { project } = await metaResponse.json();
+
+      // Check if project already exists
+      const existingProject = projects.find((p) => p.id === project.id);
+      if (existingProject) {
+        alert('This project has already been added!');
+        setLoading(false);
+        return;
+      }
+
+      // Save project with loading state
+      const newProject = {
+        ...project,
+        onboardingOverview: null,
+        isGenerating: true,
+        generationFailed: false,
+      };
+
+      const updatedProjects = [...projects, newProject];
+      updateProjects(updatedProjects);
 
       setRepoUrl('');
+      setLoading(false);
+      setShowAddForm(false);
 
-      // redirect to the new project detail page
-      if (data.project?.id) {
-        router.push(`/projects/${data.project.id}`);
-      }
-    } catch (err) {
-      setError(err.message || 'An error occurred while creating the project');
-      console.error('Error creating project:', err);
-    } finally {
+      // Navigate to detail page
+      router.push(`/projects/${project.id}`);
+
+      // Generate onboarding in background
+      generateOnboarding(newProject);
+    } catch (error) {
+      console.error('Error adding project:', error);
+      alert(error.message || 'Failed to fetch project');
       setLoading(false);
     }
   };
 
-  const handleKeyDown = (e) => {
-    if (e.key === 'Enter') {
-      handleCreateProject();
+  const deleteProject = (projectId, e) => {
+    e.stopPropagation();
+
+    if (confirm('Are you sure you want to delete this project?')) {
+      const updated = projects.filter((p) => p.id !== projectId);
+      updateProjects(updated);
     }
   };
+
+  if (authLoading || !user) {
+    return (
+      <div className="min-h-screen bg-slate-950 flex items-center justify-center">
+        <div className="text-center">
+          <svg
+            className="animate-spin h-12 w-12 text-blue-400 mx-auto mb-4"
+            xmlns="http://www.w3.org/2000/svg"
+            fill="none"
+            viewBox="0 0 24 24"
+          >
+            <circle
+              className="opacity-25"
+              cx="12"
+              cy="12"
+              r="10"
+              stroke="currentColor"
+              strokeWidth="4"
+            />
+            <path
+              className="opacity-75"
+              fill="currentColor"
+              d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"
+            />
+          </svg>
+          <p className="text-gray-400">Loading...</p>
+        </div>
+      </div>
+    );
+  }
 
   return (
     <div className="bg-slate-950 min-h-screen">
       <main>
+        {/* Header */}
         <header className="border-b border-slate-800 bg-slate-900/50 backdrop-blur-sm">
           <div className="px-6 py-7">
             <div className="flex justify-between items-center">
@@ -94,119 +213,232 @@ const ProjectsPage = () => {
                   threshold={0.2}
                   delay={0.3}
                 >
-                  <h2 className="text-4xl font-bold text-white">My Projects</h2>
+                  <h2 className="text-4xl font-bold text-white">Projects</h2>
+                </AnimatedContent>
+                <AnimatedContent
+                  distance={60}
+                  direction="up"
+                  reverse={true}
+                  duration={0.7}
+                  ease="power2.out"
+                  initialOpacity={0}
+                  animateOpacity
+                  threshold={0.2}
+                  delay={0.6}
+                >
+                  <p className="text-base text-gray-400 mt-3">
+                    Manage and explore your GitHub repositories with AI-powered
+                    insights.
+                  </p>
                 </AnimatedContent>
               </div>
+              <button
+                onClick={() => setShowAddForm(!showAddForm)}
+                className="px-4 py-2 bg-blue-600 hover:bg-blue-700 text-white rounded-lg font-medium transition-colors flex items-center gap-2"
+              >
+                <Plus className="w-4 h-4" />
+                Add Project
+              </button>
             </div>
           </div>
         </header>
 
-        <div className="mx-auto px-6 py-7">
-          <div className="flex items-center gap-3 px-4 py-1 border border-slate-800 rounded-lg bg-slate-900 focus-within:border-slate-700">
-            <Search className="w-5 h-5 text-gray-400 shrink-0" />
-            <Input
-              type="search"
-              placeholder="Search Projects"
-              className="border-0 p-0 bg-transparent text-white placeholder:text-gray-400 focus-visible:ring-0 focus-visible:ring-offset-0"
-            />
+        <div className="px-6 py-8">
+          {/* Stats */}
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
+            <div className="bg-slate-900/50 border border-slate-800 rounded-xl p-6 hover:border-blue-500/50 transition-colors">
+              <div className="flex items-center justify-between mb-4">
+                <div className="p-3 bg-blue-500/10 rounded-lg">
+                  <FolderGit2 className="w-6 h-6 text-blue-400" />
+                </div>
+              </div>
+              <h3 className="text-2xl font-bold text-white mb-1">
+                {stats.total}
+              </h3>
+              <p className="text-sm text-gray-400">Total Projects</p>
+            </div>
+
+            <div className="bg-slate-900/50 border border-slate-800 rounded-xl p-6 hover:border-green-500/50 transition-colors">
+              <div className="flex items-center justify-between mb-4">
+                <div className="p-3 bg-green-500/10 rounded-lg">
+                  <CheckCircle className="w-6 h-6 text-green-400" />
+                </div>
+              </div>
+              <h3 className="text-2xl font-bold text-white mb-1">
+                {stats.ready}
+              </h3>
+              <p className="text-sm text-gray-400">Ready to Explore</p>
+            </div>
+
+            <div className="bg-slate-900/50 border border-slate-800 rounded-xl p-6 hover:border-cyan-500/50 transition-colors">
+              <div className="flex items-center justify-between mb-4">
+                <div className="p-3 bg-cyan-500/10 rounded-lg">
+                  <Loader2 className="w-6 h-6 text-cyan-400" />
+                </div>
+              </div>
+              <h3 className="text-2xl font-bold text-white mb-1">
+                {stats.generating}
+              </h3>
+              <p className="text-sm text-gray-400">Generating</p>
+            </div>
+
+            <div className="bg-slate-900/50 border border-slate-800 rounded-xl p-6 hover:border-red-500/50 transition-colors">
+              <div className="flex items-center justify-between mb-4">
+                <div className="p-3 bg-red-500/10 rounded-lg">
+                  <AlertCircle className="w-6 h-6 text-red-400" />
+                </div>
+              </div>
+              <h3 className="text-2xl font-bold text-white mb-1">
+                {stats.failed}
+              </h3>
+              <p className="text-sm text-gray-400">Failed</p>
+            </div>
+          </div>
+
+          {/* Add Project Form */}
+          {showAddForm && (
+            <div className="bg-slate-900/50 border border-slate-800 rounded-xl p-6 mb-6">
+              <h3 className="text-lg font-semibold text-white mb-4">
+                Add New Project
+              </h3>
+              <form onSubmit={addProject} className="flex gap-2">
+                <input
+                  type="text"
+                  value={repoUrl}
+                  onChange={(e) => setRepoUrl(e.target.value)}
+                  placeholder="https://github.com/owner/repo"
+                  className="flex-1 px-4 py-2 bg-slate-800 text-white rounded-lg border border-slate-700 focus:border-blue-500 focus:outline-none"
+                  disabled={loading}
+                />
+                <button
+                  type="submit"
+                  disabled={loading || !repoUrl.trim()}
+                  className="px-6 py-2 bg-blue-600 hover:bg-blue-700 disabled:bg-slate-700 disabled:cursor-not-allowed text-white rounded-lg font-medium transition-colors flex items-center gap-2"
+                >
+                  {loading ? (
+                    <>
+                      <Loader2 className="w-4 h-4 animate-spin" />
+                      Adding...
+                    </>
+                  ) : (
+                    'Add'
+                  )}
+                </button>
+                <button
+                  type="button"
+                  onClick={() => setShowAddForm(false)}
+                  className="px-4 py-2 bg-slate-800 hover:bg-slate-700 text-gray-300 rounded-lg transition-colors"
+                >
+                  Cancel
+                </button>
+              </form>
+            </div>
+          )}
+
+          {/* Projects List */}
+          <div className="bg-slate-900/50 border border-slate-800 rounded-xl p-6">
+            <div className="flex items-center justify-between mb-6">
+              <h3 className="text-xl font-semibold text-white">
+                Your Projects
+              </h3>
+            </div>
+
+            {projects.length === 0 ? (
+              <div className="text-center py-12">
+                <div className="p-4 bg-slate-800/50 rounded-full w-16 h-16 mx-auto mb-4 flex items-center justify-center">
+                  <FolderGit2 className="w-8 h-8 text-gray-500" />
+                </div>
+                <p className="text-lg text-gray-400 mb-2">No projects yet</p>
+                <p className="text-sm text-gray-500 mb-6">
+                  Add a GitHub repository to get started!
+                </p>
+                <button
+                  onClick={() => setShowAddForm(true)}
+                  className="px-6 py-2 bg-blue-600 hover:bg-blue-700 text-white rounded-lg font-medium transition-colors inline-flex items-center gap-2"
+                >
+                  <Plus className="w-4 h-4" />
+                  Add Your First Project
+                </button>
+              </div>
+            ) : (
+              <div className="space-y-4">
+                {projects.map((project) => (
+                  <div
+                    key={project.id}
+                    onClick={() => router.push(`/projects/${project.id}`)}
+                    className="flex items-start space-x-4 p-4 rounded-lg hover:bg-slate-800/50 transition-colors cursor-pointer border border-slate-800 hover:border-slate-700"
+                  >
+                    <div className="p-2 bg-blue-500/10 rounded-lg mt-1">
+                      <FolderGit2 className="w-5 h-5 text-blue-400" />
+                    </div>
+
+                    <div className="flex-1 min-w-0">
+                      <div className="flex items-center gap-2 mb-1">
+                        <h4 className="text-base font-semibold text-white truncate">
+                          {project.name}
+                        </h4>
+                        {project.isGenerating && (
+                          <span className="inline-flex items-center gap-1 px-2 py-0.5 text-xs bg-cyan-500/10 text-cyan-400 rounded-full">
+                            <Loader2 className="w-3 h-3 animate-spin" />
+                            Generating
+                          </span>
+                        )}
+                        {project.onboardingOverview &&
+                          !project.isGenerating && (
+                            <span className="inline-flex items-center gap-1 px-2 py-0.5 text-xs bg-green-500/10 text-green-400 rounded-full">
+                              <CheckCircle className="w-3 h-3" />
+                              Ready
+                            </span>
+                          )}
+                        {project.generationFailed && (
+                          <span className="inline-flex items-center gap-1 px-2 py-0.5 text-xs bg-red-500/10 text-red-400 rounded-full">
+                            <AlertCircle className="w-3 h-3" />
+                            Failed
+                          </span>
+                        )}
+                      </div>
+
+                      <p className="text-sm text-gray-400 mb-2 line-clamp-1">
+                        {project.description || 'No description'}
+                      </p>
+
+                      <div className="flex items-center gap-4 text-xs text-gray-500">
+                        <span className="flex items-center gap-1">
+                          <Star className="w-3 h-3" />
+                          {project.stars?.toLocaleString() || 0}
+                        </span>
+                        <span className="flex items-center gap-1">
+                          <GitBranch className="w-3 h-3" />
+                          {project.forks?.toLocaleString() || 0}
+                        </span>
+                        {project.language && (
+                          <span className="px-2 py-0.5 bg-slate-800 rounded-full">
+                            {project.language}
+                          </span>
+                        )}
+                        {project.updatedAt && (
+                          <span className="flex items-center gap-1">
+                            <Clock className="w-3 h-3" />
+                            {new Date(project.updatedAt).toLocaleDateString()}
+                          </span>
+                        )}
+                      </div>
+                    </div>
+
+                    <button
+                      onClick={(e) => deleteProject(project.id, e)}
+                      className="p-2 text-gray-500 hover:text-red-400 hover:bg-red-950/50 rounded-lg transition-colors"
+                      title="Delete project"
+                    >
+                      <Trash2 className="w-4 h-4" />
+                    </button>
+                  </div>
+                ))}
+              </div>
+            )}
           </div>
         </div>
-
-        {loading ? (
-          <div className="flex flex-col items-center justify-center py-20">
-            <svg
-              className="animate-spin h-16 w-16 text-blue-400 mb-4"
-              xmlns="http://www.w3.org/2000/svg"
-              fill="none"
-              viewBox="0 0 24 24"
-            >
-              <circle
-                className="opacity-25"
-                cx="12"
-                cy="12"
-                r="10"
-                stroke="currentColor"
-                strokeWidth="4"
-              ></circle>
-              <path
-                className="opacity-75"
-                fill="currentColor"
-                d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"
-              ></path>
-            </svg>
-            <h3 className="text-xl font-semibold text-white mb-2">
-              Importing Your Project
-            </h3>
-            <p className="text-gray-400">
-              Fetching repository data and generating AI insights...
-            </p>
-          </div>
-        ) : (
-          <Empty>
-            <EmptyHeader>
-              <EmptyMedia variant="icon">
-                <IconFolderCode />
-              </EmptyMedia>
-              <EmptyTitle className="text-gray-400">No Projects Yet</EmptyTitle>
-              <EmptyDescription>
-                You haven&apos;t created any projects yet. Get started by
-                creating your first project.
-              </EmptyDescription>
-            </EmptyHeader>
-            <EmptyContent>
-              <div className="flex flex-col gap-2">
-                <div className="flex gap-2">
-                  <Input
-                    type="text"
-                    placeholder="Paste GitHub Repo URL"
-                    value={repoUrl}
-                    onChange={(e) => setRepoUrl(e.target.value)}
-                    onKeyDown={handleKeyDown}
-                    disabled={loading}
-                    className="flex-1 border-slate-700 bg-slate-900 text-white placeholder:text-gray-400 focus:border-slate-600 disabled:opacity-50"
-                  />
-                  <Button
-                    onClick={handleCreateProject}
-                    disabled={loading}
-                    className="bg-blue-600 hover:bg-blue-700 text-white cursor-pointer disabled:opacity-50 disabled:cursor-not-allowed"
-                  >
-                    {loading ? (
-                      <div className="flex items-center gap-2">
-                        <svg
-                          className="animate-spin h-4 w-4"
-                          xmlns="http://www.w3.org/2000/svg"
-                          fill="none"
-                          viewBox="0 0 24 24"
-                        >
-                          <circle
-                            className="opacity-25"
-                            cx="12"
-                            cy="12"
-                            r="10"
-                            stroke="currentColor"
-                            strokeWidth="4"
-                          ></circle>
-                          <path
-                            className="opacity-75"
-                            fill="currentColor"
-                            d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"
-                          ></path>
-                        </svg>
-                        <span>Creating...</span>
-                      </div>
-                    ) : (
-                      'Create Project'
-                    )}
-                  </Button>
-                </div>
-                {error && <p className="text-sm text-red-400">{error}</p>}
-              </div>
-            </EmptyContent>
-          </Empty>
-        )}
       </main>
     </div>
   );
-};
-
-export default ProjectsPage;
+}
