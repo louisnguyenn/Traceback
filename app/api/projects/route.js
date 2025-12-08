@@ -34,9 +34,7 @@ export async function POST(req) {
       onboardingOverview,
     };
 
-    // TODO: Save to database
-    // await db.projects.create(project);
-
+    // Return the generated summary
     return Response.json({
       message: 'Project created successfully',
       project,
