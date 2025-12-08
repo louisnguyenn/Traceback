@@ -1,8 +1,18 @@
 'use client';
 
+import AnimatedContent from '@/components/animations/AnimatedContent';
+import {
+  ChevronDown,
+  ChevronRight,
+  FileCode,
+  GitCommit,
+  Maximize2,
+  Package,
+  RefreshCw,
+  Sparkles,
+} from 'lucide-react';
 import { useParams, useRouter } from 'next/navigation';
 import { useEffect, useState } from 'react';
-import { POST } from '../route';
 
 const ProjectDetailPage = () => {
   const params = useParams();
@@ -182,5 +192,59 @@ const ProjectDetailPage = () => {
   }
 
   // projects not found page
-  
+  if (!projectData) {
+    return (
+      <div className="min-h-screen bg-slate-950 flex items-center justify-center">
+        <div className="text-center">
+          <p className="text-red-400 mb-2">Project not found</p>
+          <p className="text-gray-500 text-sm mb-4">Project ID: {projectId}</p>
+          <button
+            onClick={() => router.push('/projects')}
+            className="mt-4 px-4 py-2 bg-blue-500 hover:bg-blue-600 text-white rounded-lg transition-colors cursor-pointer"
+          >
+            ← Back to Projects
+          </button>
+        </div>
+      </div>
+    );
+  }
+
+  // section component
+  const Section = ({
+    title,
+    icon,
+    isExpanded,
+    onToggle,
+    onFullScreen,
+    children,
+  }) => {
+    return (
+      <div className="bg-slate-900/50 rounded-lg border border-slate-800 overflow-hidden">
+        <div className="flex items-center justify-between p-4 border-b border-slate-800">
+          <button
+            onClick={onToggle}
+            className="flex items-center gap-2 text-white hover:text-blue-400 transition-colors"
+          >
+            {isExpanded ? (
+              <ChevronDown className="w-5 h-5" />
+            ) : (
+              <ChevronRight className="w-5 h-5" />
+            )}
+            {icon}
+            <h3 className="text-lg font-semibold">{title}</h3>
+          </button>
+          <button
+            onClick={onFullScreen}
+            className="p-2 text-gray-400 hover:text-white hover:bg-slate-800 rounded-lg transition-colors"
+            title="View full screen"
+          >
+            <Maximize2 className="w-4 h-4" />
+          </button>
+        </div>
+        {isExpanded && <div className="p-4">{children}</div>}
+      </div>
+    );
+  };
 };
+
+export default ProjectDetailPage;
