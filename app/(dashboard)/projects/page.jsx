@@ -234,7 +234,7 @@ export default function ProjectsPage() {
               </div>
               <button
                 onClick={() => setShowAddForm(!showAddForm)}
-                className="px-4 py-2 bg-blue-600 hover:bg-blue-700 text-white rounded-lg font-medium transition-colors flex items-center gap-2"
+                className="px-4 py-2 bg-blue-600 hover:bg-blue-700 text-white rounded-lg font-medium transition-colors flex items-center gap-2 cursor-pointer"
               >
                 <Plus className="w-4 h-4" />
                 Add Project
@@ -313,7 +313,7 @@ export default function ProjectsPage() {
                 <button
                   type="submit"
                   disabled={loading || !repoUrl.trim()}
-                  className="px-6 py-2 bg-blue-600 hover:bg-blue-700 disabled:bg-slate-700 disabled:cursor-not-allowed text-white rounded-lg font-medium transition-colors flex items-center gap-2"
+                  className="px-6 py-2 bg-blue-600 hover:bg-blue-700 disabled:bg-slate-700 disabled:cursor-not-allowed text-white rounded-lg font-medium transition-colors flex items-center gap-2 cursor-pointer"
                 >
                   {loading ? (
                     <>
@@ -327,7 +327,7 @@ export default function ProjectsPage() {
                 <button
                   type="button"
                   onClick={() => setShowAddForm(false)}
-                  className="px-4 py-2 bg-slate-800 hover:bg-slate-700 text-gray-300 rounded-lg transition-colors"
+                  className="px-4 py-2 bg-slate-800 hover:bg-slate-700 text-gray-300 rounded-lg transition-colors cursor-pointer"
                 >
                   Cancel
                 </button>
@@ -354,7 +354,7 @@ export default function ProjectsPage() {
                 </p>
                 <button
                   onClick={() => setShowAddForm(true)}
-                  className="px-6 py-2 bg-blue-600 hover:bg-blue-700 text-white rounded-lg font-medium transition-colors inline-flex items-center gap-2"
+                  className="px-6 py-2 bg-blue-600 hover:bg-blue-700 text-white rounded-lg font-medium transition-colors inline-flex items-center gap-2 cursor-pointer"
                 >
                   <Plus className="w-4 h-4" />
                   Add Your First Project
@@ -427,7 +427,7 @@ export default function ProjectsPage() {
 
                     <button
                       onClick={(e) => deleteProject(project.id, e)}
-                      className="p-2 text-gray-500 hover:text-red-400 hover:bg-red-950/50 rounded-lg transition-colors"
+                      className="p-2 text-gray-500 hover:text-red-400 hover:bg-red-950/50 rounded-lg transition-colors cursor-pointer"
                       title="Delete project"
                     >
                       <Trash2 className="w-4 h-4" />
