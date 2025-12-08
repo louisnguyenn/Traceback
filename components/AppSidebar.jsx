@@ -26,11 +26,6 @@ const items = [
     url: '/projects',
     icon: FolderCode,
   },
-  {
-    title: 'Help',
-    url: '/help',
-    icon: HelpCircle,
-  },
 ];
 
 export function AppSidebar() {
