@@ -14,6 +14,7 @@ import {
 } from 'lucide-react';
 import { useRouter } from 'next/navigation';
 import { useCallback, useEffect, useState } from 'react';
+import { toast } from 'sonner';
 
 export default function ProjectsPage() {
   const router = useRouter();
@@ -155,13 +156,89 @@ export default function ProjectsPage() {
     }
   };
 
-  const deleteProject = (projectId, e) => {
-    e.stopPropagation();
+  // remove project helper function
+  const removeProjectById = useCallback((projectId) => {
+    setProjects((prev) => {
+      const updated = prev.filter((p) => p.id !== projectId);
+      try {
+        localStorage.setItem('projects', JSON.stringify(updated));
+      } catch (err) {
+        console.error('Failed to save projects to localStorage', err);
+      }
+      return updated;
+    });
+  }, []);
 
-    if (confirm('Are you sure you want to delete this project?')) {
-      const updated = projects.filter((p) => p.id !== projectId);
-      updateProjects(updated);
+  // delete project function
+  const deleteProject = (projectId, e) => {
+    // make sure we stop the card navigation
+    if (e?.stopPropagation) {
+      e.stopPropagation();
+      e.preventDefault();
     }
+
+    // capture current projects snapshot for undo
+    const snapshot = [...projects];
+
+    toast.custom((t) => (
+      <div className="flex items-start gap-3 p-4 bg-neutral-900 border border-neutral-700 rounded-xl shadow-xl w-[320px]">
+        <div className="text-red-400 text-xl">🗑️</div>
+
+        <div className="flex flex-col flex-1">
+          <p className="font-semibold text-white">Delete project?</p>
+          <p className="text-sm text-neutral-400">
+            This action cannot be undone.
+          </p>
+
+          <div className="mt-3 flex gap-2">
+            <button
+              type="button"
+              className="px-3 py-1.5 text-sm bg-red-600 hover:bg-red-500 rounded-md cursor-pointer"
+              onClick={() => {
+                // remove safely using functional update helper to avoid stale closures
+                removeProjectById(projectId);
+
+                // dismiss confirm toast
+                toast.dismiss(t);
+
+                // success toast with undo action
+                toast.success('Project deleted', {
+                  description: 'The project was removed.',
+                  action: {
+                    label: 'Undo',
+                    onClick: () => {
+                      // restore snapshot
+                      setProjects(snapshot);
+                      try {
+                        localStorage.setItem(
+                          'projects',
+                          JSON.stringify(snapshot)
+                        );
+                      } catch (err) {
+                        console.error(
+                          'Failed to save projects to localStorage',
+                          err
+                        );
+                      }
+                    },
+                  },
+                });
+              }}
+            >
+              Delete
+            </button>
+
+            <button
+              type="button"
+              className="px-3 py-1.5 text-sm bg-neutral-700 hover:bg-neutral-600 rounded-md cursor-pointer"
+              onClick={() => toast.dismiss(t)}
+            >
+              Cancel
+            </button>
+          </div>
+        </div>
+      </div>
+    ));
   };
 
   if (authLoading || !user) {
@@ -426,6 +503,7 @@ export default function ProjectsPage() {
                     </div>
 
                     <button
+                      type="button"
                       onClick={(e) => deleteProject(project.id, e)}
                       className="p-2 text-gray-500 hover:text-red-400 hover:bg-red-950/50 rounded-lg transition-colors cursor-pointer"
                       title="Delete project"
