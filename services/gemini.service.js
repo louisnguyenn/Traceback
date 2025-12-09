@@ -3,23 +3,12 @@ import { GoogleGenerativeAI } from '@google/generative-ai';
 export async function fetchGemini(prompt) {
   const apiKey = process.env.GEMINI_API_KEY;
 
-  console.log('=== GEMINI DEBUG ===');
-  console.log(
-    'API Key from env:',
-    process.env.GEMINI_API_KEY ? 'EXISTS' : 'UNDEFINED'
-  );
-  console.log('API Key being used:', apiKey.substring(0, 20) + '...');
-  console.log('API Key length:', apiKey.length);
-
   if (!apiKey) {
     throw new Error('No API key available');
   }
 
   try {
-    console.log('Initializing GoogleGenerativeAI...');
     const genAI = new GoogleGenerativeAI(apiKey);
-
-    console.log('Getting model...');
     const model = genAI.getGenerativeModel({
       model: 'gemini-2.5-flash',
     });
