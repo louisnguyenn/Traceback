@@ -17,13 +17,11 @@ Traceback helps developers get up to speed with new projects instantly. By summa
 
 ---
 
-## 🏗️ Tech Stack
+## 🌐 Live Deployment
 
-**Frontend:** Next.js, React, Tailwind CSS  
-**Backend / API:** Next.js Serverless API Routes  
-**Authentication:** Supabase Auth  
-**AI Integration:** Gemini 2.5 Flash API  
-**Deployment:** Vercel  
+Traceback is fully deployed and accessible on Vercel:
+
+👉 **Live Demo:** [Traceback](https://traceback-steel.vercel.app)
 
 ---
 
@@ -41,11 +39,13 @@ This architecture ensures that all AI calls remain **server-side**, keeping API 
 
 ---
 
-## 🌐 Live Deployment
+## 🏗️ Tech Stack
 
-Traceback is fully deployed and accessible on Vercel:
-
-👉 **Live Demo:** [https://traceback-steel.vercel.app](https://traceback-steel.vercel.app)
+**Frontend:** Next.js, React, Tailwind CSS  
+**Backend / API:** Next.js Serverless API Routes  
+**Authentication:** Supabase Auth  
+**AI Integration:** Gemini 2.5 Flash API  
+**Deployment:** Vercel  
 
 ---
 
