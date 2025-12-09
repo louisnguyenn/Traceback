@@ -2,6 +2,7 @@
 import AnimatedContent from '@/components/animations/AnimatedContent';
 import { Button } from '@/components/ui/button';
 import { useAuth } from '@/context/AuthContext';
+import { getLanguageColor } from '@/lib/languageColors';
 import {
   AlertCircle,
   CheckCircle,
@@ -279,8 +280,7 @@ export default function ProjectsPage() {
                   delay={0.6}
                 >
                   <p className="text-base text-gray-400 mt-3">
-                    Manage and explore your GitHub repositories with AI-powered
-                    insights.
+                    Manage and explore your GitHub repositories.
                   </p>
                 </AnimatedContent>
               </div>
@@ -465,8 +465,22 @@ export default function ProjectsPage() {
                           {project.forks?.toLocaleString() || 0}
                         </span>
                         {project.language && (
-                          <span className="px-2 py-0.5 bg-slate-800 rounded-full">
-                            {project.language}
+                          <span className="flex items-center gap-2">
+                            <span
+                              className="w-2 h-2 rounded-full"
+                              style={{
+                                backgroundColor: getLanguageColor(
+                                  project.language
+                                ),
+                              }}
+                            />
+                            <span
+                              style={{
+                                color: getLanguageColor(project.language),
+                              }}
+                            >
+                              {project.language}
+                            </span>
                           </span>
                         )}
                         {project.updatedAt && (
