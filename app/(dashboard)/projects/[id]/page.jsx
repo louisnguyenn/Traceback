@@ -365,7 +365,7 @@ const ProjectDetailPage = () => {
               {projectData.onboardingOverview && !projectData.isGenerating && (
                 <button
                   onClick={regenerateOnboarding}
-                  className="p-2 text-gray-400 hover:text-white hover:bg-slate-800 rounded-lg transition-colors flex items-center gap-2"
+                  className="p-2 text-gray-400 hover:text-white hover:bg-slate-800 rounded-lg transition-colors flex items-center gap-2 cursor-pointer"
                   title="Regenerate onboarding"
                 >
                   <RefreshCw className="w-4 h-4" />
