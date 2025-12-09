@@ -358,14 +358,12 @@ const ProjectDetailPage = () => {
             <div className="flex items-center justify-between p-4 border-b border-slate-800">
               <div className="flex items-center gap-3 text-white">
                 <Sparkles className="w-5 h-5 text-purple-400" />
-                <h3 className="text-lg font-semibold">
-                  AI Onboarding Overview
-                </h3>
+                <h3 className="text-lg font-semibold">Onboarding Overview</h3>
               </div>
               {projectData.onboardingOverview && !projectData.isGenerating && (
                 <button
                   onClick={regenerateOnboarding}
-                  className="p-2 text-gray-400 hover:text-white hover:bg-slate-800 rounded-lg transition-colors flex items-center gap-2 cursor-pointer"
+                  className="p-2 text-gray-400 hover:text-white hover:bg-slate-800 rounded-lg transition-all hover:scale-105 duration-300 flex items-center gap-2 cursor-pointer"
                   title="Regenerate onboarding"
                 >
                   <RefreshCw className="w-4 h-4" />
@@ -377,10 +375,7 @@ const ProjectDetailPage = () => {
               {projectData.isGenerating ? (
                 <div className="flex items-center gap-3 text-gray-400 py-8">
                   <Loader2 className="w-5 h-5 animate-spin text-cyan-400" />
-                  <span>
-                    AI is analyzing the repository and generating an onboarding
-                    guide...
-                  </span>
+                  <span>Generating an onboarding guide...</span>
                 </div>
               ) : projectData.onboardingOverview ? (
                 <div className="prose prose-invert prose-lg max-w-none">
