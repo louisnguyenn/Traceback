@@ -1,9 +1,7 @@
-import React from 'react'
+import React from 'react';
 
 const TrustedByDevelopers = () => {
-  return (
-    <div>TrustedByDevelopers</div>
-  )
-}
+  return <div>TrustedByDevelopers</div>;
+};
 
-export default TrustedByDevelopers
+export default TrustedByDevelopers;

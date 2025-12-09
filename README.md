@@ -45,7 +45,7 @@ This architecture ensures that all AI calls remain **server-side**, keeping API 
 **Backend / API:** Next.js Serverless API Routes  
 **Authentication:** Supabase Auth  
 **AI Integration:** Gemini 2.5 Flash API  
-**Deployment:** Vercel  
+**Deployment:** Vercel
 
 ---
 
@@ -59,6 +59,7 @@ npm run dev
 ```
 
 Add the following environment variables to a .env.local file (refer to .env.example):
+
 ```.env.local
 GEMINI_API_KEY=
 NEXT_PUBLIC_SUPABASE_URL=
@@ -66,6 +67,7 @@ NEXT_PUBLIC_SUPABASE_ANON_KEY=
 ```
 
 Start the development server:
+
 ```bash
 npm run dev
 ```
@@ -73,4 +75,5 @@ npm run dev
 ---
 
 ## 🧭 Credits
+
 Created by Louis Nguyen
