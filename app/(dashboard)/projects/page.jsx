@@ -1,5 +1,6 @@
 'use client';
 import AnimatedContent from '@/components/animations/AnimatedContent';
+import { Button } from '@/components/ui/button';
 import { useAuth } from '@/context/AuthContext';
 import {
   AlertCircle,
@@ -177,11 +178,8 @@ export default function ProjectsPage() {
       e.preventDefault();
     }
 
-    // capture current projects snapshot for undo
-    const snapshot = [...projects];
-
     toast.custom((t) => (
-      <div className="flex items-start gap-3 p-4 bg-neutral-900 border border-neutral-700 rounded-xl shadow-xl w-[320px]">
+      <div className="flex items-start gap-3 p-4 bg-slate-900 border border-slate-700 rounded-xl shadow-xl w-[320px]">
         <div className="text-red-400 text-xl">🗑️</div>
 
         <div className="flex flex-col flex-1">
@@ -191,8 +189,8 @@ export default function ProjectsPage() {
           </p>
 
           <div className="mt-3 flex gap-2">
-            <button
-              type="button"
+            <Button
+              variant="outine"
               className="px-3 py-1.5 text-sm bg-red-600 hover:bg-red-500 rounded-md cursor-pointer"
               onClick={() => {
                 // remove safely using functional update helper to avoid stale closures
@@ -200,33 +198,10 @@ export default function ProjectsPage() {
 
                 // dismiss confirm toast
                 toast.dismiss(t);
-
-                // success toast with undo action
-                toast.success('Project deleted', {
-                  description: 'The project was removed.',
-                  action: {
-                    label: 'Undo',
-                    onClick: () => {
-                      // restore snapshot
-                      setProjects(snapshot);
-                      try {
-                        localStorage.setItem(
-                          'projects',
-                          JSON.stringify(snapshot)
-                        );
-                      } catch (err) {
-                        console.error(
-                          'Failed to save projects to localStorage',
-                          err
-                        );
-                      }
-                    },
-                  },
-                });
               }}
             >
               Delete
-            </button>
+            </Button>
 
             <button
               type="button"
