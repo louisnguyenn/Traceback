@@ -192,7 +192,7 @@ export default function ProjectsPage() {
           <div className="mt-3 flex gap-2">
             <Button
               variant="outine"
-              className="px-3 py-1.5 text-sm bg-red-600 hover:bg-red-500 rounded-md cursor-pointer"
+              className="px-3 py-1.5 text-sm bg-red-600 hover:bg-red-500 hover:scale-105 rounded-md cursor-pointer text-white transition-all duration-300"
               onClick={() => {
                 // remove safely using functional update helper to avoid stale closures
                 removeProjectById(projectId);
@@ -204,13 +204,13 @@ export default function ProjectsPage() {
               Delete
             </Button>
 
-            <button
-              type="button"
-              className="px-3 py-1.5 text-sm bg-neutral-700 hover:bg-neutral-600 rounded-md cursor-pointer"
+            <Button
+              variant="button"
+              className="px-3 py-1.5 text-sm bg-neutral-700 hover:bg-neutral-600 hover:scale-105 transition-all duration-300 rounded-md cursor-pointer text-white"
               onClick={() => toast.dismiss(t)}
             >
               Cancel
-            </button>
+            </Button>
           </div>
         </div>
       </div>
@@ -358,7 +358,7 @@ export default function ProjectsPage() {
                 <button
                   type="submit"
                   disabled={loading || !repoUrl.trim()}
-                  className="px-6 py-2 bg-blue-600 hover:bg-blue-700 disabled:bg-slate-700 disabled:cursor-not-allowed text-white rounded-lg font-medium transition-colors flex items-center gap-2 cursor-pointer"
+                  className="px-6 py-2 bg-blue-600 hover:bg-blue-700 disabled:bg-slate-700 disabled:cursor-not-allowed text-white rounded-lg font-medium flex items-center gap-2 cursor-pointer hover:scale-105 transition-all duration-300"
                 >
                   {loading ? (
                     <>
@@ -372,7 +372,7 @@ export default function ProjectsPage() {
                 <button
                   type="button"
                   onClick={() => setShowAddForm(false)}
-                  className="px-4 py-2 bg-red-500 hover:bg-red-700 text-white font-medium rounded-lg transition-colors cursor-pointer"
+                  className="px-4 py-2 bg-red-500 hover:bg-red-700 text-white font-medium rounded-lg transition-all hover:scale-105 duration-300 cursor-pointer"
                 >
                   Cancel
                 </button>
@@ -389,7 +389,7 @@ export default function ProjectsPage() {
 
               <button
                 onClick={() => setShowAddForm(!showAddForm)}
-                className="px-4 py-2 bg-blue-600 hover:bg-blue-700 text-white rounded-lg font-medium transition-colors flex items-center gap-2 cursor-pointer"
+                className="px-4 py-2 bg-blue-600 hover:bg-blue-700 text-white rounded-lg font-medium transition-all hover:scale-105 duration-300 flex items-center gap-2 cursor-pointer"
               >
                 <Plus className="w-4 h-4" />
                 Add Project
@@ -407,7 +407,7 @@ export default function ProjectsPage() {
                 </p>
                 <button
                   onClick={() => setShowAddForm(true)}
-                  className="px-6 py-2 bg-blue-600 hover:bg-blue-700 text-white rounded-lg font-medium transition-colors inline-flex items-center gap-2 cursor-pointer"
+                  className="px-6 py-2 bg-blue-600 hover:bg-blue-700 text-white rounded-lg font-medium transition-all inline-flex items-center gap-2 cursor-pointer hover:scale-105 duration-300"
                 >
                   <Plus className="w-4 h-4" />
                   Add Your First Project
