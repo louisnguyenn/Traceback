@@ -1,7 +1,7 @@
 import { ArrowRight } from 'lucide-react';
 import Link from 'next/link';
-import AnimatedContent from './animations/AnimatedContent';
-import FadeContent from './animations/FadeContent';
+import AnimatedContent from '../animations/AnimatedContent';
+import FadeContent from '../animations/FadeContent';
 
 const Hero = () => {
   return (
