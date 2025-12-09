@@ -284,13 +284,6 @@ export default function ProjectsPage() {
                   </p>
                 </AnimatedContent>
               </div>
-              <button
-                onClick={() => setShowAddForm(!showAddForm)}
-                className="px-4 py-2 bg-blue-600 hover:bg-blue-700 text-white rounded-lg font-medium transition-colors flex items-center gap-2 cursor-pointer"
-              >
-                <Plus className="w-4 h-4" />
-                Add Project
-              </button>
             </div>
           </div>
         </header>
@@ -379,7 +372,7 @@ export default function ProjectsPage() {
                 <button
                   type="button"
                   onClick={() => setShowAddForm(false)}
-                  className="px-4 py-2 bg-slate-800 hover:bg-slate-700 text-gray-300 rounded-lg transition-colors cursor-pointer"
+                  className="px-4 py-2 bg-red-500 hover:bg-red-700 text-white font-medium rounded-lg transition-colors cursor-pointer"
                 >
                   Cancel
                 </button>
@@ -393,6 +386,14 @@ export default function ProjectsPage() {
               <h3 className="text-xl font-semibold text-white">
                 Your Projects
               </h3>
+
+              <button
+                onClick={() => setShowAddForm(!showAddForm)}
+                className="px-4 py-2 bg-blue-600 hover:bg-blue-700 text-white rounded-lg font-medium transition-colors flex items-center gap-2 cursor-pointer"
+              >
+                <Plus className="w-4 h-4" />
+                Add Project
+              </button>
             </div>
 
             {projects.length === 0 ? (
