@@ -31,7 +31,7 @@ const ProjectDetailPage = () => {
   const [loading, setLoading] = useState(true);
   const [expandedSections, setExpandedSections] = useState({
     onboarding: true,
-    commits: true,
+    commits: false,
     languages: false,
     dependencies: false,
     readme: false,
@@ -229,7 +229,7 @@ const ProjectDetailPage = () => {
             <h3 className="text-lg font-semibold">{title}</h3>
           </div>
         </button>
-        {isExpanded && <div className="p-6 pt-0">{children}</div>}
+        {isExpanded && <div className="p-6 pt-5">{children}</div>}
       </div>
     );
   };
