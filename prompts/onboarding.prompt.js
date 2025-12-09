@@ -21,7 +21,7 @@ The overview must include these sections in order:
 
 1. What is <insert repo name here>? 6-7 sentences explaining the project's purpose and value
 2. Tech Stack: Bullet list of key technologies (frameworks, languages, main libraries only)
-3. Key Features: 3-5 bullet points of main functionality
+3. Key Features: 2-4 bullet points of main functionality
 4. Recent Commits: 3-5 sentences explaining the recent repo commits
 
 __BEST_PRACTICES__
