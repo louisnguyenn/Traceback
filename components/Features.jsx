@@ -1,23 +1,25 @@
+import Image from 'next/image';
+
 const features = [
   {
-    title: 'AI-Powered Summaries',
+    title: 'AI-Powered Onboarding',
     description:
-      "Get concise, human-readable explanations of complex commit histories. Traceback uses Gemini AI to summarize commit messages and code changes, so you can understand what's been done without reading hundreds of lines of diffs.",
-    image: 'commit-summary',
+      "New to a repository? Traceback automatically generates an AI-powered onboarding guide with a personalized summary of the project's purpose, tech stack, key features, and how to get started - helping you understand the codebase in minutes.",
+    image: '/images/onboardingpreview.png',
     imagePosition: 'left',
   },
   {
-    title: 'Onboarding Mode',
+    title: 'Complete Repository Analysis',
     description:
-      'New to a repository? Traceback automatically generates a “quick brief”, a personalized summary of the most important recent commits, key features, and active branches, to get you up to speed in minutes.',
-    image: 'onboarding-summary',
+      'Traceback fetches comprehensive GitHub repository information including commits, languages, dependencies, README, and project statistics - giving you a complete overview of the codebase in one place.',
+    image: '/images/commitspreview.png',
     imagePosition: 'right',
   },
   {
     title: 'Workflow Integration',
     description:
       'Traceback connects seamlessly with GitHub and GitLab, fitting right into your development workflow without changing the way you work.',
-    image: 'workflow-summary',
+    image: '/images/projectspreview.png',
     imagePosition: 'left',
   },
 ];
@@ -51,7 +53,17 @@ const Features = () => {
             >
               {/* image */}
               <div className="flex-1 w-full">
-                <div className="relative group">{/* add the image here */}</div>
+                <div className="relative group">
+                  {feature.image && (
+                    <Image
+                      src={feature.image}
+                      alt={feature.title}
+                      width={600}
+                      height={400}
+                      className="rounded-xl shadow-lg object-cover"
+                    />
+                  )}
+                </div>
               </div>
 
               {/* text section */}
