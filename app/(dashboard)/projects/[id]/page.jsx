@@ -217,7 +217,7 @@ const ProjectDetailPage = () => {
       <div className="bg-slate-900/50 rounded-xl border border-slate-800 overflow-hidden">
         <button
           onClick={() => toggleSection(sectionKey)}
-          className="w-full flex items-center justify-between p-4 hover:bg-slate-800/50 transition-colors"
+          className="w-full flex items-center justify-between p-4 hover:bg-slate-800/50 transition-colors cursor-pointer"
         >
           <div className="flex items-center gap-3 text-white">
             {isExpanded ? (
