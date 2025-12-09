@@ -473,7 +473,7 @@ const ProjectDetailPage = () => {
                           </div>
                           <div className="w-full bg-slate-800 rounded-full h-2.5">
                             <div
-                              className="bg-gradient-to-r from-green-500 to-emerald-500 h-2.5 rounded-full transition-all"
+                              className="bg-linear-to-r from-green-500 to-emerald-500 h-2.5 rounded-full transition-all"
                               style={{ width: `${percentage}%` }}
                             ></div>
                           </div>
