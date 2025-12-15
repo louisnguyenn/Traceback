@@ -219,7 +219,7 @@ const DashboardPage = () => {
                 </button>
               </div>
 
-              {recentActivity.length > 0 ? (
+              {recentActivity?.length > 0 ? (
                 <div className="space-y-4">
                   {recentActivity.map((activity, index) => (
                     <div
