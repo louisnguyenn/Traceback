@@ -44,9 +44,9 @@ const Features = () => {
         </div>
 
         <div className="space-y-16 sm:space-y-20 lg:space-y-32">
-          {features.map((feature, key) => (
+          {features.map((feature) => (
             <div
-              key={key}
+              key={feature.id}
               className={`flex flex-col lg:flex-row items-center gap-8 sm:gap-12 ${
                 feature.imagePosition === 'right' ? 'lg:flex-row-reverse' : ''
               }`}
