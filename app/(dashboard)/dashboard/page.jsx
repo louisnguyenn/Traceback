@@ -11,6 +11,7 @@ import {
   FolderGit2,
   GitBranch,
   GitBranchPlus,
+  Sparkles,
 } from 'lucide-react';
 import { useRouter } from 'next/navigation';
 import { useEffect, useState } from 'react';
@@ -203,8 +204,8 @@ const DashboardPage = () => {
             </div>
           </div>
 
+          {/* Recent Activity */}
           <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
-            {/* recent activity */}
             <div className="lg:col-span-3 bg-slate-900/50 border border-slate-800 rounded-xl p-6">
               <div className="flex items-center justify-between mb-6">
                 <h3 className="text-xl font-semibold text-white">
@@ -218,7 +219,53 @@ const DashboardPage = () => {
                 </button>
               </div>
 
-              {/* TODO: code for recent activtiy here */}
+              {recentActivity.length > 0 ? (
+                <div className="space-y-4">
+                  {recentActivity.map((activity, index) => (
+                    <div
+                      key={index}
+                      className="flex items-start space-x-4 p-4 rounded-lg hover:bg-slate-800/50 transition-colors"
+                    >
+                      <div
+                        className={`p-2 bg-${activity.color}-500/10 rounded-lg mt-1`}
+                      >
+                        {activity.icon === 'folder' && (
+                          <FolderGit2
+                            className={`w-4 h-4 text-${activity.color}-400`}
+                          />
+                        )}
+                        {activity.icon === 'sparkles' && (
+                          <Sparkles
+                            className={`w-4 h-4 text-${activity.color}-400`}
+                          />
+                        )}
+                        {activity.icon === 'git' && (
+                          <GitBranch
+                            className={`w-4 h-4 text-${activity.color}-400`}
+                          />
+                        )}
+                      </div>
+                      <div className="flex-1 min-w-0">
+                        <p className="text-sm text-white font-medium truncate">
+                          {activity.repo}
+                        </p>
+                        <p className="text-sm text-gray-400 truncate">
+                          {activity.action}
+                        </p>
+                      </div>
+                      <div className="flex items-center text-xs text-gray-500 whitespace-nowrap">
+                        <Clock className="w-3 h-3 mr-1" />
+                        {getRelativeTime(activity.time)}
+                      </div>
+                    </div>
+                  ))}
+                </div>
+              ) : (
+                <div className="text-center py-12">
+                  <Activity className="w-12 h-12 text-gray-600 mx-auto mb-4" />
+                  <p className="text-gray-400 mb-2">No activity yet</p>
+                </div>
+              )}
             </div>
           </div>
         </div>
