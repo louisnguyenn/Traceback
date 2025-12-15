@@ -14,15 +14,30 @@ const Navbar = ({ scrolled }) => {
       }`}
     >
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="flex justify-between items-center h-14 sm:h-16 md:h-20">
-          <div className="flex items-center space-x-1 group">
+        <div className="grid grid-cols-3 items-center h-14 sm:h-16 md:h-20">
+          <div className="flex items-center space-x-1 group justify-self-start">
             <span className="text-lg sm:text-2xl md:text-3xl font-bold">
               <span className="text-white">Trace</span>
               <span className="text-blue-400">back</span>
             </span>
           </div>
 
-          <div className="hidden md:flex items-center space-x-6 lg:space-x-8">
+          <div className="hidden md:flex items-center gap-10 justify-self-center">
+            <a
+              href="#features"
+              className="text-gray-300 hover:text-white text-sm lg:text-base transition-colors duration-300"
+            >
+              Features
+            </a>
+            <a
+              href="#howitworks"
+              className="text-gray-300 hover:text-white text-sm lg:text-base transition-colors duration-300"
+            >
+              How It Works
+            </a>
+          </div>
+
+          <div className="hidden md:flex items-center space-x-6 lg:space-x-8 justify-self-end">
             <Link
               href="/signin"
               className="text-gray-300 hover:text-white text-sm lg:text-base transition-colors duration-300"
@@ -55,6 +70,20 @@ const Navbar = ({ scrolled }) => {
             >
               Features
             </a>
+            <a
+              href="#howitworks"
+              onClick={() => setMobileMenuIsOpen(false)}
+              className="block text-gray-300 hover:text-white text-sm lg:text-base"
+            >
+              How It Works
+            </a>
+            <Link
+              href="/signin"
+              onClick={() => setMobileMenuIsOpen(false)}
+              className="bloack text-gray-300 hover:text-white text-sm lg:text-base transition-colors duration-300"
+            >
+              Sign in
+            </Link>
           </div>
         </div>
       )}
