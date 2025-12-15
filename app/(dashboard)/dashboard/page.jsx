@@ -2,6 +2,10 @@
 import AnimatedContent from '@/components/animations/AnimatedContent';
 import { useAuth } from '@/context/AuthContext';
 import {
+  calculateDashboardStats,
+  getRecentActivity,
+} from '@/lib/dashboardStats';
+import {
   Activity,
   Clock,
   FolderGit2,
@@ -10,21 +14,55 @@ import {
   TrendingUp,
 } from 'lucide-react';
 import { useRouter } from 'next/navigation';
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 
 const DashboardPage = () => {
   const { user, loading } = useAuth();
   const router = useRouter();
+  const [projects, setProjects] = useState([]);
+  const [stats, setStats] = useState({
+    totalProjects: 0,
+    totalCommits: 0,
+    totalStars: 0,
+    readyProjects: 0,
+  });
+  const [recentActivity, setRecentActivity] = useState([]);
 
+  // HELPER: navigate to projects page
   function projectsRoute() {
     router.push('/projects');
   }
 
+  // redirect user to sign-in page if not authenticated
   useEffect(() => {
     if (!loading && !user) {
       router.push('/signin');
     }
   }, [user, loading, router]);
+
+  // load projects from local storage
+  useEffect(() => {
+    const loadProjects = () => {
+      const project = localStorage.getItem('projects'); // get projects from local storage
+      if (project) {
+        const loadedProjects = JSON.parse(project);
+        setProjects(loadedProjects); // set state to the loaded projects
+
+        const calculatedStats = calculateDashboardStats(loadedProjects);
+        setStats(calculatedStats); // set stats to the calculated stats
+
+        const activities = getRecentActivity(loadedProjects);
+        setRecentActivity(activities); // set recent activities
+      }
+    };
+
+    loadProjects();
+
+    // updates dashboard when a new project is added or every 2 seconds
+    const interval = setInterval(() => loadProjects(), 2000);
+
+    return () => clearInterval(interval);
+  }, []);
 
   if (loading || !user) {
     return (
