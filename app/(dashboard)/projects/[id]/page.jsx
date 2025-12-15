@@ -31,7 +31,7 @@ const ProjectDetailPage = () => {
   const [loading, setLoading] = useState(true);
   const [expandedSections, setExpandedSections] = useState({
     onboarding: true,
-    commits: false,
+    commits: true,
     languages: false,
     dependencies: false,
     readme: false,
