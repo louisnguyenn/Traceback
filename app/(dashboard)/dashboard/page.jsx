@@ -11,11 +11,14 @@ import {
   FolderGit2,
   GitBranch,
   GitBranchPlus,
-  TrendingUp,
 } from 'lucide-react';
 import { useRouter } from 'next/navigation';
 import { useEffect, useState } from 'react';
 
+/**
+ * dashboard page render
+ * @returns {function} - dashboard page
+ */
 const DashboardPage = () => {
   const { user, loading } = useAuth();
   const router = useRouter();
@@ -42,6 +45,10 @@ const DashboardPage = () => {
 
   // load projects from local storage
   useEffect(() => {
+    /**
+     * load projects from local storage
+     * sets use states with project data
+     */
     const loadProjects = () => {
       const project = localStorage.getItem('projects'); // get projects from local storage
       if (project) {
@@ -58,13 +65,13 @@ const DashboardPage = () => {
 
     loadProjects();
 
-    // updates dashboard when a new project is added or every 2 seconds
+    // updates dashboard every two seconds
     const interval = setInterval(() => loadProjects(), 2000);
 
     return () => clearInterval(interval);
   }, []);
 
-  // loading state: show spinner when loading dashboard
+  // LOADING STATE: show spinner when loading dashboard
   if (loading || !user) {
     return (
       <div className="min-h-screen bg-slate-950 flex items-center justify-center">
