@@ -2,8 +2,9 @@
 
 import Features from '@/components/sections/Features';
 import Footer from '@/components/sections/Footer';
-import Navbar from '@/components/sections/Navbar';
 import Hero from '@/components/sections/Hero';
+import HowItWorks from '@/components/sections/HowItWorks';
+import Navbar from '@/components/sections/Navbar';
 import { useEffect, useState } from 'react';
 
 function App() {
@@ -28,6 +29,7 @@ function App() {
       <Navbar scrolled={scrolled} />
       <Hero />
       <Features />
+      <HowItWorks />
       <Footer />
     </div>
   );
