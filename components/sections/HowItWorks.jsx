@@ -1,5 +1,25 @@
 import { BookOpen, Link2, Sparkles, Zap } from 'lucide-react';
 import React from 'react';
+import {
+  SiAmazon,
+  SiApple,
+  SiGoogle,
+  SiMeta,
+  SiNetflix,
+  SiSpotify,
+  SiTesla,
+} from 'react-icons/si';
+import LogoLoop from '../animations/LogoLoop';
+
+const companyLogos = [
+  { node: <SiNetflix />, title: 'Netflix' },
+  { node: <SiGoogle />, title: 'Google' },
+  { node: <SiAmazon />, title: 'Amazon' },
+  { node: <SiMeta />, title: 'Meta' },
+  { node: <SiApple />, title: 'Apple' },
+  { node: <SiTesla />, title: 'Tesla' },
+  { node: <SiSpotify />, title: 'Spotify' },
+];
 
 const HowItWorks = () => {
   const steps = [
@@ -133,7 +153,7 @@ const HowItWorks = () => {
         {/* CTA Section */}
         <div className="mt-16 text-center">
           <div className="inline-flex flex-col items-center gap-4 bg-slate-950/50 backdrop-blur-sm border border-blue-500/20 rounded-2xl p-8 shadow-xl shadow-blue-500/10">
-            <h3 className="text-2xl font-bold bg-linear-to-r from-white via-blue-100 to-cyan-100 bg-clip-text text-transparent">
+            <h3 className="text-3xl font-bold bg-linear-to-r from-white via-blue-100 to-cyan-100 bg-clip-text text-transparent">
               Ready to streamline your onboarding?
             </h3>
             <p className="text-gray-300 max-w-xl">
@@ -143,6 +163,35 @@ const HowItWorks = () => {
             <button className="mt-4 px-8 py-3 bg-linear-to-b from-blue-600 to-blue-400 text-white font-semibold rounded-lg transition-all duration-300 hover:scale-105 shadow-lg shadow-blue-500/50 cursor-pointer">
               Get Started Now
             </button>
+          </div>
+        </div>
+
+        {/* logo loop animation */}
+        <div className="mt-30 text-center">
+          <div className="inline-flex flex-col items-center gap-4">
+            <h1 className="text-4xl font-bold ">Trusted by Developers At</h1>
+            <p className="max-w-xl text-gray-300">
+              Used by developers at leading organizations
+            </p>
+          </div>
+          <div
+            style={{
+              height: '200px',
+              position: 'relative',
+              overflow: 'hidden',
+            }}
+            className="mt-20"
+          >
+            <LogoLoop
+              logos={companyLogos}
+              speed={30}
+              direction="left"
+              logoHeight={48}
+              gap={90}
+              hoverSpeed={30}
+              scaleOnHover
+              ariaLabel="Trusted companies"
+            />
           </div>
         </div>
       </div>
