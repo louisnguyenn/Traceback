@@ -64,6 +64,7 @@ const DashboardPage = () => {
     return () => clearInterval(interval);
   }, []);
 
+  // loading state: show spinner when loading dashboard
   if (loading || !user) {
     return (
       <div className="min-h-screen bg-slate-950 flex items-center justify-center">
@@ -142,48 +143,56 @@ const DashboardPage = () => {
         <div className="px-6 py-8">
           {/* stats */}
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
+            {/* total projects */}
             <div className="bg-slate-900/50 border border-slate-800 rounded-xl p-6 hover:border-blue-500/50 transition-colors">
               <div className="flex items-center justify-between mb-4">
                 <div className="p-3 bg-blue-500/10 rounded-lg">
                   <FolderGit2 className="w-6 h-6 text-blue-400" />
                 </div>
-                <TrendingUp className="w-5 h-5 text-green-400" />
               </div>
-              <h3 className="text-2xl font-bold text-white mb-1">12</h3>
-              <p className="text-sm text-gray-400">Active Repositories</p>
+              <h3 className="text-2xl font-bold text-white mb-1">
+                {stats.totalProjects}
+              </h3>
+              <p className="text-sm text-gray-400">Total Projects</p>
             </div>
 
+            {/* total commits */}
             <div className="bg-slate-900/50 border border-slate-800 rounded-xl p-6 hover:border-cyan-500/50 transition-colors">
               <div className="flex items-center justify-between mb-4">
                 <div className="p-3 bg-cyan-500/10 rounded-lg">
                   <GitBranch className="w-6 h-6 text-cyan-400" />
                 </div>
-                <TrendingUp className="w-5 h-5 text-green-400" />
               </div>
-              <h3 className="text-2xl font-bold text-white mb-1">247</h3>
+              <h3 className="text-2xl font-bold text-white mb-1">
+                {stats.totalCommits}
+              </h3>
               <p className="text-sm text-gray-400">Total Commits</p>
             </div>
 
+            {/* total stars */}
             <div className="bg-slate-900/50 border border-slate-800 rounded-xl p-6 hover:border-purple-500/50 transition-colors">
               <div className="flex items-center justify-between mb-4">
                 <div className="p-3 bg-purple-500/10 rounded-lg">
                   <GitBranchPlus className="w-6 h-6 text-purple-400" />
                 </div>
-                <TrendingUp className="w-5 h-5 text-green-400" />
               </div>
-              <h3 className="text-2xl font-bold text-white mb-1">8</h3>
-              <p className="text-sm text-gray-400">Active Branches</p>
+              <h3 className="text-2xl font-bold text-white mb-1">
+                {stats.totalStars.toLocaleString()}
+              </h3>
+              <p className="text-sm text-gray-400">Total Stars</p>
             </div>
 
+            {/* ready projects */}
             <div className="bg-slate-900/50 border border-slate-800 rounded-xl p-6 hover:border-green-500/50 transition-colors">
               <div className="flex items-center justify-between mb-4">
                 <div className="p-3 bg-green-500/10 rounded-lg">
                   <Activity className="w-6 h-6 text-green-400" />
                 </div>
-                <TrendingUp className="w-5 h-5 text-green-400" />
               </div>
-              <h3 className="text-2xl font-bold text-white mb-1">94%</h3>
-              <p className="text-sm text-gray-400">Code Coverage</p>
+              <h3 className="text-2xl font-bold text-white mb-1">
+                {stats.readyProjects}
+              </h3>
+              <p className="text-sm text-gray-400">Onboarding Ready</p>
             </div>
           </div>
 
@@ -202,57 +211,7 @@ const DashboardPage = () => {
                 </button>
               </div>
 
-              <div className="space-y-4">
-                {[
-                  {
-                    repo: 'traceback-nextjs',
-                    action: 'pushed to main',
-                    time: '2 hours ago',
-                    color: 'blue',
-                  },
-                  {
-                    repo: 'auth-service',
-                    action: 'created pull request',
-                    time: '5 hours ago',
-                    color: 'green',
-                  },
-                  {
-                    repo: 'api-gateway',
-                    action: 'merged branch feature/oauth',
-                    time: '1 day ago',
-                    color: 'purple',
-                  },
-                  {
-                    repo: 'frontend-ui',
-                    action: 'deployed to production',
-                    time: '2 days ago',
-                    color: 'cyan',
-                  },
-                ].map((activity, index) => (
-                  <div
-                    key={index}
-                    className="flex items-start space-x-4 p-4 rounded-lg hover:bg-slate-800/50 transition-colors"
-                  >
-                    <div
-                      className={`p-2 bg-${activity.color}-500/10 rounded-lg mt-1`}
-                    >
-                      <GitBranch
-                        className={`w-4 h-4 text-${activity.color}-400`}
-                      />
-                    </div>
-                    <div className="flex-1 min-w-0">
-                      <p className="text-sm text-white font-medium truncate">
-                        {activity.repo}
-                      </p>
-                      <p className="text-sm text-gray-400">{activity.action}</p>
-                    </div>
-                    <div className="flex items-center text-xs text-gray-500">
-                      <Clock className="w-3 h-3 mr-1" />
-                      {activity.time}
-                    </div>
-                  </div>
-                ))}
-              </div>
+              {/* TODO: code for recent activtiy here */}
             </div>
           </div>
         </div>
