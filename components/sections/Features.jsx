@@ -4,14 +4,14 @@ const features = [
   {
     title: 'AI-Powered Onboarding',
     description:
-      "New to a repository? Traceback automatically generates an AI-powered onboarding guide with a personalized summary of the project's purpose, tech stack, key features, and how to get started - helping you understand the codebase in minutes.",
+      "New to a repository? Traceback automatically generates an AI-powered onboarding guide with a personalized summary of the project's purpose, tech stack, key features, and how to get started, helping you understand the codebase in minutes.",
     image: '/images/onboardingpreview.png',
     imagePosition: 'left',
   },
   {
     title: 'Complete Repository Analysis',
     description:
-      'Traceback fetches comprehensive GitHub repository information including commits, languages, dependencies, README, and project statistics - giving you a complete overview of the codebase in one place.',
+      'Traceback fetches comprehensive GitHub repository information including commits, languages, dependencies, README, and project statistics, giving you a complete overview of the codebase in one place.',
     image: '/images/commitspreview.png',
     imagePosition: 'right',
   },
