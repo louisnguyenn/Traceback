@@ -1,4 +1,5 @@
 import { BookOpen, Link2, Sparkles, Zap } from 'lucide-react';
+import Link from 'next/link';
 import React from 'react';
 import {
   SiAmazon,
@@ -160,9 +161,12 @@ const HowItWorks = () => {
               Join developers who are saving hours on codebase onboarding with
               Traceback.
             </p>
-            <button className="mt-4 px-8 py-3 bg-linear-to-b from-blue-600 to-blue-400 text-white font-semibold rounded-lg transition-all duration-300 hover:scale-105 shadow-lg shadow-blue-500/50 cursor-pointer">
+            <Link
+              href="/signin"
+              className="mt-4 px-8 py-3 bg-linear-to-b from-blue-600 to-blue-400 text-white font-semibold rounded-lg transition-all duration-300 hover:scale-105 shadow-lg shadow-blue-500/50 cursor-pointer"
+            >
               Get Started Now
-            </button>
+            </Link>
           </div>
         </div>
 

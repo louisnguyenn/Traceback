@@ -1,3 +1,5 @@
+import Link from 'next/link';
+
 const Footer = () => {
   return (
     <footer className="relative border-t border-slate-800 bg-slate-950/50 backdrop-blur-sm">
@@ -9,9 +11,12 @@ const Footer = () => {
           <p className="text-gray-300 max-w-xl text-lg">
             Start contributing now.
           </p>
-          <button className="mt-4 px-8 py-3 bg-linear-to-b from-blue-600 to-blue-400 text-white font-semibold rounded-lg transition-all duration-300 hover:scale-105 shadow-lg shadow-blue-500/50 cursor-pointer">
+          <Link
+            href="/signin"
+            className="mt-4 px-8 py-3 bg-linear-to-b from-blue-600 to-blue-400 text-white font-semibold rounded-lg transition-all duration-300 hover:scale-105 shadow-lg shadow-blue-500/50 cursor-pointer"
+          >
             Get Started Now
-          </button>
+          </Link>
         </div>
       </div>
 
