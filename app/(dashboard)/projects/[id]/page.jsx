@@ -1,12 +1,11 @@
 'use client';
 import AnimatedContent from '@/components/animations/AnimatedContent';
+import Section from '@/components/ui/section';
 import { useAuth } from '@/context/AuthContext';
 import {
   AlertCircle,
   ArrowLeft,
   Calendar,
-  ChevronDown,
-  ChevronRight,
   ExternalLink,
   Eye,
   FileCode,
@@ -26,16 +25,8 @@ const ProjectDetailPage = () => {
   const router = useRouter();
   const { user, loading: authLoading } = useAuth();
   const projectId = params.id;
-
   const [projectData, setProjectData] = useState(null);
   const [loading, setLoading] = useState(true);
-  const [expandedSections, setExpandedSections] = useState({
-    onboarding: true,
-    commits: true,
-    languages: false,
-    dependencies: false,
-    readme: false,
-  });
 
   // Redirect if not authenticated
   useEffect(() => {
@@ -153,13 +144,6 @@ const ProjectDetailPage = () => {
         });
       }
     }
-  };
-
-  const toggleSection = (section) => {
-    setExpandedSections((prev) => ({
-      ...prev,
-      [section]: !prev[section],
-    }));
   };
 
   // LOADING SKELETON
