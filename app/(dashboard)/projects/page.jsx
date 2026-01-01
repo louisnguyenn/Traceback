@@ -56,7 +56,9 @@ export default function ProjectsPage() {
     localStorage.setItem('projects', JSON.stringify(updatedProjects));
   }, []);
 
-  // Background generation function
+  /**
+   * fetch API to generate AI-Powered onboarding summary
+   */
   const generateOnboarding = useCallback(
     async (project) => {
       try {
@@ -102,6 +104,13 @@ export default function ProjectsPage() {
     [updateProjects]
   );
 
+  /**
+   * takes parameter e as in event
+   * add a project with github metadata and project details
+   *
+   * @param {any} e
+   * @returns
+   */
   const addProject = async (e) => {
     e.preventDefault();
     if (!repoUrl.trim()) return;
@@ -158,7 +167,10 @@ export default function ProjectsPage() {
     }
   };
 
-  // remove project helper function
+  /**
+   * HELPER FUNCTION
+   * filters and finds the project by ID
+   */
   const removeProjectById = useCallback((projectId) => {
     setProjects((prev) => {
       const updated = prev.filter((p) => p.id !== projectId);
@@ -171,7 +183,12 @@ export default function ProjectsPage() {
     });
   }, []);
 
-  // delete project function
+  /**
+   * will delete a project
+   *
+   * @param {any} projectId
+   * @param {any} e
+   */
   const deleteProject = (projectId, e) => {
     // make sure we stop the card navigation
     if (e?.stopPropagation) {
@@ -194,7 +211,7 @@ export default function ProjectsPage() {
               variant="outine"
               className="px-3 py-1.5 text-sm bg-red-600 hover:bg-red-500 hover:scale-105 rounded-md cursor-pointer text-white transition-all duration-300"
               onClick={() => {
-                // remove safely using functional update helper to avoid stale closures
+                // remove safely using functional update helper
                 removeProjectById(projectId);
 
                 // dismiss confirm toast
@@ -217,6 +234,7 @@ export default function ProjectsPage() {
     ));
   };
 
+  // LOADING SKELETON
   if (authLoading || !user) {
     return (
       <div className="min-h-screen bg-slate-950 flex items-center justify-center">
@@ -247,6 +265,9 @@ export default function ProjectsPage() {
     );
   }
 
+  /**
+   * return project information in dashboard
+   */
   return (
     <div className="bg-slate-950 min-h-screen">
       <main>
