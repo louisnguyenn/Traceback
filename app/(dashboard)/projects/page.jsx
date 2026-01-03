@@ -310,58 +310,7 @@ export default function ProjectsPage() {
         </header>
 
         <div className="px-6 py-8">
-          {/* Stats */}
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
-            <div className="bg-slate-900/50 border border-slate-800 rounded-xl p-6 hover:border-blue-500/50 transition-colors">
-              <div className="flex items-center justify-between mb-4">
-                <div className="p-3 bg-blue-500/10 rounded-lg">
-                  <FolderGit2 className="w-6 h-6 text-blue-400" />
-                </div>
-              </div>
-              <h3 className="text-2xl font-bold text-white mb-1">
-                {stats.total}
-              </h3>
-              <p className="text-sm text-gray-400">Total Projects</p>
-            </div>
-
-            <div className="bg-slate-900/50 border border-slate-800 rounded-xl p-6 hover:border-green-500/50 transition-colors">
-              <div className="flex items-center justify-between mb-4">
-                <div className="p-3 bg-green-500/10 rounded-lg">
-                  <CheckCircle className="w-6 h-6 text-green-400" />
-                </div>
-              </div>
-              <h3 className="text-2xl font-bold text-white mb-1">
-                {stats.ready}
-              </h3>
-              <p className="text-sm text-gray-400">Ready to Explore</p>
-            </div>
-
-            <div className="bg-slate-900/50 border border-slate-800 rounded-xl p-6 hover:border-cyan-500/50 transition-colors">
-              <div className="flex items-center justify-between mb-4">
-                <div className="p-3 bg-cyan-500/10 rounded-lg">
-                  <Loader2 className="w-6 h-6 text-cyan-400" />
-                </div>
-              </div>
-              <h3 className="text-2xl font-bold text-white mb-1">
-                {stats.generating}
-              </h3>
-              <p className="text-sm text-gray-400">Generating</p>
-            </div>
-
-            <div className="bg-slate-900/50 border border-slate-800 rounded-xl p-6 hover:border-red-500/50 transition-colors">
-              <div className="flex items-center justify-between mb-4">
-                <div className="p-3 bg-red-500/10 rounded-lg">
-                  <AlertCircle className="w-6 h-6 text-red-400" />
-                </div>
-              </div>
-              <h3 className="text-2xl font-bold text-white mb-1">
-                {stats.failed}
-              </h3>
-              <p className="text-sm text-gray-400">Failed</p>
-            </div>
-          </div>
-
-          {/* Add Project Form */}
+          {/* add project */}
           {showAddForm && (
             <div className="bg-slate-900/50 border border-slate-800 rounded-xl p-6 mb-6">
               <h3 className="text-lg font-semibold text-white mb-4">
