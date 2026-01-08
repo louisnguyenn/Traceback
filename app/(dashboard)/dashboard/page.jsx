@@ -1,5 +1,4 @@
 'use client';
-import AnimatedContent from '@/components/animations/AnimatedContent';
 import Loading from '@/components/ui/loading';
 import { useAuth } from '@/context/AuthContext';
 import {
@@ -85,39 +84,16 @@ const DashboardPage = () => {
           <div className="px-6 py-7">
             <div className="flex justify-between items-center">
               <div>
-                <AnimatedContent
-                  distance={60}
-                  direction="up"
-                  reverse={true}
-                  duration={0.7}
-                  ease="power2.out"
-                  initialOpacity={0}
-                  animateOpacity
-                  threshold={0.2}
-                  delay={0.3}
-                >
-                  <h2 className="text-4xl font-bold text-white">
-                    Welcome back,{' '}
-                    {user.user_metadata?.full_name?.split(' ')[0] ||
-                      user.email?.split('@')[0]}
-                    !
-                  </h2>
-                </AnimatedContent>
-                <AnimatedContent
-                  distance={60}
-                  direction="up"
-                  reverse={true}
-                  duration={0.7}
-                  ease="power2.out"
-                  initialOpacity={0}
-                  animateOpacity
-                  threshold={0.2}
-                  delay={0.6}
-                >
-                  <p className="text-base text-gray-400 mt-3">
-                    Here&apos;s what&apos;s happening with your projects today.
-                  </p>
-                </AnimatedContent>
+                <h2 className="text-4xl font-bold text-white">
+                  Welcome back,{' '}
+                  {user.user_metadata?.full_name?.split(' ')[0] ||
+                    user.email?.split('@')[0]}
+                  !
+                </h2>
+
+                <p className="text-base text-gray-400 mt-3">
+                  Here&apos;s what&apos;s happening with your projects today.
+                </p>
               </div>
             </div>
           </div>

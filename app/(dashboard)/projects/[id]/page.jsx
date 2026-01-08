@@ -1,5 +1,4 @@
 'use client';
-import AnimatedContent from '@/components/animations/AnimatedContent';
 import Section from '@/components/ui/section';
 import { useAuth } from '@/context/AuthContext';
 import {
@@ -201,50 +200,38 @@ const ProjectDetailPage = () => {
         {/* Header */}
         <header className="border-b border-slate-800 bg-slate-900/50 backdrop-blur-sm">
           <div className="px-6 py-7">
-            <AnimatedContent
-              distance={60}
-              direction="up"
-              reverse={true}
-              duration={0.7}
-              ease="power2.out"
-              initialOpacity={0}
-              animateOpacity
-              threshold={0.2}
-              delay={0.3}
+            <button
+              onClick={() => router.push('/projects')}
+              className="text-sm text-blue-400 hover:text-blue-300 mb-3 transition-colors cursor-pointer flex items-center gap-2"
             >
-              <button
-                onClick={() => router.push('/projects')}
-                className="text-sm text-blue-400 hover:text-blue-300 mb-3 transition-colors cursor-pointer flex items-center gap-2"
-              >
-                <ArrowLeft className="w-4 h-4" />
-                Back to Projects
-              </button>
-              <div className="flex items-start justify-between">
-                <div className="flex-1">
-                  <h2 className="text-4xl font-bold text-white mb-2">
-                    {projectData.name}
-                  </h2>
-                  <p className="text-base text-gray-400 mb-4">
-                    {projectData.description || 'No description available'}
-                  </p>
-                  <div className="flex items-center gap-4">
-                    <a
-                      href={projectData.url}
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      className="inline-flex items-center gap-2 text-sm text-blue-400 hover:text-blue-300 transition-colors"
-                    >
-                      View on GitHub
-                      <ExternalLink className="w-4 h-4" />
-                    </a>
-                    <span className="text-gray-600">•</span>
-                    <span className="text-sm text-gray-400">
-                      by {projectData.owner}
-                    </span>
-                  </div>
+              <ArrowLeft className="w-4 h-4" />
+              Back to Projects
+            </button>
+            <div className="flex items-start justify-between">
+              <div className="flex-1">
+                <h2 className="text-4xl font-bold text-white mb-2">
+                  {projectData.name}
+                </h2>
+                <p className="text-base text-gray-400 mb-4">
+                  {projectData.description || 'No description available'}
+                </p>
+                <div className="flex items-center gap-4">
+                  <a
+                    href={projectData.url}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="inline-flex items-center gap-2 text-sm text-blue-400 hover:text-blue-300 transition-colors"
+                  >
+                    View on GitHub
+                    <ExternalLink className="w-4 h-4" />
+                  </a>
+                  <span className="text-gray-600">•</span>
+                  <span className="text-sm text-gray-400">
+                    by {projectData.owner}
+                  </span>
                 </div>
               </div>
-            </AnimatedContent>
+            </div>
           </div>
         </header>
 

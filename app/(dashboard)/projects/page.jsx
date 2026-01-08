@@ -1,5 +1,4 @@
 'use client';
-import AnimatedContent from '@/components/animations/AnimatedContent';
 import { Button } from '@/components/ui/button';
 import { useAuth } from '@/context/AuthContext';
 import { getLanguageColor } from '@/lib/languageColors';
@@ -251,34 +250,11 @@ export default function ProjectsPage() {
           <div className="px-6 py-7">
             <div className="flex justify-between items-center">
               <div>
-                <AnimatedContent
-                  distance={60}
-                  direction="up"
-                  reverse={true}
-                  duration={0.7}
-                  ease="power2.out"
-                  initialOpacity={0}
-                  animateOpacity
-                  threshold={0.2}
-                  delay={0.3}
-                >
-                  <h2 className="text-4xl font-bold text-white">Projects</h2>
-                </AnimatedContent>
-                <AnimatedContent
-                  distance={60}
-                  direction="up"
-                  reverse={true}
-                  duration={0.7}
-                  ease="power2.out"
-                  initialOpacity={0}
-                  animateOpacity
-                  threshold={0.2}
-                  delay={0.6}
-                >
-                  <p className="text-base text-gray-400 mt-3">
-                    Manage and explore your GitHub repositories.
-                  </p>
-                </AnimatedContent>
+                <h2 className="text-4xl font-bold text-white">Projects</h2>
+
+                <p className="text-base text-gray-400 mt-3">
+                  Manage and explore your GitHub repositories.
+                </p>
               </div>
             </div>
           </div>
