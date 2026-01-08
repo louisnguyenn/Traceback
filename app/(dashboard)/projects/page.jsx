@@ -17,7 +17,7 @@ import {
 import { useRouter } from 'next/navigation';
 import { useCallback, useEffect, useState } from 'react';
 import { toast } from 'sonner';
-import Loading from './loading';
+import Loading from '../../../components/ui/loading';
 
 export default function ProjectsPage() {
   const router = useRouter();
