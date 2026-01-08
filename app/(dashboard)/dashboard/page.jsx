@@ -92,6 +92,16 @@ const DashboardPage = () => {
   useEffect(() => {
     if (projects.length === 0) return;
 
+    // console.log('Raw projects data:', projects);
+
+    // projects.forEach((project) => {
+    //   console.log(`${project.name}:`, {
+    //     commits: project.commits,
+    //     isArray: Array.isArray(project.commits),
+    //     length: Array.isArray(project.commits) ? project.commits.length : 'N/A',
+    //   });
+    // });
+
     // get prepared data from helper functions in lib/dashboardStats.js
     const commitData = getCommitActivityData(projects);
     const topReposData = getTopRepositories(projects);
