@@ -1,8 +1,6 @@
 const GITHUB_API_BASE = 'https://api.github.com';
 const GITHUB_HEADERS = {
   Accept: 'application/vnd.github.v3+json',
-  // Add token for higher rate limits (optional)
-  // Authorization: `token ${process.env.GITHUB_TOKEN}`,
 };
 
 /**
@@ -64,6 +62,50 @@ export async function getCommits(owner, repo, limit = 10) {
 }
 
 /**
+ * Get total commit count for a repository
+ * Uses the default branch to count commits
+ */
+export async function getTotalCommitCount(owner, repo) {
+  try {
+    // First, get the repository to find the default branch
+    const repoData = await getRepository(owner, repo);
+    const defaultBranch = repoData.default_branch;
+
+    // Fetch commits with pagination to get the total count
+    // We'll make a request for 1 commit and check the Link header
+    const response = await fetch(
+      `${GITHUB_API_BASE}/repos/${owner}/${repo}/commits?sha=${defaultBranch}&per_page=1`,
+      {
+        headers: GITHUB_HEADERS,
+      }
+    );
+
+    if (!response.ok) {
+      throw new Error('Failed to fetch commit count');
+    }
+
+    // Parse the Link header to get total pages
+    const linkHeader = response.headers.get('Link');
+
+    if (linkHeader) {
+      // Extract the last page number from the Link header
+      const lastPageMatch = linkHeader.match(/page=(\d+)>; rel="last"/);
+      if (lastPageMatch) {
+        return parseInt(lastPageMatch[1]);
+      }
+    }
+
+    // If no Link header, there's likely just one page
+    const commits = await response.json();
+    return commits.length > 0 ? 1 : 0;
+  } catch (error) {
+    console.error('Error fetching total commit count:', error);
+    // Return 0 as fallback
+    return 0;
+  }
+}
+
+/**
  * Fetch repository file tree
  */
 export async function getFileTree(owner, repo, branch = 'main') {
@@ -119,7 +161,7 @@ export async function getDependencies(owner, repo) {
 
     if (packageResponse.ok) {
       const data = await packageResponse.json();
-      const content = Buffer.from(data.content, 'base64').toString('utf-8');
+      const content = atob(data.content); // Use atob for browser compatibility
       const packageJson = JSON.parse(content);
       return {
         type: 'npm',
@@ -138,7 +180,7 @@ export async function getDependencies(owner, repo) {
 
     if (reqResponse.ok) {
       const data = await reqResponse.json();
-      const content = Buffer.from(data.content, 'base64').toString('utf-8');
+      const content = atob(data.content); // Use atob for browser compatibility
       return {
         type: 'pip',
         requirements: content.split('\n').filter((line) => line.trim()),
@@ -182,10 +224,11 @@ export async function getReadme(owner, repo) {
  */
 export async function getCompleteRepositoryData(owner, repo) {
   try {
-    const [repository, commits, languages, dependencies, readme] =
+    const [repository, commits, totalCommits, languages, dependencies, readme] =
       await Promise.all([
         getRepository(owner, repo),
         getCommits(owner, repo, 10),
+        getTotalCommitCount(owner, repo),
         getLanguages(owner, repo),
         getDependencies(owner, repo),
         getReadme(owner, repo),
@@ -205,7 +248,8 @@ export async function getCompleteRepositoryData(owner, repo) {
       defaultBranch: repository.default_branch,
       createdAt: repository.created_at,
       updatedAt: repository.updated_at,
-      commits,
+      commits, // Array of 10 recent commits for detailed view
+      totalCommits, // Total commit count for charts/stats
       languages,
       dependencies,
       readme,
