@@ -3,7 +3,10 @@ import Loading from '@/components/ui/loading';
 import { useAuth } from '@/context/AuthContext';
 import {
   calculateDashboardStats,
+  getCommitActivityData,
   getRecentActivity,
+  getStatusDistribution,
+  getTopRepositories,
 } from '@/lib/dashboardStats';
 import Chart from 'chart.js/auto';
 import {
@@ -92,32 +95,25 @@ const DashboardPage = () => {
   useEffect(() => {
     if (projects.length === 0) return;
 
+    // get prepared data from helper functions in lib/dashboardStats.js
+    const commitData = getCommitActivityData(projects);
+    const statusData = getStatusDistribution(projects);
+    const topReposData = getTopRepositories(projects);
+
     // Commit Activity Line Chart
     if (commitChartRef.current) {
       if (commitChartInstance.current) {
         commitChartInstance.current.destroy();
       }
 
-      const commitsByDate = {};
-      projects.forEach((project) => {
-        if (project.commits) {
-          const date = new Date(
-            project.lastCommitDate || project.createdAt
-          ).toLocaleDateString('en-US', { month: 'short', day: 'numeric' });
-          commitsByDate[date] = (commitsByDate[date] || 0) + project.commits;
-        }
-      });
-
-      const commitData = Object.entries(commitsByDate).slice(-7);
-
       commitChartInstance.current = new Chart(commitChartRef.current, {
         type: 'line',
         data: {
-          labels: commitData.map(([date]) => date),
+          labels: commitData.map((item) => item.date),
           datasets: [
             {
               label: 'Commits',
-              data: commitData.map(([, commits]) => commits),
+              data: commitData.map((item) => item.commits),
               borderColor: '#06b6d4',
               backgroundColor: 'rgba(6, 182, 212, 0.1)',
               tension: 0.4,
@@ -152,24 +148,14 @@ const DashboardPage = () => {
         statusChartInstance.current.destroy();
       }
 
-      const ready = projects.filter(
-        (p) => p.onboardingStatus === 'ready'
-      ).length;
-      const pending = projects.filter(
-        (p) => p.onboardingStatus === 'pending'
-      ).length;
-      const processing = projects.filter(
-        (p) => p.onboardingStatus === 'processing'
-      ).length;
-
       statusChartInstance.current = new Chart(statusChartRef.current, {
         type: 'doughnut',
         data: {
-          labels: ['Ready', 'Pending', 'Processing'],
+          labels: statusData.map((item) => item.status),
           datasets: [
             {
-              data: [ready, pending, processing],
-              backgroundColor: ['#10b981', '#f59e0b', '#3b82f6'],
+              data: statusData.map((item) => item.count),
+              backgroundColor: statusData.map((item) => item.color),
               borderWidth: 0,
             },
           ],
@@ -193,26 +179,20 @@ const DashboardPage = () => {
         reposChartInstance.current.destroy();
       }
 
-      const topRepos = projects
-        .sort((a, b) => (b.commits || 0) - (a.commits || 0))
-        .slice(0, 5);
-
       reposChartInstance.current = new Chart(reposChartRef.current, {
         type: 'bar',
         data: {
-          labels: topRepos.map((p) =>
-            p.name.length > 15 ? p.name.substring(0, 15) + '...' : p.name
-          ),
+          labels: topReposData.map((repo) => repo.name),
           datasets: [
             {
               label: 'Commits',
-              data: topRepos.map((p) => p.commits || 0),
+              data: topReposData.map((repo) => repo.commits),
               backgroundColor: '#3b82f6',
               borderRadius: 6,
             },
             {
               label: 'Stars',
-              data: topRepos.map((p) => p.stars || 0),
+              data: topReposData.map((repo) => repo.stars),
               backgroundColor: '#a855f7',
               borderRadius: 6,
             },
