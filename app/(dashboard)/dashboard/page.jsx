@@ -5,7 +5,6 @@ import {
   calculateDashboardStats,
   getCommitActivityData,
   getRecentActivity,
-  getStatusDistribution,
   getTopRepositories,
 } from '@/lib/dashboardStats';
 import Chart from 'chart.js/auto';
