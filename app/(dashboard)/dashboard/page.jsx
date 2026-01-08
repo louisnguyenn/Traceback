@@ -51,10 +51,8 @@ const DashboardPage = () => {
   const [recentActivity, setRecentActivity] = useState([]);
 
   const commitChartRef = useRef(null);
-  const statusChartRef = useRef(null);
   const reposChartRef = useRef(null);
   const commitChartInstance = useRef(null);
-  const statusChartInstance = useRef(null);
   const reposChartInstance = useRef(null);
 
   // HELPER: navigate to projects page
