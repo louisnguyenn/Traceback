@@ -96,7 +96,6 @@ const DashboardPage = () => {
 
     // get prepared data from helper functions in lib/dashboardStats.js
     const commitData = getCommitActivityData(projects);
-    const statusData = getStatusDistribution(projects);
     const topReposData = getTopRepositories(projects);
 
     // Commit Activity Line Chart
@@ -135,37 +134,6 @@ const DashboardPage = () => {
             x: {
               grid: { color: '#334155' },
               ticks: { color: '#94a3b8' },
-            },
-          },
-        },
-      });
-    }
-
-    // Project Status Pie Chart
-    if (statusChartRef.current) {
-      if (statusChartInstance.current) {
-        statusChartInstance.current.destroy();
-      }
-
-      statusChartInstance.current = new Chart(statusChartRef.current, {
-        type: 'doughnut',
-        data: {
-          labels: statusData.map((item) => item.status),
-          datasets: [
-            {
-              data: statusData.map((item) => item.count),
-              backgroundColor: statusData.map((item) => item.color),
-              borderWidth: 0,
-            },
-          ],
-        },
-        options: {
-          responsive: true,
-          maintainAspectRatio: false,
-          plugins: {
-            legend: {
-              position: 'bottom',
-              labels: { color: '#94a3b8', padding: 15 },
             },
           },
         },
@@ -223,7 +191,6 @@ const DashboardPage = () => {
 
     return () => {
       if (commitChartInstance.current) commitChartInstance.current.destroy();
-      if (statusChartInstance.current) statusChartInstance.current.destroy();
       if (reposChartInstance.current) reposChartInstance.current.destroy();
     };
   }, [projects]);
@@ -322,19 +289,6 @@ const DashboardPage = () => {
               </div>
             </div>
 
-            {/* Project Status Distribution */}
-            <div className="bg-slate-900/50 border border-slate-800 rounded-xl p-6">
-              <h3 className="text-xl font-semibold text-white mb-6">
-                Project Status
-              </h3>
-              <div className="h-[250px]">
-                <canvas ref={statusChartRef}></canvas>
-              </div>
-            </div>
-          </div>
-
-          {/* Top Repositories and Recent Activity */}
-          <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
             {/* Top Repos by Commits */}
             <div className="bg-slate-900/50 border border-slate-800 rounded-xl p-6">
               <h3 className="text-xl font-semibold text-white mb-6">
@@ -344,9 +298,11 @@ const DashboardPage = () => {
                 <canvas ref={reposChartRef}></canvas>
               </div>
             </div>
+          </div>
 
-            {/* Recent Activity */}
-            <div className="bg-slate-900/50 border border-slate-800 rounded-xl p-6">
+          {/* Recent Activity */}
+          <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
+            <div className="lg:col-span-3 bg-slate-900/50 border border-slate-800 rounded-xl p-6">
               <div className="flex items-center justify-between mb-6">
                 <h3 className="text-xl font-semibold text-white">
                   Recent Activity
@@ -360,7 +316,7 @@ const DashboardPage = () => {
               </div>
 
               {recentActivity?.length > 0 ? (
-                <div className="space-y-4 max-h-[268px] overflow-y-auto">
+                <div className="space-y-4">
                   {recentActivity.map((activity, index) => (
                     <div
                       key={index}
