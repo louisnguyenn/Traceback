@@ -5,6 +5,7 @@ import {
   calculateDashboardStats,
   getRecentActivity,
 } from '@/lib/dashboardStats';
+import Chart from 'chart.js/auto';
 import {
   Activity,
   Clock,
@@ -12,9 +13,24 @@ import {
   GitBranch,
   GitBranchPlus,
   Sparkles,
+  TrendingUp,
 } from 'lucide-react';
 import { useRouter } from 'next/navigation';
-import { useEffect, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
+
+/**
+ * Get relative time string
+ */
+function getRelativeTime(timestamp) {
+  const now = new Date();
+  const time = new Date(timestamp);
+  const diff = Math.floor((now - time) / 1000);
+
+  if (diff < 60) return 'just now';
+  if (diff < 3600) return `${Math.floor(diff / 60)}m ago`;
+  if (diff < 86400) return `${Math.floor(diff / 3600)}h ago`;
+  return `${Math.floor(diff / 86400)}d ago`;
+}
 
 /**
  * dashboard page render
@@ -32,6 +48,13 @@ const DashboardPage = () => {
   });
   const [recentActivity, setRecentActivity] = useState([]);
 
+  const commitChartRef = useRef(null);
+  const statusChartRef = useRef(null);
+  const reposChartRef = useRef(null);
+  const commitChartInstance = useRef(null);
+  const statusChartInstance = useRef(null);
+  const reposChartInstance = useRef(null);
+
   // HELPER: navigate to projects page
   function projectsRoute() {
     router.push('/projects');
@@ -46,33 +69,187 @@ const DashboardPage = () => {
 
   // load projects from local storage
   useEffect(() => {
-    /**
-     * load projects from local storage
-     * sets use states with project data
-     */
     const loadProjects = () => {
-      const project = localStorage.getItem('projects'); // get projects from local storage
+      const project = localStorage.getItem('projects');
       if (project) {
         const loadedProjects = JSON.parse(project);
-        setProjects(loadedProjects); // set state to the loaded projects
+        setProjects(loadedProjects);
 
         const calculatedStats = calculateDashboardStats(loadedProjects);
-        setStats(calculatedStats); // set stats to the calculated stats
+        setStats(calculatedStats);
 
         const activities = getRecentActivity(loadedProjects);
-        setRecentActivity(activities); // set recent activities
+        setRecentActivity(activities);
       }
     };
 
     loadProjects();
-
-    // updates dashboard every two seconds
     const interval = setInterval(() => loadProjects(), 2000);
-
     return () => clearInterval(interval);
   }, []);
 
-  // LOADING STATE: show spinner when loading dashboard
+  // Create charts
+  useEffect(() => {
+    if (projects.length === 0) return;
+
+    // Commit Activity Line Chart
+    if (commitChartRef.current) {
+      if (commitChartInstance.current) {
+        commitChartInstance.current.destroy();
+      }
+
+      const commitsByDate = {};
+      projects.forEach((project) => {
+        if (project.commits) {
+          const date = new Date(
+            project.lastCommitDate || project.createdAt
+          ).toLocaleDateString('en-US', { month: 'short', day: 'numeric' });
+          commitsByDate[date] = (commitsByDate[date] || 0) + project.commits;
+        }
+      });
+
+      const commitData = Object.entries(commitsByDate).slice(-7);
+
+      commitChartInstance.current = new Chart(commitChartRef.current, {
+        type: 'line',
+        data: {
+          labels: commitData.map(([date]) => date),
+          datasets: [
+            {
+              label: 'Commits',
+              data: commitData.map(([, commits]) => commits),
+              borderColor: '#06b6d4',
+              backgroundColor: 'rgba(6, 182, 212, 0.1)',
+              tension: 0.4,
+              fill: true,
+            },
+          ],
+        },
+        options: {
+          responsive: true,
+          maintainAspectRatio: false,
+          plugins: {
+            legend: { display: false },
+          },
+          scales: {
+            y: {
+              beginAtZero: true,
+              grid: { color: '#334155' },
+              ticks: { color: '#94a3b8' },
+            },
+            x: {
+              grid: { color: '#334155' },
+              ticks: { color: '#94a3b8' },
+            },
+          },
+        },
+      });
+    }
+
+    // Project Status Pie Chart
+    if (statusChartRef.current) {
+      if (statusChartInstance.current) {
+        statusChartInstance.current.destroy();
+      }
+
+      const ready = projects.filter(
+        (p) => p.onboardingStatus === 'ready'
+      ).length;
+      const pending = projects.filter(
+        (p) => p.onboardingStatus === 'pending'
+      ).length;
+      const processing = projects.filter(
+        (p) => p.onboardingStatus === 'processing'
+      ).length;
+
+      statusChartInstance.current = new Chart(statusChartRef.current, {
+        type: 'doughnut',
+        data: {
+          labels: ['Ready', 'Pending', 'Processing'],
+          datasets: [
+            {
+              data: [ready, pending, processing],
+              backgroundColor: ['#10b981', '#f59e0b', '#3b82f6'],
+              borderWidth: 0,
+            },
+          ],
+        },
+        options: {
+          responsive: true,
+          maintainAspectRatio: false,
+          plugins: {
+            legend: {
+              position: 'bottom',
+              labels: { color: '#94a3b8', padding: 15 },
+            },
+          },
+        },
+      });
+    }
+
+    // Top Repos Bar Chart
+    if (reposChartRef.current) {
+      if (reposChartInstance.current) {
+        reposChartInstance.current.destroy();
+      }
+
+      const topRepos = projects
+        .sort((a, b) => (b.commits || 0) - (a.commits || 0))
+        .slice(0, 5);
+
+      reposChartInstance.current = new Chart(reposChartRef.current, {
+        type: 'bar',
+        data: {
+          labels: topRepos.map((p) =>
+            p.name.length > 15 ? p.name.substring(0, 15) + '...' : p.name
+          ),
+          datasets: [
+            {
+              label: 'Commits',
+              data: topRepos.map((p) => p.commits || 0),
+              backgroundColor: '#3b82f6',
+              borderRadius: 6,
+            },
+            {
+              label: 'Stars',
+              data: topRepos.map((p) => p.stars || 0),
+              backgroundColor: '#a855f7',
+              borderRadius: 6,
+            },
+          ],
+        },
+        options: {
+          responsive: true,
+          maintainAspectRatio: false,
+          plugins: {
+            legend: {
+              position: 'top',
+              labels: { color: '#94a3b8', padding: 15 },
+            },
+          },
+          scales: {
+            y: {
+              beginAtZero: true,
+              grid: { color: '#334155' },
+              ticks: { color: '#94a3b8' },
+            },
+            x: {
+              grid: { display: false },
+              ticks: { color: '#94a3b8' },
+            },
+          },
+        },
+      });
+    }
+
+    return () => {
+      if (commitChartInstance.current) commitChartInstance.current.destroy();
+      if (statusChartInstance.current) statusChartInstance.current.destroy();
+      if (reposChartInstance.current) reposChartInstance.current.destroy();
+    };
+  }, [projects]);
+
+  // LOADING STATE
   if (loading || !user) {
     return <Loading />;
   }
@@ -90,7 +267,6 @@ const DashboardPage = () => {
                     user.email?.split('@')[0]}
                   !
                 </h2>
-
                 <p className="text-base text-gray-400 mt-3">
                   Here&apos;s what&apos;s happening with your projects today.
                 </p>
@@ -100,14 +276,14 @@ const DashboardPage = () => {
         </header>
 
         <div className="px-6 py-8">
-          {/* stats */}
+          {/* Stats Cards */}
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
-            {/* total projects */}
             <div className="bg-slate-900/50 border border-slate-800 rounded-xl p-6 hover:border-blue-500/50 transition-colors">
               <div className="flex items-center justify-between mb-4">
                 <div className="p-3 bg-blue-500/10 rounded-lg">
                   <FolderGit2 className="w-6 h-6 text-blue-400" />
                 </div>
+                <TrendingUp className="w-4 h-4 text-blue-400" />
               </div>
               <h3 className="text-2xl font-bold text-white mb-1">
                 {stats.totalProjects}
@@ -115,12 +291,12 @@ const DashboardPage = () => {
               <p className="text-sm text-gray-400">Total Projects</p>
             </div>
 
-            {/* total commits */}
             <div className="bg-slate-900/50 border border-slate-800 rounded-xl p-6 hover:border-cyan-500/50 transition-colors">
               <div className="flex items-center justify-between mb-4">
                 <div className="p-3 bg-cyan-500/10 rounded-lg">
                   <GitBranch className="w-6 h-6 text-cyan-400" />
                 </div>
+                <TrendingUp className="w-4 h-4 text-cyan-400" />
               </div>
               <h3 className="text-2xl font-bold text-white mb-1">
                 {stats.totalCommits}
@@ -128,12 +304,12 @@ const DashboardPage = () => {
               <p className="text-sm text-gray-400">Total Commits</p>
             </div>
 
-            {/* total stars */}
             <div className="bg-slate-900/50 border border-slate-800 rounded-xl p-6 hover:border-purple-500/50 transition-colors">
               <div className="flex items-center justify-between mb-4">
                 <div className="p-3 bg-purple-500/10 rounded-lg">
                   <GitBranchPlus className="w-6 h-6 text-purple-400" />
                 </div>
+                <TrendingUp className="w-4 h-4 text-purple-400" />
               </div>
               <h3 className="text-2xl font-bold text-white mb-1">
                 {stats.totalStars.toLocaleString()}
@@ -141,12 +317,12 @@ const DashboardPage = () => {
               <p className="text-sm text-gray-400">Total Stars</p>
             </div>
 
-            {/* ready projects */}
             <div className="bg-slate-900/50 border border-slate-800 rounded-xl p-6 hover:border-green-500/50 transition-colors">
               <div className="flex items-center justify-between mb-4">
                 <div className="p-3 bg-green-500/10 rounded-lg">
                   <Activity className="w-6 h-6 text-green-400" />
                 </div>
+                <TrendingUp className="w-4 h-4 text-green-400" />
               </div>
               <h3 className="text-2xl font-bold text-white mb-1">
                 {stats.readyProjects}
@@ -155,9 +331,43 @@ const DashboardPage = () => {
             </div>
           </div>
 
-          {/* Recent Activity */}
-          <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
-            <div className="lg:col-span-3 bg-slate-900/50 border border-slate-800 rounded-xl p-6">
+          {/* Charts Section */}
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 mb-8">
+            {/* Commits Over Time */}
+            <div className="bg-slate-900/50 border border-slate-800 rounded-xl p-6">
+              <h3 className="text-xl font-semibold text-white mb-6">
+                Commit Activity
+              </h3>
+              <div className="h-[250px]">
+                <canvas ref={commitChartRef}></canvas>
+              </div>
+            </div>
+
+            {/* Project Status Distribution */}
+            <div className="bg-slate-900/50 border border-slate-800 rounded-xl p-6">
+              <h3 className="text-xl font-semibold text-white mb-6">
+                Project Status
+              </h3>
+              <div className="h-[250px]">
+                <canvas ref={statusChartRef}></canvas>
+              </div>
+            </div>
+          </div>
+
+          {/* Top Repositories and Recent Activity */}
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+            {/* Top Repos by Commits */}
+            <div className="bg-slate-900/50 border border-slate-800 rounded-xl p-6">
+              <h3 className="text-xl font-semibold text-white mb-6">
+                Top Repositories
+              </h3>
+              <div className="h-[300px]">
+                <canvas ref={reposChartRef}></canvas>
+              </div>
+            </div>
+
+            {/* Recent Activity */}
+            <div className="bg-slate-900/50 border border-slate-800 rounded-xl p-6">
               <div className="flex items-center justify-between mb-6">
                 <h3 className="text-xl font-semibold text-white">
                   Recent Activity
@@ -171,7 +381,7 @@ const DashboardPage = () => {
               </div>
 
               {recentActivity?.length > 0 ? (
-                <div className="space-y-4">
+                <div className="space-y-4 max-h-[268px] overflow-y-auto">
                   {recentActivity.map((activity, index) => (
                     <div
                       key={index}
